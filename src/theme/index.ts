@@ -26,7 +26,7 @@ export type { DeepPartial } from './deep-merge';
 // Merge utility
 export { deepMerge } from './deep-merge';
 export { applyAccent, applyScheme, getCurrentAccent } from './runtime';
-export type { OpacityTokens, TerraTheme } from './theme';
+export type { LayoutTokens, OpacityTokens, TerraTheme } from './theme';
 export {
   defaultDarkTheme,
   defaultLightTheme,

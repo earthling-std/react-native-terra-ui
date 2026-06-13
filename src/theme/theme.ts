@@ -27,6 +27,14 @@ export interface OpacityTokens {
   pressed: number;
 }
 
+/** Screen-level layout tokens. */
+export interface LayoutTokens {
+  screen: {
+    /** Margin between content and the screen edge (applied as container padding). */
+    margin: { x: number; y: number };
+  };
+}
+
 /** The full resolved theme. `light` and `dark` are both `TerraTheme`. */
 export interface TerraTheme {
   color: ThemeColor;
@@ -35,9 +43,12 @@ export interface TerraTheme {
   typography: Typography;
   elevation: ElevationScale;
   opacity: OpacityTokens;
+  layout: LayoutTokens;
 }
 
 const opacity: OpacityTokens = { disabled: 0.45, pressed: 0.85 };
+
+const layout: LayoutTokens = { screen: { margin: { x: 16, y: 0 } } };
 
 export const defaultLightTheme: TerraTheme = {
   color: lightColor,
@@ -46,6 +57,7 @@ export const defaultLightTheme: TerraTheme = {
   typography: defaultTypography,
   elevation: lightElevation,
   opacity,
+  layout,
 };
 
 export const defaultDarkTheme: TerraTheme = {
@@ -55,4 +67,5 @@ export const defaultDarkTheme: TerraTheme = {
   typography: defaultTypography,
   elevation: darkElevation,
   opacity,
+  layout,
 };

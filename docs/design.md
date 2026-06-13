@@ -105,6 +105,7 @@ Rationale for the renames is in the table below.
 | `border: default/separator/focus` | `border: default/subtle/strong/focus` | `separator` folded into a clearer `subtle`/`strong`/`default` set; keep `focus`. |
 | `field: bg/text/placeholder/border` | *(removed)* | Component-level token leaking into semantics. Inputs derive from `surface`/`border`/`content`/`border.focus`. |
 | *(none)* | `elevation`, `opacity` | New: shadow presets and state-layer opacities (disabled/pressed). |
+| `screen.insets.{x,y}` | `layout.screen.margin.{x,y}` | Margin between content and the screen edge (applied as container padding). Renamed off "insets" to avoid colliding with safe-area insets. Default `x: 16`, `y: 0`; consumed by the future `Screen` component. |
 
 `action`/`status` entries pair fills with their on-colors so contrast is guaranteed:
 
@@ -258,6 +259,10 @@ interface TerraTheme {
   typography: Typography
   elevation: Record<'none' | 'sm' | 'md' | 'lg' | 'xl', ElevationStyle>
   opacity: { disabled: number; pressed: number }
+  layout: {
+    /** Margin between content and the screen edge (applied as container padding). */
+    screen: { margin: { x: number; y: number } }
+  }
 }
 
 // ── Config-facing types ──
