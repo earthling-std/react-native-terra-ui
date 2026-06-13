@@ -10,6 +10,11 @@
       "types": "./lib/typescript/src/index.d.ts",
       "default": "./lib/module/index.js"
     },
+    "./theme": {
+      "source": "./src/theme/index.ts",
+      "types": "./lib/typescript/src/theme/index.d.ts",
+      "default": "./lib/module/theme/index.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -75,7 +80,8 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "react-native-unistyles": ">=3.0.0"
   },
   "workspaces": [
     "example"
