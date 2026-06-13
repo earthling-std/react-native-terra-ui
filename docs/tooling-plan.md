@@ -134,3 +134,7 @@ engine, with a live **accent + light/dark switcher** (the v1 preview harness).
 - Verifies multi-accent switching and light/dark end-to-end.
 - Runtime requires `yarn install` + the Unistyles Babel plugin (already added to
   `example/babel.config.js`); cannot be run in the dev sandbox.
+- **Must run as a development build, not Expo Go** — Unistyles v3 pulls in
+  `react-native-nitro-modules` (native), which Expo Go can't load. Use
+  `npx expo prebuild` + `npx expo run:ios`/`run:android`, then
+  `expo start --dev-client`. See `example/README.md`.
