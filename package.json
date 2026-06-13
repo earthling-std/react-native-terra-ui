@@ -75,6 +75,9 @@
     "react": "19.2.0",
     "react-native": "0.83.6",
     "react-native-builder-bob": "^0.42.1",
+    "react-native-edge-to-edge": "1.8.1",
+    "react-native-nitro-modules": "0.35.9",
+    "react-native-unistyles": "^3.2.5",
     "turbo": "^2.9.16",
     "typescript": "^6.0.3"
   },

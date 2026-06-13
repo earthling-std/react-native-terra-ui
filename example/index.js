@@ -1,3 +1,6 @@
+// Configure Terra UI first, before anything imports components.
+import './src/unistyles';
+
 import { registerRootComponent } from 'expo';
 
 import App from './src/App';

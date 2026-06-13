@@ -1,20 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { multiply } from 'react-native-terra-ui';
+import { UIKitProvider } from 'react-native-terra-ui';
 
-const result = multiply(3, 7);
+import { Gallery } from './Gallery';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
+    <UIKitProvider>
+      <Gallery />
+    </UIKitProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

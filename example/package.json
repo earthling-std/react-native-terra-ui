@@ -18,6 +18,9 @@
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-native": "0.83.6",
+    "react-native-edge-to-edge": "1.8.1",
+    "react-native-nitro-modules": "0.35.9",
+    "react-native-unistyles": "^3.2.5",
     "react-native-web": "~0.21.1"
   },
   "private": true,
