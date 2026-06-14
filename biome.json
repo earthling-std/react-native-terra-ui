@@ -26,7 +26,7 @@
       "jsxQuoteStyle": "double",
       "semicolons": "always",
       "trailingCommas": "es5",
-      "quoteProperties": "asNeeded"
+      "quoteProperties": "preserve"
     }
   }
 }

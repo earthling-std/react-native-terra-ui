@@ -43,11 +43,11 @@ android.iml
 
 # Example Project
 #
-example/ios
-example/android
+apps/example-expo/ios
+apps/example-expo/android
 
 # Ruby
-example/vendor/
+apps/example-expo/vendor/
 
 # node.js
 #

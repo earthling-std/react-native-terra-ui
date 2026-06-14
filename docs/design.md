@@ -32,7 +32,7 @@ The single most important design decision and the main upgrade over `packages/ui
 - The library ships a **`base` theme** that defines the full **token shape** and sensible default values, for both `light` and `dark`.
 - A consuming project may pass **per-project base overrides** at config time (deep-merged onto `base`) so different apps can look different.
 - **Accents** are **named partial-theme overrides**, switchable at **runtime**. An accent may be:
-  - a **shorthand** — just a hue (expands to `intent.primary.bg` + `text.accent`), or
+  - a **shorthand** — just a hue, which expands to a fuller patch so primary *and* secondary actions recolor consistently: `action.primary` (solid hue + derived hover/active + legible `fg`), `action.secondary` (soft translucent tint of the hue), and `content.accent`/`link`/`onAccent`. Hover/active darken on light, lighten on dark. — or
   - a **full partial override** — change any tokens (primary bg/fg/hover, text accent/link, tinted surfaces, etc.).
 - "Accent" and "brand" are the **same mechanism** (a named deep-partial override on top of `base`). We use the term **accent** and do not introduce a separate "brand" concept. (The token shape stays brand-ready, so font/shape-level variants can be added later with no rework.)
 
@@ -75,7 +75,7 @@ setScheme('dark')
 
 ### 3.4 Runtime switching & persistence
 
-- **Library owns switching**: `UIKitProvider` + `useTheme()` exposing `accent`/`setAccent`, `scheme`/`setScheme`.
+- **Library owns switching**: `TerraUIProvider` + `useTheme()` exposing `accent`/`setAccent`, `scheme`/`setScheme`, `setRadius`.
 - **App owns persistence**: the app supplies the initial accent/scheme and persists the user's choice. **No storage dependency** baked into the library.
 - **Implementation**: keep just two registered Unistyles themes (`light`, `dark`); on accent change, apply the partial override via Unistyles `updateTheme` rather than pre-registering a `scheme × accent` product of themes.
 
@@ -282,6 +282,8 @@ interface TerraConfig {
   /** Follow system light/dark. Default true. */
   adaptiveThemes?: boolean
   initialScheme?: 'light' | 'dark'
+  /** Override radius scale values (sm/md/lg/…); affects Button + surfaces. */
+  radius?: Partial<Record<RadiusKey, number>>
 }
 
 interface UseThemeResult {
@@ -398,7 +400,7 @@ The library also exports the `Slot` primitive plus `mergeProps`/`composeRefs` so
 
 Foundation only — tight and well-tested:
 
-1. **Theme engine** — base theme, token shape, deep-merge, accent overrides, `configureTerraUI`, `UIKitProvider`, `useTheme`.
+1. **Theme engine** — base theme, token shape, deep-merge, accent overrides, `configureTerraUI`, `TerraUIProvider`, `useTheme`.
 2. **Layout primitives** — `Box` / `Stack` (token style-props, align/justify/gap, `asChild`).
 3. **Text** — variants driven by themeable typography, semantic color tokens.
 4. **Button** — variants/size/radius, loading/disabled, a11y, compound `Button.Icon` / `Button.Label` (icon slot accepts any node; no icon-set dependency yet).
@@ -446,7 +448,7 @@ The scaffold's placeholder `multiply.tsx` is removed during this milestone.
 
 ## 11. Key implementation notes & risks
 
-- **Configure-before-create ordering**: Unistyles requires `StyleSheet.configure` to run before any `StyleSheet.create`. So `configureTerraUI` must run at app entry, before components are imported/rendered. Provide a side-effect-free config entry (e.g. `react-native-terra-ui/theme`) the app imports first; `UIKitProvider` configures the default if the app hasn't, guarded so it only configures once.
+- **Configure-before-create ordering**: Unistyles requires `StyleSheet.configure` to run before any `StyleSheet.create`. So `configureTerraUI` must run at app entry, before components are imported/rendered. Provide a side-effect-free config entry (e.g. `react-native-terra-ui/theme`) the app imports first; `TerraUIProvider` configures the default if the app hasn't, guarded so it only configures once.
 - **Runtime accent via `updateTheme`**: verify Unistyles `updateTheme` re-renders consumers correctly and that deep-merged partials apply cleanly to both `light` and `dark`.
 - **Type safety**: the semantic token shape (`TerraTheme`, §4.4) is the source of truth for component color props (autocomplete for `content.tertiary`, `action.primary.bg`, …). Keep that inference intact through the merge.
 - **Fonts**: library references font-family *names*; document that apps must load fonts. Missing fonts should degrade to system gracefully.

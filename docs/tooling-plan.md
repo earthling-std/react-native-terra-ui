@@ -37,7 +37,7 @@ for a later milestone.
    drop unused exports while preserving the configure side effect where it lives.
 2. **Make the root entry side-effect-free.** Drop the auto-configure from the
    import path: require apps to call `configureTerraUI()` explicitly (or only via
-   `<UIKitProvider>` at render, not at import). Then `sideEffects: false` is
+   `<TerraUIProvider>` at render, not at import). Then `sideEffects: false` is
    honest and `import { Text }` no longer drags in the provider. Trade-off: the
    "zero-config default" convenience changes.
 3. **Per-component subpath exports.** Add `"./button"`, `"./text"`, … to the
@@ -121,7 +121,7 @@ engine, with a live **accent + light/dark switcher** (the v1 preview harness).
   imported from the side-effect-free `react-native-terra-ui/theme`. Imported as
   the **first** line of `example/index.js` so it configures before any component
   loads (and the root package's import-time default becomes a guarded no-op).
-- `example/src/App.tsx` — wraps `<Gallery/>` in `<UIKitProvider>`.
+- `example/src/App.tsx` — wraps `<Gallery/>` in `<TerraUIProvider>`.
 - `example/src/Gallery.tsx` — `useTheme()` for scheme/accent; sections:
   - Controls: scheme toggle + accent picker (`getAccentNames()`).
   - Typography: representative `Text` variants.

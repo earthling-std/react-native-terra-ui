@@ -1,25 +1,43 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": [".nvmrc", ".yarnrc.yml"],
+  "globalDependencies": [".nvmrc", ".yarnrc.yml", "tsconfig.base.json", "biome.json"],
   "globalEnv": ["NODE_ENV"],
   "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["lib/**"]
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "lint": {
+      "outputs": []
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
     "build:android": {
+      "dependsOn": ["react-native-terra-ui#build"],
       "env": ["ANDROID_HOME", "ORG_GRADLE_PROJECT_newArchEnabled"],
       "inputs": [
         "package.json",
-        "android",
-        "!android/build",
-        "src/*.ts",
-        "src/*.tsx",
-        "example/package.json",
-        "example/android",
-        "!example/android/.gradle",
-        "!example/android/build",
-        "!example/android/app/build"
+        "app.json",
+        "index.js",
+        "babel.config.js",
+        "metro.config.js",
+        "src/**",
+        "assets/**",
+        "android/**",
+        "!android/.gradle/**",
+        "!android/build/**",
+        "!android/app/build/**"
       ],
       "outputs": []
     },
     "build:ios": {
+      "dependsOn": ["react-native-terra-ui#build"],
       "env": [
         "RCT_NEW_ARCH_ENABLED",
         "RCT_REMOVE_LEGACY_ARCH",
@@ -28,16 +46,21 @@
       ],
       "inputs": [
         "package.json",
-        "*.podspec",
-        "ios",
-        "src/*.ts",
-        "src/*.tsx",
-        "example/package.json",
-        "example/ios",
-        "!example/ios/build",
-        "!example/ios/Pods"
+        "app.json",
+        "index.js",
+        "babel.config.js",
+        "metro.config.js",
+        "src/**",
+        "assets/**",
+        "ios/**",
+        "!ios/build/**",
+        "!ios/Pods/**"
       ],
       "outputs": []
+    },
+    "build:web": {
+      "dependsOn": ["react-native-terra-ui#build"],
+      "outputs": ["dist/**"]
     }
   }
 }

@@ -1,0 +1,112 @@
+{
+  "name": "react-native-terra-ui",
+  "version": "0.1.0",
+  "description": "Themeable React Native UI components built on react-native-unistyles",
+  "main": "./lib/module/index.js",
+  "types": "./lib/typescript/src/index.d.ts",
+  "imports": {
+    "#*": "./src/*"
+  },
+  "exports": {
+    ".": {
+      "source": "./src/index.tsx",
+      "types": "./lib/typescript/src/index.d.ts",
+      "default": "./lib/module/index.js"
+    },
+    "./theme": {
+      "source": "./src/theme/index.ts",
+      "types": "./lib/typescript/src/theme/index.d.ts",
+      "default": "./lib/module/theme/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "lib",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__",
+    "!**/.*"
+  ],
+  "scripts": {
+    "build": "bob build",
+    "clean": "del-cli lib",
+    "prepare": "bob build",
+    "typecheck": "tsc",
+    "lint": "biome check .",
+    "test": "jest"
+  },
+  "keywords": [
+    "react-native",
+    "ios",
+    "android"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/earthling-std/react-native-terra-ui.git",
+    "directory": "packages/ui"
+  },
+  "author": "Hai Le <hai.le@elmosoftware.com.au> (https://github.com/earthling-std)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/earthling-std/react-native-terra-ui/issues"
+  },
+  "homepage": "https://github.com/earthling-std/react-native-terra-ui#readme",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@react-native/babel-preset": "0.85.0",
+    "@react-native/jest-preset": "0.85.0",
+    "@types/react": "^19.2.0",
+    "babel-plugin-module-resolver": "^5.0.3",
+    "del-cli": "^7.0.0",
+    "jest": "^29.7.0",
+    "react": "19.2.0",
+    "react-native": "0.83.6",
+    "react-native-builder-bob": "^0.42.1",
+    "react-native-edge-to-edge": "1.8.1",
+    "react-native-nitro-modules": "0.35.9",
+    "react-native-unistyles": "^3.2.5",
+    "typescript": "^6.0.3"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*",
+    "react-native-unistyles": ">=3.0.0"
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      [
+        "module",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
+        }
+      ]
+    ]
+  },
+  "jest": {
+    "preset": "@react-native/jest-preset",
+    "modulePathIgnorePatterns": [
+      "<rootDir>/lib/"
+    ]
+  },
+  "create-react-native-library": {
+    "type": "library",
+    "languages": "js",
+    "tools": [
+      "biome",
+      "jest"
+    ],
+    "version": "0.62.2"
+  }
+}
