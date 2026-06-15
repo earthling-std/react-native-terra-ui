@@ -140,6 +140,9 @@ const ButtonRoot = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
 
     const { bg, border, fg } = getColors(variant, theme);
     const blocked = isDisabled || isLoading;
+    const { style: externalStyle, ...pressableRest } = rest as typeof rest & {
+      style?: PressableProps['style'];
+    };
 
     return (
       <ButtonContext.Provider value={{ color: fg, size }}>
@@ -149,13 +152,18 @@ const ButtonRoot = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
           disabled={blocked}
           accessibilityRole="button"
           accessibilityState={{ disabled: blocked, busy: isLoading }}
-          style={({ pressed }) => [
+          {...pressableRest}
+          style={(state) => [
             styles.base,
             { backgroundColor: bg, borderColor: border },
-            pressed && !blocked ? { opacity: theme.opacity.pressed } : null,
+            state.pressed && !blocked
+              ? { opacity: theme.opacity.pressed }
+              : null,
             isDisabled ? { opacity: theme.opacity.disabled } : null,
+            typeof externalStyle === 'function'
+              ? externalStyle(state)
+              : externalStyle,
           ]}
-          {...rest}
         >
           {isLoading ? (
             <ActivityIndicator size="small" color={fg} />

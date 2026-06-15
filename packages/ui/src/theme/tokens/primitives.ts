@@ -213,4 +213,9 @@ export const primitives = {
   // ── screen-level layout ───────────────────────────────────────────────────
   'layout.screen.margin.x': 16,
   'layout.screen.margin.y': 0,
+
+  // ── header layout ─────────────────────────────────────────────────────────
+  // Header bar height (compact nav bar / collapsed large-title bar). 56dp aligns
+  // to the 4dp spacing grid (= spacing.14) and a standard app-bar height.
+  'layout.header.height': 56,
 };

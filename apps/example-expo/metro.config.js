@@ -2,7 +2,8 @@ const path = require('node:path');
 const { getDefaultConfig } = require('@expo/metro-config');
 
 const projectRoot = __dirname;
-const uiSrc = path.resolve(projectRoot, '../../packages/ui/src');
+const uiPackageRoot = path.resolve(projectRoot, '../../packages/ui');
+const uiSrc = path.resolve(uiPackageRoot, 'src');
 
 /**
  * Metro configuration
@@ -18,9 +19,15 @@ const config = getDefaultConfig(projectRoot);
 const { resolveRequest: customResolveRequest } = config.resolver;
 
 config.resolver.resolveRequest = (context, moduleName, platform) => {
-  const resolvedName = moduleName.startsWith('#')
-    ? path.resolve(uiSrc, moduleName.slice(1))
-    : moduleName;
+  let resolvedName = moduleName;
+
+  if (moduleName === 'react-native-terra-ui') {
+    resolvedName = path.join(uiSrc, 'index.tsx');
+  } else if (moduleName === 'react-native-terra-ui/theme') {
+    resolvedName = path.join(uiSrc, 'theme/index.ts');
+  } else if (moduleName.startsWith('#')) {
+    resolvedName = path.resolve(uiSrc, moduleName.slice(1));
+  }
 
   if (typeof customResolveRequest === 'function') {
     return customResolveRequest(context, resolvedName, platform);

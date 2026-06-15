@@ -179,6 +179,10 @@ export interface LayoutTokens {
     /** Margin between content and the screen edge (applied as container padding). */
     margin: { x: number; y: number };
   };
+  header: {
+    /** Height of the header bar (compact nav bar / collapsed large-title bar), dp. */
+    height: number;
+  };
 }
 
 /** The full resolved theme. `light` and `dark` are both `TerraTheme`. */
