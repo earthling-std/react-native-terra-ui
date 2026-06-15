@@ -1,7 +1,8 @@
 # Terra UI example
 
-A small gallery exercising the v1 components (Text, Button, Box/Stack) and the
-theming engine, with a live light/dark + accent switcher.
+A small gallery exercising the v1 components (Text, Button, Surface, Box/Stack) and the
+theming engine, with a live light/dark + accent switcher. Navigation uses **expo-router**
+(file-based routes under `src/app/`).
 
 ## ⚠️ Requires a development build (not Expo Go)
 
@@ -21,10 +22,20 @@ npx expo run:ios         # or: npx expo run:android  — builds & launches a dev
 For later runs, start the bundler against the dev client (not Expo Go):
 
 ```sh
-npx expo start --dev-client
+yarn example start          # dev client + Fast Refresh
+yarn example start:reset    # clears Metro + Watchman if reloads stall
 ```
 
 On a device or CI, build a dev client with EAS instead (`eas build --profile development`).
+
+### Fast Refresh not updating?
+
+1. **Use a dev build**, not Expo Go — this app requires native modules.
+2. **Restart with a clean watcher** if saves don't trigger reloads:
+   ```sh
+   yarn example start:reset
+   ```
+3. Metro should only watch `apps/example-expo` and `packages/ui`, not the whole monorepo (misconfigured watchers cause Watchman recrawls and missed file events).
 
 ## What it shows
 

@@ -13,12 +13,14 @@ module.exports = (api) => {
     {
       presets: ['babel-preset-expo'],
       plugins: [
-        // Unistyles v3 requires its Babel plugin. `root` is the example's own
-        // source folder; `autoProcessPaths` also processes the linked library
-        // source so its StyleSheet.create / useUnistyles calls are transformed.
+        // Unistyles v3 requires its Babel plugin. Use an absolute root so file
+        // watching and transforms stay scoped to the example app source tree.
         [
           'react-native-unistyles/plugin',
-          { root: 'src', autoProcessImports: ['react-native-terra-ui'] },
+          {
+            root: path.resolve(__dirname, 'src'),
+            autoProcessImports: ['react-native-terra-ui'],
+          },
         ],
       ],
     },

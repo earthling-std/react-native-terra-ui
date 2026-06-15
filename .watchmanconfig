@@ -1,1 +1,10 @@
-{}
+{
+  "ignore_dirs": [
+    ".git",
+    ".turbo",
+    ".yarn",
+    "android",
+    "ios",
+    "lib"
+  ]
+}

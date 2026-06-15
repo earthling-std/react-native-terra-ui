@@ -24,8 +24,13 @@
       },
       "package": "terraui.example"
     },
+    "scheme": "terraui-example",
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router"
+    ]
   }
 }
