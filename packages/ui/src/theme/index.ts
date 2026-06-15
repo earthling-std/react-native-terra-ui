@@ -53,7 +53,6 @@ export type {
   StatusRole,
   SurfaceColorToken,
   TerraConfig,
-  TerraDefaults,
   TerraTheme,
   TextVariant,
   ThemeColor,

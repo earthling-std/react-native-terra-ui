@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native-unistyles';
 import { normalizeAccent } from '#utils/accent-utils';
 import { deepMerge } from '#utils/deep-merge';
 
-import { defaultDarkTheme, defaultLightTheme } from './theme';
+import { buildRadiusScale, defaultDarkTheme, defaultLightTheme } from './theme';
 import type {
   ComponentDefaults,
   DefaultRadiusToken,
@@ -101,8 +101,21 @@ export function configureTerraUI(config: TerraConfig = {}): void {
   }
   registry.configured = true;
 
-  registry.baseLight = deepMerge(defaultLightTheme, config.theme?.light);
-  registry.baseDark = deepMerge(defaultDarkTheme, config.theme?.dark);
+  // Derive the radius scale from the single base value (if provided), then let
+  // explicit per-token overrides in `theme.{light,dark}.radius` win over it.
+  const radiusPatch =
+    config.radiusBase != null
+      ? { radius: buildRadiusScale(config.radiusBase) }
+      : undefined;
+
+  registry.baseLight = deepMerge(
+    deepMerge(defaultLightTheme, radiusPatch),
+    config.theme?.light
+  );
+  registry.baseDark = deepMerge(
+    deepMerge(defaultDarkTheme, radiusPatch),
+    config.theme?.dark
+  );
 
   registry.defaultRadius = resolveDefaultRadius(config.components);
   registry.surfaceElevation =
@@ -112,7 +125,7 @@ export function configureTerraUI(config: TerraConfig = {}): void {
   for (const [name, accent] of Object.entries(config.accents ?? {})) {
     registry.accents[name] = normalizeAccent(accent);
   }
-  const defaultAccent = config.defaults?.accent;
+  const { defaultAccent } = config;
   registry.currentAccent =
     defaultAccent && registry.accents[defaultAccent]
       ? defaultAccent

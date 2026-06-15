@@ -12,7 +12,7 @@ configureTerraUI({
     rose: { light: '#e11d48', dark: '#fb7185' },
     amber: { light: '#d97706', dark: '#fbbf24' },
   },
-  defaults: { accent: 'emerald' },
+  defaultAccent: 'emerald',
   components: {
     button: { radius: 'full' },
     surface: { radius: 'xl', elevation: 'sm' },

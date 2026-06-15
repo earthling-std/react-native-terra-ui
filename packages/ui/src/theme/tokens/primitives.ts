@@ -111,16 +111,12 @@ export const primitives = {
   'spacing.24': 96,
   'spacing.32': 128,
 
-  // ── border-radius scale (dp) ──────────────────────────────────────────────
-  'radius.none': 0,
-  'radius.xs': 2,
-  'radius.sm': 4,
-  'radius.md': 6,
-  'radius.lg': 8,
-  'radius.xl': 12,
-  'radius.2xl': 16,
-  'radius.3xl': 24,
-  'radius.full': 9999,
+  // ── border-radius base (dp) ───────────────────────────────────────────────
+  // Only the BASE (the `lg`/×1 step) is authored here. The full radius scale is
+  // DERIVED from it via `buildRadiusScale()` in `../theme.ts`. Two ways to
+  // change it: edit this design-time token, or override at configure time with
+  // `configureTerraUI({ radiusBase })`.
+  'radius.base': 8,
 
   // ── typography: weight-token → font family (System default) ───────────────
   'typography.fonts.regular': 'System',

@@ -249,12 +249,6 @@ export interface NormalizedAccent {
   dark: DeepPartial<TerraTheme>;
 }
 
-/** Global, cross-cutting default selections applied once at configure time. */
-export interface TerraDefaults {
-  /** Name of the accent (from `accents`) to apply by default. */
-  accent?: string;
-}
-
 /** Default props for the Button component. A per-instance prop still wins. */
 export interface ButtonDefaults {
   /** Default corner radius. Defaults to `'md'`. */
@@ -276,12 +270,20 @@ export interface ComponentDefaults {
 }
 
 export interface TerraConfig {
+  /**
+   * Base corner radius in dp — the `lg` (×1) step. The rest of the scale is
+   * derived by fixed multipliers (`xs` ×0.25, `sm` ×0.5, `md` ×0.75, `xl` ×1.5,
+   * `2xl` ×2, `3xl` ×3); `none` (0) and `full` (9999) are constant. Defaults to
+   * the `radius.base` token (`8`), which reproduces the shipped scale. Per-token
+   * overrides in `theme.{light,dark}.radius` still win over the derived value.
+   */
+  radiusBase?: number;
   /** Per-project base override, deep-merged onto the shipped base (set once). */
   theme?: { light?: DeepPartial<TerraTheme>; dark?: DeepPartial<TerraTheme> };
   /** Runtime-switchable named overrides (hue shorthand or full partial). */
   accents?: Record<string, Accent>;
-  /** Global default selections (which accent to apply, …). */
-  defaults?: TerraDefaults;
+  /** Name of the accent (from `accents`) to apply by default. */
+  defaultAccent?: string;
   /** Per-component default props (e.g. `{ button: { radius: 'full' } }`). */
   components?: ComponentDefaults;
   /** Follow the system color scheme. Default `true`. */
