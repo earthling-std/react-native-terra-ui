@@ -22,6 +22,9 @@ module.exports = (api) => {
             autoProcessImports: ['react-native-terra-ui'],
           },
         ],
+        // Reanimated 4 worklets transform — required by Terra UI's Screen
+        // (scroll-linked headers). MUST be the last plugin in the list.
+        'react-native-worklets/plugin',
       ],
     },
     { root, pkg }

@@ -1,7 +1,6 @@
 import { Link } from 'expo-router';
-import { ScrollView } from 'react-native';
 
-import { Box, Button, Text, VStack } from 'react-native-terra-ui';
+import { Button, Header, Screen, Text, VStack } from 'react-native-terra-ui';
 
 import { ThemeConfigSection } from '../components/ThemeConfigSection';
 
@@ -9,19 +8,20 @@ const COMPONENTS = [
   { href: '/typography', label: 'Typography' },
   { href: '/surface', label: 'Surface' },
   { href: '/button', label: 'Button' },
+  { href: '/screen', label: 'Screen' },
 ] as const;
 
 export function GalleryScreen() {
   return (
-    <Box flex={1} bg="background">
-      <ScrollView contentContainerStyle={{ padding: 20, paddingTop: 64, gap: 32 }}>
-        <VStack gap="1">
-          <Text variant="headline-md">Gallery</Text>
-          <Text variant="body-sm" color="content.secondary">
-            Terra UI component explorer
-          </Text>
-        </VStack>
-
+    <Screen>
+      <Screen.Header>
+        <Header.LargeTitle
+          title="Gallery"
+          caption="Terra UI component explorer"
+          titleAlignment="left"
+        />
+      </Screen.Header>
+      <Screen.ScrollView bottomInset={32} contentContainerStyle={{ gap: 32 }}>
         <ThemeConfigSection />
 
         <VStack gap="2">
@@ -36,7 +36,7 @@ export function GalleryScreen() {
             </Link>
           ))}
         </VStack>
-      </ScrollView>
-    </Box>
+      </Screen.ScrollView>
+    </Screen>
   );
 }

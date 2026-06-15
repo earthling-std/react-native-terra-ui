@@ -1,8 +1,11 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {},
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ]
+  "compilerOptions": {
+    "paths": {
+      "react-native-terra-ui": ["../../packages/ui/src/index.tsx"],
+      "react-native-terra-ui/theme": ["../../packages/ui/src/theme/index.ts"],
+      "#*": ["../../packages/ui/src/*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx"]
 }

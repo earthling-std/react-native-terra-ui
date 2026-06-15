@@ -17,15 +17,15 @@ a single entry point.
 | # | Decision | Choice |
 |---|----------|--------|
 | 1 | Dependency posture | Animated **by default**, **single entry point**. `react-native-reanimated` and `react-native-safe-area-context` are **expected peer deps**. (A pure `/lite` subpath was considered and dropped for now.) |
-| 3 | Composition | **Compound dot-notation** — `Screen.Header`, `Screen.ScrollView`, `Screen.FlatList` (terra-ui's first compound component). |
-| 5 | Collapsing header | **Keep the Portal injection** — port `PortalProvider`/`PortalHost` so the header stays declared outside the scroll view yet renders its title inside it. |
-| 6 | Safe area | `react-native-safe-area-context` as an **expected peer**; `Screen` + headers use it directly. |
-| 7 | Tab / edges | **Explicit `edges` + `inTabView` props**, smart header-aware default, **no react-navigation**. |
-| 8 | Background | **Solid only** — `bg?: ColorToken`, default `background`. No gradient. |
-| 9 | Header scope | `Screen`, scroll containers, Portal, and a composite **`Header`** namespace: `Header.Title` (compact bar) + `Header.LargeTitle` (collapsing). **No** back/close buttons / icon dep (deferred). |
-| 9a | Header naming | Renamed `NavigationHeader` → **`TitleHeader`** (no false react-navigation implication; the axis is compact/inline vs large). Grouped under a composite `Header` (`Header.Title` / `Header.LargeTitle`), echoing es-meditation's `Header.*` dot-notation and matching the compound `Screen`. |
-| 10 | Layout values | Content padding from `layout.screen.margin.{x,y}`; collapse threshold / header height / bottom clearance as **props with defaults**. No magic numbers. |
-| 11 | Conventions | `bg` (not `backgroundColor`), `forwardRef`, JSDoc, semicolons, `#`-aliases. **Export `useScreen()`**. |
+| 2 | Composition | **Compound dot-notation** — `Screen.Header`, `Screen.ScrollView`, `Screen.FlatList` (terra-ui's first compound component). |
+| 3 | Collapsing header | **Keep the Portal injection** — port `PortalProvider`/`PortalHost` so the header stays declared outside the scroll view yet renders its title inside it. |
+| 4 | Safe area | `react-native-safe-area-context` as an **expected peer**; `Screen` + headers use it directly. |
+| 5 | Tab / edges | **Explicit `edges` + `inTabView` props**, smart header-aware default, **no react-navigation**. |
+| 6 | Background | **Solid only** — `bg?: ColorToken`, default `background`. No gradient. |
+| 7 | Header scope | `Screen`, scroll containers, Portal, and a composite **`Header`** namespace: `Header.Title` (compact bar) + `Header.LargeTitle` (collapsing). **No** back/close buttons / icon dep (deferred). |
+| 8 | Header naming | Renamed `NavigationHeader` → **`TitleHeader`** (no false react-navigation implication; the axis is compact/inline vs large). Grouped under a composite `Header` (`Header.Title` / `Header.LargeTitle`), echoing es-meditation's `Header.*` dot-notation and matching the compound `Screen`. |
+| 9 | Layout values | Content padding from `layout.screen.margin.{x,y}`; collapse threshold / header height / bottom clearance as **props with defaults**. No magic numbers. |
+| 10 | Conventions | `bg` (not `backgroundColor`), `forwardRef`, JSDoc, semicolons, `#`-aliases. **Export `useScreen()`**. |
 
 ## Why this is "better" than the port
 

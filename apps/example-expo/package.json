@@ -26,11 +26,13 @@
     "react-native": "0.83.6",
     "react-native-edge-to-edge": "1.8.1",
     "react-native-nitro-modules": "0.35.9",
+    "react-native-reanimated": "^4.4.1",
     "react-native-safe-area-context": "~5.6.2",
     "react-native-screens": "~4.23.0",
     "react-native-terra-ui": "workspace:*",
     "react-native-unistyles": "^3.2.5",
-    "react-native-web": "~0.21.1"
+    "react-native-web": "~0.21.1",
+    "react-native-worklets": "^0.9.2"
   },
   "private": true,
   "devDependencies": {
