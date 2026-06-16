@@ -2,11 +2,16 @@ import type { ReactNode } from 'react';
 import { Text, View } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { FONT_WEIGHT_VALUE } from '#utils/typography';
 
-export interface TitleHeaderProps {
+import {
+  HeaderDismissButton,
+  type HeaderDismissProps,
+} from './HeaderDismissButton';
+
+export interface TitleHeaderProps extends HeaderDismissProps {
   title?: string;
   /** Content on the leading side (e.g. a back button). */
   LeftComponent?: ReactNode;
@@ -32,26 +37,49 @@ export function TitleHeader({
   title,
   LeftComponent,
   RightComponent,
+  dismissAction = 'none',
+  navigation,
+  onDismiss,
   titleAlignment = 'center',
 }: TitleHeaderProps) {
   styles.useVariants({ titleAlignment });
 
+  const leading =
+    dismissAction === 'back' ? (
+      <>
+        <HeaderDismissButton
+          dismissAction={dismissAction}
+          navigation={navigation}
+          onDismiss={onDismiss}
+        />
+        {LeftComponent}
+      </>
+    ) : (
+      LeftComponent
+    );
+
+  const trailing =
+    dismissAction === 'close' ? (
+      <>
+        {RightComponent}
+        <HeaderDismissButton
+          dismissAction={dismissAction}
+          navigation={navigation}
+          onDismiss={onDismiss}
+        />
+      </>
+    ) : (
+      RightComponent
+    );
+
   return (
     <SafeAreaView edges={['top']} style={styles.safeArea}>
       <View style={styles.bar}>
-        {LeftComponent != null && (
-          <View style={styles.slot}>{LeftComponent}</View>
-        )}
+        {leading != null && <View style={styles.slot}>{leading}</View>}
         <View style={styles.titleContainer} pointerEvents="none">
-          {!!title && (
-            <Text style={styles.title}>
-              {title}
-            </Text>
-          )}
+          {!!title && <Text style={styles.title}>{title}</Text>}
         </View>
-        {RightComponent != null && (
-          <View style={styles.slotEnd}>{RightComponent}</View>
-        )}
+        {trailing != null && <View style={styles.slotEnd}>{trailing}</View>}
       </View>
     </SafeAreaView>
   );
@@ -73,11 +101,13 @@ const styles = StyleSheet.create((theme) => ({
   slot: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: theme.spacing['2'],
   },
   slotEnd: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
+    gap: theme.spacing['2'],
   },
   titleContainer: {
     variants: {

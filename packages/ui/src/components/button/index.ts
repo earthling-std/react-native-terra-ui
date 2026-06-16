@@ -1,4 +1,5 @@
 export type {
+  ButtonIconProps,
   ButtonProps,
   ButtonRadius,
   ButtonSize,

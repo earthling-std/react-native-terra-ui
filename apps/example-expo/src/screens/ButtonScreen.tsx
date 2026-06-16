@@ -35,14 +35,17 @@ export function ButtonScreen() {
       >
         <HStack gap="2" wrap>
           {VARIANTS.map((variant) => (
-              <Button key={variant} variant={variant} size="sm" onPress={noop}>
-                {variant}
-              </Button>
+            <Button key={variant} variant={variant} size="sm" onPress={noop}>
+              {variant}
+            </Button>
           ))}
         </HStack>
       </DemoSection>
 
-      <DemoSection title="size" description='Height and padding. Defaults to "md".'>
+      <DemoSection
+        title="size"
+        description='Height and padding. Defaults to "md".'
+      >
         <HStack gap="2" align="center" wrap>
           {SIZES.map((size) => (
             <PropDemo key={size} code={`size="${size}"`}>
@@ -93,7 +96,39 @@ export function ButtonScreen() {
               onPress={noop}
               accessibilityLabel="Add"
             >
-              +
+              <Button.Icon name="add" />
+            </Button>
+          </PropDemo>
+        </PropDemoGroup>
+      </DemoSection>
+
+      <DemoSection
+        title="Button.Icon"
+        description="Compound icon slot resolved from configured icon names."
+      >
+        <PropDemoGroup>
+          <PropDemo code='<Button.Icon name="add" />'>
+            <Button onPress={noop}>
+              <Button.Icon name="add" />
+              Add new contact
+            </Button>
+          </PropDemo>
+          <PropDemo code='<Button.Icon name="navigation.forward" />'>
+            <Button variant="outline" onPress={noop}>
+              Continue
+              <Button.Icon name="navigation.forward" />
+            </Button>
+          </PropDemo>
+          <PropDemo code='<Button.Icon name="trash" />'>
+            <Button variant="danger" onPress={noop}>
+              <Button.Icon name="trash" />
+              Delete contact
+            </Button>
+          </PropDemo>
+          <PropDemo code='<Button.Icon name="navigation.back" />'>
+            <Button variant="ghost" onPress={noop}>
+              <Button.Icon name="navigation.back" />
+              Back
             </Button>
           </PropDemo>
         </PropDemoGroup>

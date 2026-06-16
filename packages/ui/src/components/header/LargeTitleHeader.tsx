@@ -14,6 +14,7 @@ import { FONT_WEIGHT_VALUE } from '#utils/typography';
 
 import { usePortal } from '../portal';
 import { useScreen } from '../screen/ScreenContext';
+import { HeaderDismissButton } from './HeaderDismissButton';
 import type { TitleHeaderProps } from './TitleHeader';
 
 const AnimatedText = Animated.createAnimatedComponent(Text);
@@ -110,12 +111,16 @@ export function LargeTitleHeader({
   caption,
   LeftComponent,
   RightComponent,
+  dismissAction = 'none',
+  navigation,
+  onDismiss,
   titleAlignment = 'center',
   isLargeTitleHidden = false,
 }: LargeTitleHeaderProps) {
   const { theme } = useUnistyles();
   const surfaceBase = theme.color.surface.base;
-  const { scrollY, headerCollapseHeight, setHeaderCollapseHeight } = useScreen();
+  const { scrollY, headerCollapseHeight, setHeaderCollapseHeight } =
+    useScreen();
   const { registerContent, unregisterContent } = usePortal();
   const portalId = useId();
   const isLargeTitleHiddenValue = useSharedValue(isLargeTitleHidden);
@@ -211,15 +216,41 @@ export function LargeTitleHeader({
     unregisterContent,
   ]);
 
+  const leading =
+    dismissAction === 'back' ? (
+      <>
+        <HeaderDismissButton
+          dismissAction={dismissAction}
+          navigation={navigation}
+          onDismiss={onDismiss}
+        />
+        {LeftComponent}
+      </>
+    ) : (
+      LeftComponent
+    );
+
+  const trailing =
+    dismissAction === 'close' ? (
+      <>
+        {RightComponent}
+        <HeaderDismissButton
+          dismissAction={dismissAction}
+          navigation={navigation}
+          onDismiss={onDismiss}
+        />
+      </>
+    ) : (
+      RightComponent
+    );
+
   return (
     <AnimatedSafeAreaView
       edges={['top']}
       style={[styles.safeArea, headerBackgroundStyle]}
     >
       <View style={styles.bar}>
-        {LeftComponent != null && (
-          <View style={styles.slot}>{LeftComponent}</View>
-        )}
+        {leading != null && <View style={styles.slot}>{leading}</View>}
         <Animated.View
           style={[styles.titleContainer, compactTitleAnimatedStyle]}
           pointerEvents="none"
@@ -233,9 +264,7 @@ export function LargeTitleHeader({
             {title}
           </AnimatedText>
         </Animated.View>
-        {RightComponent != null && (
-          <View style={styles.slotEnd}>{RightComponent}</View>
-        )}
+        {trailing != null && <View style={styles.slotEnd}>{trailing}</View>}
       </View>
     </AnimatedSafeAreaView>
   );
@@ -256,11 +285,13 @@ const styles = StyleSheet.create((theme) => ({
   slot: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: theme.spacing['2'],
   },
   slotEnd: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
+    gap: theme.spacing['2'],
   },
   portalContent: {
     marginTop: theme.spacing['1'],

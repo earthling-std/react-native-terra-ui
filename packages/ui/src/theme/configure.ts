@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native-unistyles';
 
+import { defaultIcons } from '#components/icon/defaultIcons';
 import { normalizeAccent } from '#utils/accent-utils';
 import { deepMerge } from '#utils/deep-merge';
 
@@ -12,6 +13,8 @@ import type {
   RadiusComponent,
   Scheme,
   TerraConfig,
+  TerraIconComponent,
+  TerraSemanticIconName,
   TerraTheme,
   TerraThemeOverride,
 } from './types';
@@ -24,7 +27,9 @@ const DEFAULT_ELEVATION: ElevationKey = 'none';
 type ResolvedRadius = Record<RadiusComponent, DefaultRadiusToken>;
 
 /** Resolves each component's default radius from the `components` config. */
-const resolveDefaultRadius = (components?: ComponentDefaults): ResolvedRadius => ({
+const resolveDefaultRadius = (
+  components?: ComponentDefaults
+): ResolvedRadius => ({
   button: components?.button?.radius ?? DEFAULT_RADIUS,
   surface: components?.surface?.radius ?? DEFAULT_RADIUS,
 });
@@ -44,6 +49,7 @@ interface Registry {
   currentAccent?: string;
   defaultRadius: ResolvedRadius;
   surfaceElevation: ElevationKey;
+  icons: Record<string, TerraIconComponent>;
   configured: boolean;
 }
 
@@ -54,6 +60,7 @@ const registry: Registry = {
   currentAccent: undefined,
   defaultRadius: resolveDefaultRadius(),
   surfaceElevation: DEFAULT_ELEVATION,
+  icons: {},
   configured: false,
 };
 
@@ -63,6 +70,13 @@ export const getRegistry = (): Registry => registry;
 export const getIsConfigured = (): boolean => registry.configured;
 
 export const getAccentNames = (): string[] => Object.keys(registry.accents);
+
+export const getIcon = (name: string): TerraIconComponent | undefined =>
+  registry.icons[name] ?? defaultIcons[name as TerraSemanticIconName];
+
+export const getRequiredIcon = (
+  name: TerraSemanticIconName
+): TerraIconComponent => registry.icons[name] ?? defaultIcons[name];
 
 /**
  * The configured default corner radius for a component (Button, Surface).
@@ -76,7 +90,8 @@ export const getDefaultRadius = (
  * The configured default drop-shadow depth for Surface (`'none'` = no shadow).
  * Set via {@link configureTerraUI}; defaults to `'none'`.
  */
-export const getSurfaceElevation = (): ElevationKey => registry.surfaceElevation;
+export const getSurfaceElevation = (): ElevationKey =>
+  registry.surfaceElevation;
 
 /** Resolves a scheme's theme = base ⊕ the named accent's partial override. */
 export function resolveTheme(scheme: Scheme, accentName?: string): TerraTheme {
@@ -134,6 +149,7 @@ export function configureTerraUI(config: TerraConfig = {}): void {
   registry.defaultRadius = resolveDefaultRadius(config.components);
   registry.surfaceElevation =
     config.components?.surface?.elevation ?? DEFAULT_ELEVATION;
+  registry.icons = config.icons ?? {};
 
   registry.accents = {};
   for (const [name, accent] of Object.entries(config.accents ?? {})) {

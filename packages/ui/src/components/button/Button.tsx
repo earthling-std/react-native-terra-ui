@@ -1,4 +1,5 @@
 import {
+  Children,
   type ComponentRef,
   createContext,
   forwardRef,
@@ -11,7 +12,9 @@ import { ActivityIndicator, Pressable, Text } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 import { getDefaultRadius } from '#theme/configure';
-import type { TerraTheme } from '#theme/types';
+import type { ColorToken, TerraIconName, TerraTheme } from '#theme/types';
+
+import { Icon } from '../icon';
 
 export type ButtonVariant =
   | 'primary'
@@ -95,7 +98,15 @@ function getColors(variant: ButtonVariant, theme: TerraTheme): ButtonColors {
 
 // ─── Label sub-component ───────────────────────────────────────────────────────
 
-const LABEL_STYLE: Record<ButtonSize, { fontSize: number; fontWeight: '500' | '600'; lineHeight: number; letterSpacing: number }> = {
+const LABEL_STYLE: Record<
+  ButtonSize,
+  {
+    fontSize: number;
+    fontWeight: '500' | '600';
+    lineHeight: number;
+    letterSpacing: number;
+  }
+> = {
   sm: { fontSize: 14, fontWeight: '500', lineHeight: 20, letterSpacing: 0.5 },
   md: { fontSize: 16, fontWeight: '500', lineHeight: 24, letterSpacing: 0.1 },
   lg: { fontSize: 16, fontWeight: '600', lineHeight: 24, letterSpacing: 0.1 },
@@ -103,18 +114,54 @@ const LABEL_STYLE: Record<ButtonSize, { fontSize: number; fontWeight: '500' | '6
 
 const ButtonLabel = ({ children }: { children: ReactNode }) => {
   const { color, size } = useButtonContext();
+  return <Text style={[LABEL_STYLE[size], { color }]}>{children}</Text>;
+};
+
+// ─── Icon sub-component ────────────────────────────────────────────────────────
+
+const ICON_SIZE: Record<ButtonSize, number> = {
+  sm: 16,
+  md: 18,
+  lg: 20,
+};
+
+export interface ButtonIconProps {
+  name: TerraIconName;
+  size?: number;
+  color?: ColorToken;
+  strokeWidth?: number;
+}
+
+const ButtonIcon = ({
+  name,
+  size: sizeProp,
+  color: colorProp,
+  strokeWidth,
+}: ButtonIconProps) => {
+  const { color, size } = useButtonContext();
+
   return (
-    <Text style={[LABEL_STYLE[size], { color }]}>
-      {children}
-    </Text>
+    <Icon
+      color={colorProp ?? color}
+      name={name}
+      size={sizeProp ?? ICON_SIZE[size]}
+      strokeWidth={strokeWidth}
+    />
   );
 };
 
 function renderChildren(children: ReactNode): ReactNode {
-  if (typeof children === 'string' || typeof children === 'number') {
-    return <ButtonLabel>{children}</ButtonLabel>;
-  }
-  return children;
+  return Children.map(children, (child) => {
+    if (typeof child === 'string') {
+      return child.trim().length > 0 ? (
+        <ButtonLabel>{child}</ButtonLabel>
+      ) : null;
+    }
+    if (typeof child === 'number') {
+      return <ButtonLabel>{child}</ButtonLabel>;
+    }
+    return child;
+  });
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -176,9 +223,13 @@ const ButtonRoot = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
   }
 );
 
-type ButtonComponent = typeof ButtonRoot & { Label: typeof ButtonLabel };
+type ButtonComponent = typeof ButtonRoot & {
+  Icon: typeof ButtonIcon;
+  Label: typeof ButtonLabel;
+};
 
 export const Button = ButtonRoot as ButtonComponent;
+Button.Icon = ButtonIcon;
 Button.Label = ButtonLabel;
 
 // ─── Styles ───────────────────────────────────────────────────────────────────

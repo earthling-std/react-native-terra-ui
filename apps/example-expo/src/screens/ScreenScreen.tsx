@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import { Header, Screen, Surface, Text, VStack } from 'react-native-terra-ui';
 
 const SECTIONS = Array.from({ length: 12 }, (_, i) => ({
@@ -9,7 +10,13 @@ export function ScreenScreen() {
   return (
     <Screen>
       <Screen.Header>
-        <Header.LargeTitle title="Screen" caption="Collapsing large title" titleAlignment='left'/>
+        <Header.LargeTitle
+          caption="Collapsing large title"
+          dismissAction="back"
+          onDismiss={router.back}
+          title="Screen"
+          titleAlignment="left"
+        />
       </Screen.Header>
       <Screen.ScrollView bottomInset={32}>
         <VStack gap="3">

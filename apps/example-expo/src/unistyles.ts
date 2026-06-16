@@ -2,6 +2,15 @@
 // `./context`, whose import-time `configureTerraUI()` default would otherwise
 // run first and lock the registry, turning this explicit call into a no-op.
 // The `/theme` entry has no such side effect, so this config wins.
+import {
+  ChevronLeft,
+  ChevronRight,
+  Plus,
+  Trash2,
+  TriangleAlert,
+  X,
+} from 'lucide-react-native';
+
 import { configureTerraUI } from 'react-native-terra-ui/theme';
 
 // Configure BEFORE any component loads (this module is imported first in index.js).
@@ -28,6 +37,10 @@ configureTerraUI({
     amber: { light: '#d97706', dark: '#fbbf24' },
   },
   defaultAccent: 'emerald',
+  icons: {
+    add: Plus,
+    trash: Trash2,
+  },
   components: {
     button: { radius: 'full' },
     surface: { radius: 'xl', elevation: 'sm' },

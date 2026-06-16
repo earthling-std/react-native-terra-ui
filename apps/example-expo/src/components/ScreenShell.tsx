@@ -1,4 +1,6 @@
+import { router } from 'expo-router';
 import type { ReactNode } from 'react';
+
 import { Header, Screen } from 'react-native-terra-ui';
 
 export function ScreenShell({
@@ -12,11 +14,14 @@ export function ScreenShell({
   return (
     <Screen>
       <Screen.Header>
-        <Header.Title title={title} titleAlignment='left'/>
+        <Header.Title
+          dismissAction="back"
+          onDismiss={() => router.back()}
+          title={title}
+          titleAlignment="left"
+        />
       </Screen.Header>
-      <Screen.ScrollView>
-        {children}
-      </Screen.ScrollView>
+      <Screen.ScrollView>{children}</Screen.ScrollView>
     </Screen>
   );
 }

@@ -4,6 +4,8 @@
  * untyped (Figma-generated); these types describe the runtime theme that the
  * data is unflattened into, plus the public configuration surface.
  */
+import type { ComponentType } from 'react';
+
 import type { DeepPartial } from '#utils/deep-merge';
 
 // ─── Scale keys (declared explicitly; token data is untyped) ────────────────
@@ -253,6 +255,35 @@ export interface NormalizedAccent {
   dark: DeepPartial<TerraTheme>;
 }
 
+export interface TerraIconProps {
+  size?: number;
+  color?: string;
+  strokeWidth?: number;
+}
+
+export type TerraIconComponent = ComponentType<TerraIconProps>;
+
+declare global {
+  namespace TerraUI {
+    interface IconRegistry {}
+  }
+}
+
+export interface TerraIconRegistry extends TerraUI.IconRegistry {}
+
+export type TerraSemanticIconName =
+  | 'navigation.back'
+  | 'navigation.forward'
+  | 'navigation.close'
+  | 'status.info'
+  | 'status.success'
+  | 'status.warning'
+  | 'status.danger';
+
+export type TerraConfiguredIconName = keyof TerraIconRegistry & string;
+
+export type TerraIconName = TerraSemanticIconName | TerraConfiguredIconName;
+
 export type ThemeRadiusOverride = DeepPartial<TerraTheme['radius']> & {
   /**
    * Base corner radius in dp — the `lg` (×1) step. The rest of the scale is
@@ -295,6 +326,12 @@ export interface TerraConfig {
   schemes?: { light?: TerraThemeOverride; dark?: TerraThemeOverride };
   /** Runtime-switchable named overrides (hue shorthand or full partial). */
   accents?: Record<string, Accent>;
+  /**
+   * App-provided icon overrides. Semantic icons (`navigation.*`, `status.*`)
+   * fall back to the built-in defaults when omitted; app icons (`add`, etc.)
+   * must be registered here.
+   */
+  icons?: Partial<Record<TerraIconName, TerraIconComponent>>;
   /** Name of the accent (from `accents`) to apply by default. */
   defaultAccent?: string;
   /** Per-component default props (e.g. `{ button: { radius: 'full' } }`). */
