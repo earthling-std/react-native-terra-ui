@@ -46,8 +46,20 @@ The single most important design decision and the main upgrade over `packages/ui
 ```ts
 // app entry — runs ONCE, before any component renders
 configureTerraUI({
-  // optional: per-project base overrides (set once)
-  theme: { /* DeepPartial<TerraTheme> */ },
+  // shared token overrides, applied to both light and dark
+  shared: {
+    radius: { base: 12 },
+    layout: {
+      screen: { margin: { x: 20, y: 16 } },
+      header: { height: 56 },
+    },
+  },
+
+  // light/dark token overrides, applied after shared
+  schemes: {
+    light: { color: { background: '#ffffff' } },
+    dark: { color: { background: '#09090b' } },
+  },
 
   // runtime-switchable named overrides
   accents: {
@@ -274,16 +286,16 @@ type Accent =
   | { light?: DeepPartial<TerraTheme>; dark?: DeepPartial<TerraTheme> }
 
 interface TerraConfig {
-  /** Per-project base override, deep-merged onto the shipped base (set once). */
-  theme?: { light?: DeepPartial<TerraTheme>; dark?: DeepPartial<TerraTheme> }
+  /** Shared token overrides, applied to both light and dark themes. */
+  shared?: TerraThemeOverride
+  /** Per-scheme token overrides, applied after shared. */
+  schemes?: { light?: TerraThemeOverride; dark?: TerraThemeOverride }
   /** Runtime-switchable named overrides. */
   accents?: Record<string, Accent>
   defaultAccent?: string
   /** Follow system light/dark. Default true. */
   adaptiveThemes?: boolean
   initialScheme?: 'light' | 'dark'
-  /** Override radius scale values (sm/md/lg/…); affects Button + surfaces. */
-  radius?: Partial<Record<RadiusKey, number>>
 }
 
 interface UseThemeResult {

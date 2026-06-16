@@ -34,7 +34,8 @@ const prim = unflatten<{
  * Default base corner radius (dp) — the `lg` (×1) step — taken from the
  * `radius.base` primitive. The rest of the scale is derived from it via
  * {@link RADIUS_MULTIPLIERS}; override at runtime with
- * `configureTerraUI({ radiusBase })`, or change the `radius.base` token.
+ * `configureTerraUI({ shared: { radius: { base } } })`, or change the
+ * `radius.base` token.
  */
 export const DEFAULT_RADIUS_BASE = prim.radius.base;
 

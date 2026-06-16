@@ -54,6 +54,8 @@ export type {
   SurfaceColorToken,
   TerraConfig,
   TerraTheme,
+  TerraThemeOverride,
+  ThemeRadiusOverride,
   TextVariant,
   ThemeColor,
   TypeStyle,

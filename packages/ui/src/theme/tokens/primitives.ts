@@ -115,7 +115,7 @@ export const primitives = {
   // Only the BASE (the `lg`/×1 step) is authored here. The full radius scale is
   // DERIVED from it via `buildRadiusScale()` in `../theme.ts`. Two ways to
   // change it: edit this design-time token, or override at configure time with
-  // `configureTerraUI({ radiusBase })`.
+  // `configureTerraUI({ shared: { radius: { base } } })`.
   'radius.base': 8,
 
   // ── typography: weight-token → font family (System default) ───────────────

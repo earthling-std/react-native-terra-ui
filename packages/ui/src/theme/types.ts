@@ -253,6 +253,21 @@ export interface NormalizedAccent {
   dark: DeepPartial<TerraTheme>;
 }
 
+export type ThemeRadiusOverride = DeepPartial<TerraTheme['radius']> & {
+  /**
+   * Base corner radius in dp — the `lg` (×1) step. The rest of the scale is
+   * derived by fixed multipliers (`xs` ×0.25, `sm` ×0.5, `md` ×0.75,
+   * `xl` ×1.5, `2xl` ×2, `3xl` ×3); `none` (0) and `full` (9999) are
+   * constant. Per-token radius overrides still win over the derived value.
+   */
+  base?: number;
+};
+
+/** Theme override accepted at configure time. */
+export type TerraThemeOverride = DeepPartial<Omit<TerraTheme, 'radius'>> & {
+  radius?: ThemeRadiusOverride;
+};
+
 /** Default props for the Button component. A per-instance prop still wins. */
 export interface ButtonDefaults {
   /** Default corner radius. Defaults to `'md'`. */
@@ -274,16 +289,10 @@ export interface ComponentDefaults {
 }
 
 export interface TerraConfig {
-  /**
-   * Base corner radius in dp — the `lg` (×1) step. The rest of the scale is
-   * derived by fixed multipliers (`xs` ×0.25, `sm` ×0.5, `md` ×0.75, `xl` ×1.5,
-   * `2xl` ×2, `3xl` ×3); `none` (0) and `full` (9999) are constant. Defaults to
-   * the `radius.base` token (`8`), which reproduces the shipped scale. Per-token
-   * overrides in `theme.{light,dark}.radius` still win over the derived value.
-   */
-  radiusBase?: number;
-  /** Per-project base override, deep-merged onto the shipped base (set once). */
-  theme?: { light?: DeepPartial<TerraTheme>; dark?: DeepPartial<TerraTheme> };
+  /** Scheme-agnostic token overrides, applied to both light and dark themes. */
+  shared?: TerraThemeOverride;
+  /** Per-scheme token overrides, applied after `shared`. */
+  schemes?: { light?: TerraThemeOverride; dark?: TerraThemeOverride };
   /** Runtime-switchable named overrides (hue shorthand or full partial). */
   accents?: Record<string, Accent>;
   /** Name of the accent (from `accents`) to apply by default. */

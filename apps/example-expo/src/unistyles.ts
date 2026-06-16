@@ -6,6 +6,13 @@ import { configureTerraUI } from 'react-native-terra-ui/theme';
 
 // Configure BEFORE any component loads (this module is imported first in index.js).
 configureTerraUI({
+  shared: {
+    radius: { base: 12 },
+    layout: {
+      screen: { margin: { x: 20, y: 16 } },
+      header: { height: 50 },
+    },
+  },
   accents: {
     emerald: { light: '#00bc7d', dark: '#00bc7d' },
     indigo: { light: '#4f46e5', dark: '#818cf8' },

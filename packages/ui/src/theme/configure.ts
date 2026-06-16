@@ -13,6 +13,7 @@ import type {
   Scheme,
   TerraConfig,
   TerraTheme,
+  TerraThemeOverride,
 } from './types';
 
 /** Fallback when a component's radius is not configured. */
@@ -84,6 +85,26 @@ export function resolveTheme(scheme: Scheme, accentName?: string): TerraTheme {
   return deepMerge(base, accent ? accent[scheme] : undefined);
 }
 
+const mergeThemeOverride = (
+  theme: TerraTheme,
+  override?: TerraThemeOverride
+): TerraTheme => {
+  if (!override) return theme;
+
+  const { radius, ...rest } = override;
+  let next = deepMerge(theme, rest);
+
+  if (radius) {
+    const { base, ...radiusTokens } = radius;
+    if (base != null) {
+      next = deepMerge(next, { radius: buildRadiusScale(base) });
+    }
+    next = deepMerge(next, { radius: radiusTokens });
+  }
+
+  return next;
+};
+
 /**
  * Configure Terra UI's themes. Call ONCE, as early as possible — before any
  * component renders (e.g. top of the app entry, imported from
@@ -101,20 +122,13 @@ export function configureTerraUI(config: TerraConfig = {}): void {
   }
   registry.configured = true;
 
-  // Derive the radius scale from the single base value (if provided), then let
-  // explicit per-token overrides in `theme.{light,dark}.radius` win over it.
-  const radiusPatch =
-    config.radiusBase != null
-      ? { radius: buildRadiusScale(config.radiusBase) }
-      : undefined;
-
-  registry.baseLight = deepMerge(
-    deepMerge(defaultLightTheme, radiusPatch),
-    config.theme?.light
+  registry.baseLight = mergeThemeOverride(
+    mergeThemeOverride(defaultLightTheme, config.shared),
+    config.schemes?.light
   );
-  registry.baseDark = deepMerge(
-    deepMerge(defaultDarkTheme, radiusPatch),
-    config.theme?.dark
+  registry.baseDark = mergeThemeOverride(
+    mergeThemeOverride(defaultDarkTheme, config.shared),
+    config.schemes?.dark
   );
 
   registry.defaultRadius = resolveDefaultRadius(config.components);
