@@ -8,12 +8,12 @@ import {
 } from 'react';
 
 import Animated, {
-  useAnimatedRef,
-  useAnimatedScrollHandler,
-  useSharedValue,
   type AnimatedRef,
   type ScrollHandlerProcessed,
   type SharedValue,
+  useAnimatedRef,
+  useAnimatedScrollHandler,
+  useSharedValue,
 } from 'react-native-reanimated';
 
 export type ScreenScrollRef = AnimatedRef<Animated.ScrollView>;

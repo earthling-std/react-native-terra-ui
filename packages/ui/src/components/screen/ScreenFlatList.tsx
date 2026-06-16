@@ -4,14 +4,19 @@ import {
   isValidElement,
   type ReactElement,
 } from 'react';
-import { type FlatListProps, View } from 'react-native';
+import { type FlatListProps, type NativeScrollEvent, type NativeSyntheticEvent, View } from 'react-native';
 
-import Animated, { type AnimatedRef } from 'react-native-reanimated';
+import Animated, {
+  type AnimatedRef,
+  type ScrollHandlerProcessed,
+  useAnimatedScrollHandler,
+  useComposedEventHandler,
+} from 'react-native-reanimated';
 import { useUnistyles } from 'react-native-unistyles';
 
 import { PortalHost } from '../portal';
-import { resolveScreenContentInsets } from './screenContentInsets';
 import { useScreen } from './ScreenContext';
+import { resolveScreenContentInsets } from './screenContentInsets';
 
 export interface ScreenFlatListProps<T>
   extends Omit<FlatListProps<T>, 'CellRendererComponent'> {
@@ -52,11 +57,16 @@ export function ScreenFlatList<T>({
   ListHeaderComponent,
   margins,
   bottomInset,
+  onScroll,
   ...rest
 }: ScreenFlatListProps<T>) {
   const { theme } = useUnistyles();
-  const { scrollRef, scrollHandler, headerSnapOffsets, margins: screenMargins } =
-    useScreen();
+  const {
+    scrollRef,
+    scrollHandler,
+    headerSnapOffsets,
+    margins: screenMargins,
+  } = useScreen();
 
   const margin = theme.layout.screen.margin;
   const marginsEnabled = margins ?? screenMargins;
@@ -66,8 +76,20 @@ export function ScreenFlatList<T>({
     bottomInset
   );
 
+  const jsScrollHandler = useAnimatedScrollHandler((event) => {
+    if (onScroll)
+      onScroll(event as unknown as NativeSyntheticEvent<NativeScrollEvent>);
+  }, [onScroll]);
+
+  const composedHandler = useComposedEventHandler([
+    scrollHandler,
+    jsScrollHandler,
+  ]);
+
   const headerComponent = (
-    <View style={portalSpacing > 0 ? { marginBottom: portalSpacing } : undefined}>
+    <View
+      style={portalSpacing > 0 ? { marginBottom: portalSpacing } : undefined}
+    >
       <PortalHost />
       {renderListHeader(ListHeaderComponent)}
     </View>
@@ -83,7 +105,7 @@ export function ScreenFlatList<T>({
       scrollEventThrottle={16}
       snapToOffsets={headerSnapOffsets}
       {...rest}
-      onScroll={scrollHandler}
+      onScroll={composedHandler}
     />
   );
 }

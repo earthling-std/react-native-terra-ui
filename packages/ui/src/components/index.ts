@@ -2,6 +2,7 @@ export * from './box';
 export * from './button';
 export * from './header';
 export * from './icon';
+export * from './page-indicator';
 export * from './portal';
 export * from './screen';
 export * from './slot';

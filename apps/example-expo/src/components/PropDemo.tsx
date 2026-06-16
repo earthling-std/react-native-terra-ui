@@ -10,7 +10,13 @@ export function PropDemo({
   children: ReactNode;
 }) {
   return (
-    <Surface variant="sunken" p="3" gap="2" borderWidth="hairline" borderColor="border.default">
+    <Surface
+      variant="sunken"
+      p="3"
+      gap="2"
+      borderWidth="hairline"
+      borderColor="border.default"
+    >
       <Text variant="label-sm" color="content.tertiary">
         {code}
       </Text>

@@ -38,7 +38,13 @@ const VARIANT_BG: Record<SurfaceVariant, ColorToken> = {
  */
 export const Surface = forwardRef<ComponentRef<typeof View>, SurfaceProps>(
   function Surface(
-    { variant = 'base', elevation = getSurfaceElevation(), radius, style, ...rest },
+    {
+      variant = 'base',
+      elevation = getSurfaceElevation(),
+      radius,
+      style,
+      ...rest
+    },
     ref
   ) {
     const { theme } = useUnistyles();

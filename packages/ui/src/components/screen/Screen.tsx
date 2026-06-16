@@ -17,9 +17,9 @@ import type { ColorToken } from '#theme/types';
 import { resolveThemeColor } from '#utils/resolve-theme-color';
 
 import { PortalProvider } from '../portal';
+import { ScreenScrollProvider } from './ScreenContext';
 import { ScreenFlatList } from './ScreenFlatList';
 import { ScreenScrollView } from './ScreenScrollView';
-import { ScreenScrollProvider } from './ScreenContext';
 
 export interface ScreenHeaderProps {
   children: ReactNode;

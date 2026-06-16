@@ -1,8 +1,8 @@
 import {
+  type ElevationKey,
   Surface,
   type SurfaceVariant,
   Text,
-  type ElevationKey,
   VStack,
 } from 'react-native-terra-ui';
 

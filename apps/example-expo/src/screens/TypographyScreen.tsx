@@ -1,6 +1,9 @@
 import { router } from 'expo-router';
 import { ScrollView, useWindowDimensions, View } from 'react-native';
-
+import {
+  useAnimatedScrollHandler,
+  useSharedValue,
+} from 'react-native-reanimated';
 import {
   Header,
   Screen,
@@ -8,6 +11,8 @@ import {
   type TextVariant,
   VStack,
 } from 'react-native-terra-ui';
+
+import { Pager } from '../components/Pager';
 
 const TEXT_VARIANTS: TextVariant[] = [
   'display-lg',
@@ -27,6 +32,9 @@ const TEXT_VARIANTS: TextVariant[] = [
   'label-sm',
   'caption',
 ];
+
+const PAGE_COUNT = 2;
+const isArticleLoading = true;
 
 const SIZE_LABELS: Record<string, string> = {
   lg: 'Large',
@@ -258,6 +266,13 @@ function ArticleSamplePage(props: { width: number }) {
 
 export function TypographyScreen() {
   const { width } = useWindowDimensions();
+  const pageProgress = useSharedValue(0);
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      pageProgress.value =
+        width > 0 ? event.contentOffset.x / width : event.contentOffset.x;
+    },
+  });
 
   return (
     <Screen margins={false}>
@@ -275,11 +290,18 @@ export function TypographyScreen() {
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         decelerationRate="fast"
+        scrollEventThrottle={16}
+        scrollHandler={scrollHandler}
         contentContainerStyle={{ flexGrow: 1 }}
       >
         <VariantCatalogPage width={width} />
         <ArticleSamplePage width={width} />
       </Screen.ScrollView>
+      <Pager
+        count={PAGE_COUNT}
+        progress={pageProgress}
+        isLoading={isArticleLoading}
+      />
     </Screen>
   );
 }

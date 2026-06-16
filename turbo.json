@@ -1,6 +1,11 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": [".nvmrc", ".yarnrc.yml", "tsconfig.base.json", "biome.json"],
+  "globalDependencies": [
+    ".nvmrc",
+    ".yarnrc.yml",
+    "tsconfig.base.json",
+    "biome.json"
+  ],
   "globalEnv": ["NODE_ENV"],
   "tasks": {
     "build": {

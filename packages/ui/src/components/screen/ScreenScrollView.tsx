@@ -1,12 +1,20 @@
 import type { ReactNode } from 'react';
-import { type ScrollViewProps, View } from 'react-native';
+import {
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
+  type ScrollViewProps,
+  View,
+} from 'react-native';
 
-import Animated from 'react-native-reanimated';
+import Animated, {
+  useAnimatedScrollHandler,
+  useComposedEventHandler,
+} from 'react-native-reanimated';
 import { useUnistyles } from 'react-native-unistyles';
 
 import { PortalHost } from '../portal';
-import { resolveScreenContentInsets } from './screenContentInsets';
 import { useScreen } from './ScreenContext';
+import { resolveScreenContentInsets } from './screenContentInsets';
 
 export interface ScreenScrollViewProps extends ScrollViewProps {
   children?: ReactNode;
@@ -41,11 +49,26 @@ export function ScreenScrollView({
   contentContainerStyle,
   margins,
   bottomInset,
+  onScroll,
   ...rest
 }: ScreenScrollViewProps) {
   const { theme } = useUnistyles();
-  const { scrollRef, scrollHandler, headerSnapOffsets, margins: screenMargins } =
-    useScreen();
+  const {
+    scrollRef,
+    scrollHandler,
+    headerSnapOffsets,
+    margins: screenMargins,
+  } = useScreen();
+
+  const propScrollHandler = useAnimatedScrollHandler((event) => {
+    if (onScroll)
+      onScroll(event as unknown as NativeSyntheticEvent<NativeScrollEvent>);
+  }, [onScroll]);
+
+  const composedHandler = useComposedEventHandler([
+    scrollHandler,
+    propScrollHandler,
+  ]);
 
   const margin = theme.layout.screen.margin;
   const marginsEnabled = margins ?? screenMargins;
@@ -64,9 +87,11 @@ export function ScreenScrollView({
       scrollEventThrottle={16}
       snapToOffsets={headerSnapOffsets}
       {...rest}
-      onScroll={scrollHandler}
+      onScroll={composedHandler}
     >
-      <View style={portalSpacing > 0 ? { marginBottom: portalSpacing } : undefined}>
+      <View
+        style={portalSpacing > 0 ? { marginBottom: portalSpacing } : undefined}
+      >
         <PortalHost />
       </View>
       {children}
