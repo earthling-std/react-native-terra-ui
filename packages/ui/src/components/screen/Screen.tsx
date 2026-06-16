@@ -59,6 +59,11 @@ export interface ScreenProps extends Omit<SafeAreaViewProps, 'edges'> {
   edges?: Edge[];
   /** Hosted inside a tab navigator? Exposed via `useScreen()`. Default false. */
   inTabView?: boolean;
+  /**
+   * Apply `layout.screen.margin` padding on `Screen.ScrollView` /
+   * `Screen.FlatList`. Default true. Overridable per scroll container.
+   */
+  margins?: boolean;
 }
 
 type ScreenComponent = ReturnType<
@@ -86,7 +91,15 @@ type ScreenComponent = ReturnType<
  */
 const ScreenBase = forwardRef<ComponentRef<typeof SafeAreaView>, ScreenProps>(
   function Screen(
-    { children, bg = 'background', edges, inTabView = false, style, ...rest },
+    {
+      children,
+      bg = 'background',
+      edges,
+      inTabView = false,
+      margins = true,
+      style,
+      ...rest
+    },
     ref
   ) {
     const { theme } = useUnistyles();
@@ -103,7 +116,7 @@ const ScreenBase = forwardRef<ComponentRef<typeof SafeAreaView>, ScreenProps>(
     }, [edges, hasHeader]);
 
     return (
-      <ScreenScrollProvider isInTabView={inTabView}>
+      <ScreenScrollProvider isInTabView={inTabView} margins={margins}>
         <PortalProvider>
           <SafeAreaView
             ref={ref}

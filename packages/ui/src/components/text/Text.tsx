@@ -6,12 +6,33 @@ import {
 } from 'react-native';
 
 import { useUnistyles } from 'react-native-unistyles';
-import type { ColorToken, FontWeightToken, TextVariant } from '#theme/types';
+import type {
+  ColorToken,
+  FontWeightToken,
+  HeadingTextVariant,
+  RoleTextVariant,
+  TextVariant,
+} from '#theme/types';
 import type { Mutable } from '#types';
 import { resolveThemeColor } from '#utils/resolve-theme-color';
 import { FONT_WEIGHT_VALUE, SYSTEM_FONT } from '#utils/typography';
 
 export type TextAlign = 'left' | 'center' | 'right' | 'justify';
+
+const HEADING_VARIANT_ALIAS: Record<HeadingTextVariant, RoleTextVariant> = {
+  h1: 'headline-lg',
+  h2: 'headline-md',
+  h3: 'title-lg',
+  h4: 'title-md',
+  h5: 'title-sm',
+  h6: 'label-lg',
+};
+
+function resolveTextVariant(variant: TextVariant): RoleTextVariant {
+  return variant in HEADING_VARIANT_ALIAS
+    ? HEADING_VARIANT_ALIAS[variant as HeadingTextVariant]
+    : (variant as RoleTextVariant);
+}
 
 export interface TextProps extends RNTextProps {
   /** Typographic role. Defaults to `body-md`. */
@@ -52,7 +73,8 @@ export const Text = forwardRef<ComponentRef<typeof RNText>, TextProps>(
     ref
   ) {
     const { theme } = useUnistyles();
-    const v = theme.typography.variants[variant];
+    const resolvedVariant = resolveTextVariant(variant);
+    const v = theme.typography.variants[resolvedVariant];
     const effectiveWeight: FontWeightToken = weight ?? v.fontWeight;
     const fontFamily = theme.typography.fonts[effectiveWeight];
     const isSystemFont = fontFamily === SYSTEM_FONT;

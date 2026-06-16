@@ -1,12 +1,13 @@
+import { router } from 'expo-router';
+import { ScrollView, useWindowDimensions, View } from 'react-native';
+
 import {
-  HStack,
+  Header,
+  Screen,
   Text,
   type TextVariant,
+  VStack,
 } from 'react-native-terra-ui';
-
-import { DemoSection } from '../components/DemoSection';
-import { PropDemo, PropDemoGroup } from '../components/PropDemo';
-import { ScreenShell } from '../components/ScreenShell';
 
 const TEXT_VARIANTS: TextVariant[] = [
   'display-lg',
@@ -27,127 +28,258 @@ const TEXT_VARIANTS: TextVariant[] = [
   'caption',
 ];
 
-export function TypographyScreen() {
+const SIZE_LABELS: Record<string, string> = {
+  lg: 'Large',
+  md: 'Medium',
+  sm: 'Small',
+};
+
+function variantLabel(variant: TextVariant): string {
+  const [word = variant, ...rest] = variant.split('-');
+  if (rest.length === 0) {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+
+  const size = rest[rest.length - 1] ?? '';
+  const role = [word, ...rest.slice(0, -1)]
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+
+  return `${role} ${SIZE_LABELS[size] ?? size}`;
+}
+
+function VariantCatalogPage(props: { width: number }) {
+  const { width } = props;
+
   return (
-    <ScreenShell
-      title="Typography"
-      subtitle="Text — typographic scale, semantic colors, and text modifiers."
+    <View
+      style={{
+        flex: 1,
+        width,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 32,
+      }}
     >
-      <DemoSection
-        title="variant"
-        description='Typographic role. Defaults to "body-md".'
-      >
-        <PropDemoGroup>
-          {TEXT_VARIANTS.map((variant) => (
-            <PropDemo key={variant} code={`variant="${variant}"`}>
-              <Text variant={variant}>
-                {variant} — The quick brown fox
+      <VStack gap="2" align="center">
+        {TEXT_VARIANTS.map((variant) => (
+          <Text key={variant} variant={variant}>
+            {variantLabel(variant)}
+          </Text>
+        ))}
+      </VStack>
+    </View>
+  );
+}
+
+function ArticleSamplePage(props: { width: number }) {
+  const { width } = props;
+
+  return (
+    <ScrollView
+      style={{ width }}
+      contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+    >
+      <VStack gap="4">
+        <VStack gap="1">
+          <Text variant="label-sm" color="content.tertiary">
+            MOBILE DESIGN
+          </Text>
+          <Text variant="h1">Reading on Small Screens</Text>
+          <VStack gap="1">
+            <Text variant="label-md" color="content.secondary">
+              Mira Stone, Design Systems
+            </Text>
+            <Text variant="caption" color="content.tertiary">
+              Published June 16, 2026 · 6 min read
+            </Text>
+          </VStack>
+        </VStack>
+
+        <VStack gap="3">
+          <Text variant="h2">A page needs a visible outline</Text>
+          <Text variant="body-md">
+            Readers usually scan before they commit. A good article gives them a
+            clear title, a short deck, a byline, and section headings that make
+            the shape of the story visible before the first full paragraph.
+          </Text>
+          <Text variant="body-md">
+            On mobile, that outline matters even more. The screen shows only a
+            few blocks at once, so each heading has to tell the reader what kind
+            of content is coming next.
+          </Text>
+        </VStack>
+
+        <View
+          style={{
+            borderLeftWidth: 3,
+            borderLeftColor: '#94a3b8',
+            paddingLeft: 14,
+          }}
+        >
+          <VStack gap="2">
+            <Text variant="body-md">
+              Structure is what lets the typography become quiet.
+            </Text>
+          </VStack>
+        </View>
+
+        <VStack gap="3">
+          <Text variant="h2">What changes on mobile</Text>
+          <Text variant="body-md">
+            Desktop layouts can rely on columns, sidebars, and large visible
+            regions. A phone mostly has one column, so typography does more of
+            the navigation work.
+          </Text>
+
+          <View
+            style={{
+              borderWidth: 1,
+              borderColor: '#cbd5e1',
+              borderRadius: 8,
+              padding: 14,
+            }}
+          >
+            <VStack gap="2">
+              <Text variant="label-lg" color="content.secondary">
+                Editor's note
               </Text>
-            </PropDemo>
-          ))}
-        </PropDemoGroup>
-      </DemoSection>
-
-      <DemoSection
-        title="color"
-        description="Semantic color token from the theme palette."
-      >
-        <PropDemoGroup>
-          <PropDemo code='color="content.primary"'>
-            <Text variant="body-md" color="content.primary">
-              Primary content
-            </Text>
-          </PropDemo>
-          <PropDemo code='color="content.secondary"'>
-            <Text variant="body-md" color="content.secondary">
-              Secondary content
-            </Text>
-          </PropDemo>
-          <PropDemo code='color="content.tertiary"'>
-            <Text variant="body-md" color="content.tertiary">
-              Tertiary content
-            </Text>
-          </PropDemo>
-          <PropDemo code='color="content.link" underline'>
-            <Text variant="body-md" color="content.link" underline>
-              Link-colored text
-            </Text>
-          </PropDemo>
-          <PropDemo code='color="status.danger.solid"'>
-            <Text variant="body-md" color="status.danger.solid">
-              Danger status
-            </Text>
-          </PropDemo>
-        </PropDemoGroup>
-      </DemoSection>
-
-      <DemoSection
-        title="weight"
-        description="Override the variant's default font weight."
-      >
-        <PropDemoGroup>
-          {(['regular', 'medium', 'semibold', 'bold'] as const).map((weight) => (
-            <PropDemo key={weight} code={`weight="${weight}"`}>
-              <Text variant="body-md" weight={weight}>
-                {weight} weight
+              <Text variant="title-lg">Use display text once</Text>
+              <Text variant="body-sm" color="content.secondary">
+                Large type works best as an entry point, a pull quote, or a
+                featured number. Repeating it inside the body makes the article
+                feel fragmented.
               </Text>
-            </PropDemo>
-          ))}
-        </PropDemoGroup>
-      </DemoSection>
+            </VStack>
+          </View>
 
-      <DemoSection title="align" description="Horizontal text alignment.">
-        <PropDemoGroup>
-          {(['left', 'center', 'right'] as const).map((align) => (
-            <PropDemo key={align} code={`align="${align}"`}>
-              <Text variant="body-md" align={align}>
-                {align} aligned text
-              </Text>
-            </PropDemo>
-          ))}
-        </PropDemoGroup>
-      </DemoSection>
+          <VStack gap="2">
+            <Text variant="h3">When hierarchy disappears</Text>
+            <Text variant="body-md">
+              If every heading has the same size and weight, readers have to
+              infer structure from spacing alone. That slows scanning and makes
+              long screens feel heavier than they are.
+            </Text>
+          </VStack>
 
-      <DemoSection title="Modifiers">
-        <PropDemoGroup>
-          <PropDemo code="italic">
-            <Text variant="body-md" italic>
-              Italic text
+          <VStack gap="2">
+            <Text variant="h3">A better pattern</Text>
+            <Text variant="body-md">
+              Use headline styles for the article outline, title styles for
+              local blocks, body styles for the argument, and labels for small
+              signals like category, author, or status.
             </Text>
-          </PropDemo>
-          <PropDemo code="underline">
-            <Text variant="body-md" underline>
-              Underlined text
-            </Text>
-          </PropDemo>
-          <PropDemo code="strikeThrough">
-            <Text variant="body-md" strikeThrough>
-              Strikethrough text
-            </Text>
-          </PropDemo>
-          <PropDemo code="isTruncated">
-            <Text variant="body-md" isTruncated>
-              This long line is truncated to a single row with an ellipsis at
-              the end when it overflows the container width.
-            </Text>
-          </PropDemo>
-        </PropDemoGroup>
-      </DemoSection>
+          </VStack>
+        </VStack>
 
-      <DemoSection title="Composition">
-        <PropDemo code='variant="title-md" color="content.secondary" weight="semibold" align="center"'>
-          <HStack justify="center">
-            <Text
-              variant="title-md"
-              color="content.secondary"
-              weight="semibold"
-              align="center"
-            >
-              Combined props
+        <VStack gap="3">
+          <Text variant="h2">Reading checklist</Text>
+
+          <VStack gap="1">
+            <Text variant="h3">1. Lead with meaning</Text>
+            <Text variant="body-md">
+              The title should name the subject plainly. Decorative language can
+              come later, once the reader understands where they are.
             </Text>
-          </HStack>
-        </PropDemo>
-      </DemoSection>
-    </ScreenShell>
+          </VStack>
+
+          <VStack gap="2">
+            <Text variant="h3">2. Make sections obvious</Text>
+            <Text variant="body-md">
+              Each heading should announce a useful change: a new idea, a
+              supporting example, a quote, a note, or a summary.
+            </Text>
+          </VStack>
+
+          <VStack gap="2">
+            <Text variant="h3">3. Keep support text supportive</Text>
+            <Text variant="body-md">
+              Metadata, notes, and captions should help the reader, not compete
+              with the main paragraph.
+            </Text>
+          </VStack>
+        </VStack>
+
+        <View
+          style={{
+            borderTopWidth: 1,
+            borderBottomWidth: 1,
+            borderColor: '#cbd5e1',
+            paddingVertical: 14,
+          }}
+        >
+          <VStack gap="3">
+            <Text variant="label-sm" color="content.tertiary">
+              QUICK FACT
+            </Text>
+            <Text variant="h1">3 levels</Text>
+            <Text variant="title-sm">
+              Most article sections need only a few.
+            </Text>
+            <Text variant="body-sm" color="content.secondary">
+              A primary heading, a local subheading, and paragraph text are
+              usually enough for a readable mobile story.
+            </Text>
+          </VStack>
+        </View>
+
+        <VStack gap="3">
+          <Text variant="headline-sm">Related reading</Text>
+          <VStack gap="1">
+            <Text variant="title-sm">Designing article previews</Text>
+            <Text variant="body-sm" color="content.secondary">
+              How summaries, labels, and thumbnails shape the first tap.
+            </Text>
+          </VStack>
+          <VStack gap="1">
+            <Text variant="title-sm">Choosing text styles for apps</Text>
+            <Text variant="body-sm" color="content.secondary">
+              A practical guide to display, headline, title, body, and label
+              roles.
+            </Text>
+          </VStack>
+        </VStack>
+
+        <VStack gap="2">
+          <Text variant="label-sm" color="content.tertiary">
+            PHOTO CAPTION
+          </Text>
+          <Text variant="body-md">
+            Morning light over a phone screen during a commuter reading test.
+          </Text>
+          <Text variant="caption" color="content.tertiary">
+            Captions explain media without interrupting the article flow.
+          </Text>
+        </VStack>
+      </VStack>
+    </ScrollView>
+  );
+}
+
+export function TypographyScreen() {
+  const { width } = useWindowDimensions();
+
+  return (
+    <Screen margins={false}>
+      <Screen.Header>
+        <Header.Title
+          bg="transparent"
+          dismissAction="back"
+          onDismiss={() => router.back()}
+          title="Typography"
+        />
+      </Screen.Header>
+
+      <Screen.ScrollView
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        decelerationRate="fast"
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
+        <VariantCatalogPage width={width} />
+        <ArticleSamplePage width={width} />
+      </Screen.ScrollView>
+    </Screen>
   );
 }

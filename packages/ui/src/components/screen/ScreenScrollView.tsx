@@ -5,13 +5,20 @@ import Animated from 'react-native-reanimated';
 import { useUnistyles } from 'react-native-unistyles';
 
 import { PortalHost } from '../portal';
+import { resolveScreenContentInsets } from './screenContentInsets';
 import { useScreen } from './ScreenContext';
 
 export interface ScreenScrollViewProps extends ScrollViewProps {
   children?: ReactNode;
   /**
+   * Apply `layout.screen.margin` padding. Defaults to the enclosing `Screen`'s
+   * `margins` value.
+   */
+  margins?: boolean;
+  /**
    * Extra bottom padding on the scroll content — clearance for a tab bar or
-   * home indicator. Defaults to the `layout.screen.margin.y` token.
+   * home indicator. Defaults to the `layout.screen.margin.y` token when margins
+   * are enabled, otherwise `0`.
    */
   bottomInset?: number;
 }
@@ -32,33 +39,34 @@ export function ScreenScrollView({
   children,
   style,
   contentContainerStyle,
+  margins,
   bottomInset,
   ...rest
 }: ScreenScrollViewProps) {
   const { theme } = useUnistyles();
-  const { scrollRef, scrollHandler, headerSnapOffsets } = useScreen();
+  const { scrollRef, scrollHandler, headerSnapOffsets, margins: screenMargins } =
+    useScreen();
 
   const margin = theme.layout.screen.margin;
+  const marginsEnabled = margins ?? screenMargins;
+  const { contentPadding, portalSpacing } = resolveScreenContentInsets(
+    margin,
+    marginsEnabled,
+    bottomInset
+  );
 
   return (
     <Animated.ScrollView
       ref={scrollRef}
       style={style}
-      contentContainerStyle={[
-        {
-          flexGrow: 1,
-          paddingHorizontal: margin.x,
-          paddingBottom: bottomInset ?? margin.y,
-        },
-        contentContainerStyle,
-      ]}
+      contentContainerStyle={[contentPadding, contentContainerStyle]}
       showsVerticalScrollIndicator={false}
       scrollEventThrottle={16}
       snapToOffsets={headerSnapOffsets}
       {...rest}
       onScroll={scrollHandler}
     >
-      <View style={{ marginBottom: margin.y }}>
+      <View style={portalSpacing > 0 ? { marginBottom: portalSpacing } : undefined}>
         <PortalHost />
       </View>
       {children}

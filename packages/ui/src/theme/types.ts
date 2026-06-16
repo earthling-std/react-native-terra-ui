@@ -69,7 +69,7 @@ export type ElevationScale = Record<ElevationKey, ElevationStyle>;
 
 // ─── Typography ──────────────────────────────────────────────────────────────
 
-export type TextVariant =
+export type RoleTextVariant =
   | 'display-lg'
   | 'display-md'
   | 'display-sm'
@@ -86,6 +86,10 @@ export type TextVariant =
   | 'label-md'
   | 'label-sm'
   | 'caption';
+
+export type HeadingTextVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+
+export type TextVariant = RoleTextVariant | HeadingTextVariant;
 
 export type FontWeightToken = 'regular' | 'medium' | 'semibold' | 'bold';
 
@@ -106,7 +110,7 @@ export interface Typography {
    * (e.g. { regular: 'Inter-Regular', semibold: 'Inter-SemiBold' }).
    */
   fonts: Record<FontWeightToken, string>;
-  variants: Record<TextVariant, TypeStyle>;
+  variants: Record<RoleTextVariant, TypeStyle>;
 }
 
 // ─── Semantic color tier ─────────────────────────────────────────────────────

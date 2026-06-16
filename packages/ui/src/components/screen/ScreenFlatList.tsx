@@ -10,13 +10,20 @@ import Animated, { type AnimatedRef } from 'react-native-reanimated';
 import { useUnistyles } from 'react-native-unistyles';
 
 import { PortalHost } from '../portal';
+import { resolveScreenContentInsets } from './screenContentInsets';
 import { useScreen } from './ScreenContext';
 
 export interface ScreenFlatListProps<T>
   extends Omit<FlatListProps<T>, 'CellRendererComponent'> {
   /**
+   * Apply `layout.screen.margin` padding. Defaults to the enclosing `Screen`'s
+   * `margins` value.
+   */
+  margins?: boolean;
+  /**
    * Extra bottom padding on the list content — clearance for a tab bar or home
-   * indicator. Defaults to the `layout.screen.margin.y` token.
+   * indicator. Defaults to the `layout.screen.margin.y` token when margins are
+   * enabled, otherwise `0`.
    */
   bottomInset?: number;
 }
@@ -43,16 +50,24 @@ export function ScreenFlatList<T>({
   style,
   contentContainerStyle,
   ListHeaderComponent,
+  margins,
   bottomInset,
   ...rest
 }: ScreenFlatListProps<T>) {
   const { theme } = useUnistyles();
-  const { scrollRef, scrollHandler, headerSnapOffsets } = useScreen();
+  const { scrollRef, scrollHandler, headerSnapOffsets, margins: screenMargins } =
+    useScreen();
 
   const margin = theme.layout.screen.margin;
+  const marginsEnabled = margins ?? screenMargins;
+  const { contentPadding, portalSpacing } = resolveScreenContentInsets(
+    margin,
+    marginsEnabled,
+    bottomInset
+  );
 
   const headerComponent = (
-    <View style={{ marginBottom: margin.y }}>
+    <View style={portalSpacing > 0 ? { marginBottom: portalSpacing } : undefined}>
       <PortalHost />
       {renderListHeader(ListHeaderComponent)}
     </View>
@@ -62,14 +77,7 @@ export function ScreenFlatList<T>({
     <Animated.FlatList
       ref={scrollRef as unknown as AnimatedRef<Animated.FlatList<T>>}
       style={style}
-      contentContainerStyle={[
-        {
-          flexGrow: 1,
-          paddingHorizontal: margin.x,
-          paddingBottom: bottomInset ?? margin.y,
-        },
-        contentContainerStyle,
-      ]}
+      contentContainerStyle={[contentPadding, contentContainerStyle]}
       ListHeaderComponent={headerComponent}
       showsVerticalScrollIndicator={false}
       scrollEventThrottle={16}

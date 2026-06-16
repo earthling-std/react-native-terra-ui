@@ -126,35 +126,48 @@ Rationale for the renames is in the table below.
 
 ### 4.3 Themeable typography
 
-A `typography` token group lives in the theme; `Text` reads its `variant` from `theme.typography.variants`. Projects can restyle type per accent/override; **apps load the actual fonts** (documented), degrading to the system font if missing.
+A `typography` token group lives in the theme; `Text` reads its canonical role `variant` from `theme.typography.variants`. Projects can restyle type per accent/override; **apps load the actual fonts** (documented), degrading to the system font if missing.
 
-**Role-based scale** (Material-3-style roles, mobile-tuned). Base body is **16pt** for readability (one step above M3's canonical 14, which suits mobile reading); smallest text is 11–12pt. Each role has Large/Medium/Small plus a non-bold `caption`.
+**Role-based scale** (Material-3-style roles, mobile-tuned). Base body is **16pt** for readability, with a **17pt** large body option for primary reading text on iOS-feeling screens; smallest text is 12pt. Each role has Large/Medium/Small plus a non-bold `caption`.
 
 Default scale (size / lineHeight in dp, weight token, tracking = letterSpacing in dp, maxScale = Dynamic Type cap):
 
 | variant | size | line | weight | tracking | maxScale |
 |---|---|---|---|---|---|
-| display-lg | 57 | 64 | regular | -0.25 | 1.2 |
-| display-md | 45 | 52 | regular | 0 | 1.2 |
-| display-sm | 36 | 44 | regular | 0 | 1.2 |
-| headline-lg | 32 | 40 | semibold | 0 | 1.3 |
-| headline-md | 28 | 36 | semibold | 0 | 1.3 |
-| headline-sm | 24 | 32 | semibold | 0 | 1.3 |
+| display-lg | 40 | 48 | semibold | 0 | 1.2 |
+| display-md | 36 | 44 | semibold | 0 | 1.2 |
+| display-sm | 32 | 40 | semibold | 0 | 1.2 |
+| headline-lg | 28 | 36 | semibold | 0 | 1.3 |
+| headline-md | 24 | 32 | semibold | 0 | 1.3 |
+| headline-sm | 22 | 28 | semibold | 0 | 1.3 |
 | title-lg | 20 | 28 | semibold | 0 | 1.4 |
-| title-md | 18 | 26 | semibold | 0 | 1.4 |
-| title-sm | 16 | 24 | semibold | 0.1 | 1.4 |
-| body-lg | 18 | 28 | regular | 0 | 1.8 |
-| body-md | 16 | 24 | regular | 0.15 | 1.8 |
-| body-sm | 14 | 20 | regular | 0.25 | 1.8 |
-| label-lg | 16 | 24 | medium | 0.1 | 1.5 |
-| label-md | 14 | 20 | medium | 0.5 | 1.5 |
-| label-sm | 12 | 16 | medium | 0.5 | 1.5 |
-| caption | 12 | 16 | regular | 0.4 | 1.4 |
+| title-md | 18 | 24 | semibold | 0 | 1.4 |
+| title-sm | 16 | 22 | semibold | 0 | 1.4 |
+| body-lg | 17 | 26 | regular | 0 | 1.8 |
+| body-md | 16 | 24 | regular | 0 | 1.8 |
+| body-sm | 14 | 20 | regular | 0 | 1.8 |
+| label-lg | 15 | 20 | medium | 0.1 | 1.5 |
+| label-md | 14 | 18 | medium | 0.1 | 1.5 |
+| label-sm | 12 | 16 | medium | 0.2 | 1.5 |
+| caption | 12 | 16 | regular | 0.2 | 1.4 |
+
+`Text` also accepts `h1`–`h6` aliases for article/document-like structure. These aliases resolve to the canonical role variants at render time, so theme overrides stay centralized:
+
+| alias | resolves to | typical use |
+|---|---|---|
+| h1 | headline-lg | Main article/screen heading |
+| h2 | headline-md | Major section heading |
+| h3 | title-lg | Subsection heading |
+| h4 | title-md | Local section/card heading |
+| h5 | title-sm | List item or compact block heading |
+| h6 | label-lg | Minor heading or dense supporting heading |
+
+Use the role names (`headline-lg`, `title-md`, etc.) when designing app UI and component APIs. Use `h1`–`h6` when authoring content-heavy screens where document structure is easier to remember. The heading aliases intentionally skip `headline-sm` so `h2` and `h3` have a clearer size step on mobile. `display-*` remains above the normal heading ladder and should be reserved for rare hero, onboarding, pull quote, or featured-number moments.
 
 **Mobile typography practices baked in:**
 
 - **Dynamic Type / font scaling.** `Text` keeps `allowFontScaling` **on** (accessibility) but applies a per-variant `maxFontSizeMultiplier` so large OS text sizes don't shatter layouts — display caps tight (~1.2), body generous (~1.8).
-- **Tracking.** Negative on large display, slightly positive on small body/label — the standard legibility curve.
+- **Tracking.** Body text stays at natural tracking for readability; labels and captions use a small amount of positive tracking for compact UI controls and metadata.
 - **Weight → font-family map.** `typography.fonts` maps each weight token to a family name. With the **system font**, `Text` applies the numeric `fontWeight`. With a **custom font**, the family itself encodes the weight (e.g. `Inter-SemiBold`) and `Text` does *not* set a numeric weight — this avoids the well-known RN/Android faux-bold/synthesis problem.
 - **Platform default.** `fonts` defaults to the system font (`San Francisco` on iOS, `Roboto` on Android) via RN's `System` family; brands override by pointing the tokens at loaded custom fonts.
 - **Per-instance override** still available via the `Text` `weight` prop and `style`.
@@ -233,13 +246,17 @@ interface ThemeColor {
 }
 
 // ── Typography ──
-type TextVariant =
+type RoleTextVariant =
   | 'display-lg' | 'display-md' | 'display-sm'
   | 'headline-lg' | 'headline-md' | 'headline-sm'
   | 'title-lg' | 'title-md' | 'title-sm'
   | 'body-lg' | 'body-md' | 'body-sm'
   | 'label-lg' | 'label-md' | 'label-sm'
   | 'caption'
+
+type HeadingTextVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+
+type TextVariant = RoleTextVariant | HeadingTextVariant
 
 type FontWeightToken = 'regular' | 'medium' | 'semibold' | 'bold' // → 400 | 500 | 600 | 700
 
@@ -260,7 +277,7 @@ interface Typography {
    * for a custom family it does not (the family encodes the weight).
    */
   fonts: Record<FontWeightToken, string>
-  variants: Record<TextVariant, TypeStyle>
+  variants: Record<RoleTextVariant, TypeStyle>
 }
 
 // ── The full theme ──

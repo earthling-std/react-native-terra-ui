@@ -15,10 +15,10 @@ export function ScreenShell({
     <Screen>
       <Screen.Header>
         <Header.Title
+          bg="transparent"
           dismissAction="back"
           onDismiss={() => router.back()}
           title={title}
-          titleAlignment="left"
         />
       </Screen.Header>
       <Screen.ScrollView>{children}</Screen.ScrollView>

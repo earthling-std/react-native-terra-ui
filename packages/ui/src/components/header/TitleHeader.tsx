@@ -2,8 +2,10 @@ import type { ReactNode } from 'react';
 import { Text, View } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
+import type { ColorToken } from '#theme/types';
+import { resolveThemeColor } from '#utils/resolve-theme-color';
 import { FONT_WEIGHT_VALUE } from '#utils/typography';
 
 import {
@@ -19,6 +21,8 @@ export interface TitleHeaderProps extends HeaderDismissProps {
   RightComponent?: ReactNode;
   /** Title placement within the bar. Defaults to `'center'`. */
   titleAlignment?: 'center' | 'left';
+  /** Background color token. Defaults to `surface.base`. */
+  bg?: ColorToken;
 }
 
 /**
@@ -41,7 +45,12 @@ export function TitleHeader({
   navigation,
   onDismiss,
   titleAlignment = 'center',
+  bg = 'surface.base',
 }: TitleHeaderProps) {
+  const { theme } = useUnistyles();
+  const backgroundColor =
+    resolveThemeColor(bg, theme) ?? theme.color.surface.base;
+
   styles.useVariants({ titleAlignment });
 
   const leading =
@@ -73,7 +82,10 @@ export function TitleHeader({
     );
 
   return (
-    <SafeAreaView edges={['top']} style={styles.safeArea}>
+    <SafeAreaView
+      edges={['top']}
+      style={[styles.safeArea, { backgroundColor }]}
+    >
       <View style={styles.bar}>
         {leading != null && <View style={styles.slot}>{leading}</View>}
         <View style={styles.titleContainer} pointerEvents="none">
@@ -88,7 +100,6 @@ export function TitleHeader({
 const styles = StyleSheet.create((theme) => ({
   safeArea: {
     zIndex: 1000,
-    backgroundColor: theme.color.surface.base,
   },
   bar: {
     height: theme.layout.header.height,

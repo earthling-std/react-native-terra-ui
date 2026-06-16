@@ -20,6 +20,11 @@ export type ScreenScrollRef = AnimatedRef<Animated.ScrollView>;
 
 export interface ScreenContextValue {
   /**
+   * Whether scroll containers apply `layout.screen.margin` padding.
+   * Overridable per `Screen.ScrollView` / `Screen.FlatList`.
+   */
+  margins: boolean;
+  /**
    * Live vertical scroll offset of the screen's scroll container, driven by
    * `Screen.ScrollView` / `Screen.FlatList`. Headers (and consumer UI) read it
    * to animate on scroll.
@@ -51,6 +56,8 @@ export const ScreenContext = createContext<ScreenContextValue | null>(null);
 export interface ScreenScrollProviderProps {
   children: ReactNode;
   isInTabView: boolean;
+  /** Apply `layout.screen.margin` to scroll containers. Default true. */
+  margins?: boolean;
 }
 
 /**
@@ -61,6 +68,7 @@ export interface ScreenScrollProviderProps {
 export function ScreenScrollProvider({
   children,
   isInTabView,
+  margins = true,
 }: ScreenScrollProviderProps) {
   const scrollY = useSharedValue(0);
   const headerCollapseHeight = useSharedValue(0);
@@ -84,6 +92,7 @@ export function ScreenScrollProvider({
 
   const value = useMemo<ScreenContextValue>(
     () => ({
+      margins,
       scrollY,
       headerCollapseHeight,
       headerSnapOffsets,
@@ -93,6 +102,7 @@ export function ScreenScrollProvider({
       isInTabView,
     }),
     [
+      margins,
       scrollY,
       headerCollapseHeight,
       headerSnapOffsets,

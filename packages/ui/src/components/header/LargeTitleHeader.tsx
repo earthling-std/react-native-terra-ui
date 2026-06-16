@@ -10,6 +10,7 @@ import Animated, {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
+import { resolveThemeColor } from '#utils/resolve-theme-color';
 import { FONT_WEIGHT_VALUE } from '#utils/typography';
 
 import { usePortal } from '../portal';
@@ -80,7 +81,7 @@ function LargeTitlePortalContent({
         <Text
           style={styles.caption}
           maxFontSizeMultiplier={
-            theme.typography.variants['title-sm'].maxFontSizeMultiplier
+            theme.typography.variants['body-lg'].maxFontSizeMultiplier
           }
         >
           {caption}
@@ -116,9 +117,10 @@ export function LargeTitleHeader({
   onDismiss,
   titleAlignment = 'center',
   isLargeTitleHidden = false,
+  bg = 'surface.base',
 }: LargeTitleHeaderProps) {
   const { theme } = useUnistyles();
-  const surfaceBase = theme.color.surface.base;
+  const surfaceBase = resolveThemeColor(bg, theme) ?? theme.color.surface.base;
   const { scrollY, headerCollapseHeight, setHeaderCollapseHeight } =
     useScreen();
   const { registerContent, unregisterContent } = usePortal();
@@ -299,18 +301,21 @@ const styles = StyleSheet.create((theme) => ({
   },
   largeTitle: {
     fontSize: theme.typography.variants['headline-lg'].fontSize,
+    lineHeight: theme.typography.variants['headline-lg'].lineHeight,
     letterSpacing: theme.typography.variants['headline-lg'].letterSpacing,
     fontWeight:
       FONT_WEIGHT_VALUE[theme.typography.variants['headline-lg'].fontWeight],
     color: theme.color.content.primary,
   },
   caption: {
-    fontSize: theme.typography.variants['title-md'].fontSize,
-    letterSpacing: theme.typography.variants['title-md'].letterSpacing,
+    fontSize: theme.typography.variants['body-lg'].fontSize,
+    lineHeight: theme.typography.variants['body-lg'].lineHeight,
+    letterSpacing: theme.typography.variants['body-lg'].letterSpacing,
     color: theme.color.content.tertiary,
   },
   compactTitle: {
     fontSize: theme.typography.variants['title-md'].fontSize,
+    lineHeight: theme.typography.variants['title-md'].lineHeight,
     letterSpacing: theme.typography.variants['title-md'].letterSpacing,
     fontWeight:
       FONT_WEIGHT_VALUE[theme.typography.variants['title-md'].fontWeight],

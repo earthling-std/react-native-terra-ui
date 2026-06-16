@@ -7,14 +7,21 @@ import {
   useContext,
 } from 'react';
 import type { PressableProps } from 'react-native';
-import { ActivityIndicator, Pressable, Text } from 'react-native';
+import { ActivityIndicator, Pressable } from 'react-native';
 
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 import { getDefaultRadius } from '#theme/configure';
-import type { ColorToken, TerraIconName, TerraTheme } from '#theme/types';
+import type {
+  ColorToken,
+  FontWeightToken,
+  TerraIconName,
+  TerraTheme,
+  TextVariant,
+} from '#theme/types';
 
 import { Icon } from '../icon';
+import { Text } from '../text';
 
 export type ButtonVariant =
   | 'primary'
@@ -98,23 +105,30 @@ function getColors(variant: ButtonVariant, theme: TerraTheme): ButtonColors {
 
 // ─── Label sub-component ───────────────────────────────────────────────────────
 
-const LABEL_STYLE: Record<
+const LABEL_TYPOGRAPHY: Record<
   ButtonSize,
   {
-    fontSize: number;
-    fontWeight: '500' | '600';
-    lineHeight: number;
-    letterSpacing: number;
+    variant: TextVariant;
+    weight?: FontWeightToken;
   }
 > = {
-  sm: { fontSize: 14, fontWeight: '500', lineHeight: 20, letterSpacing: 0.5 },
-  md: { fontSize: 16, fontWeight: '500', lineHeight: 24, letterSpacing: 0.1 },
-  lg: { fontSize: 16, fontWeight: '600', lineHeight: 24, letterSpacing: 0.1 },
+  sm: { variant: 'label-md' },
+  md: { variant: 'label-lg' },
+  lg: { variant: 'label-lg', weight: 'semibold' },
 };
 
 const ButtonLabel = ({ children }: { children: ReactNode }) => {
   const { color, size } = useButtonContext();
-  return <Text style={[LABEL_STYLE[size], { color }]}>{children}</Text>;
+  const typography = LABEL_TYPOGRAPHY[size];
+  return (
+    <Text
+      variant={typography.variant}
+      weight={typography.weight}
+      style={{ color }}
+    >
+      {children}
+    </Text>
+  );
 };
 
 // ─── Icon sub-component ────────────────────────────────────────────────────────
