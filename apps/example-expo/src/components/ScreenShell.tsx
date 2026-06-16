@@ -1,13 +1,8 @@
 import type { ReactNode } from 'react';
-import { ScrollView } from 'react-native';
-
-import { router } from 'expo-router';
-
-import { Box, Button, Text, VStack } from 'react-native-terra-ui';
+import { Header, Screen } from 'react-native-terra-ui';
 
 export function ScreenShell({
   title,
-  subtitle,
   children,
 }: {
   title: string;
@@ -15,25 +10,13 @@ export function ScreenShell({
   children: ReactNode;
 }) {
   return (
-    <Box flex={1} bg="background">
-      <ScrollView
-        contentContainerStyle={{ padding: 20, paddingTop: 64, gap: 24 }}
-      >
-        <VStack gap="3">
-          <Button size="sm" variant="ghost" onPress={() => router.back()}>
-            ← Gallery
-          </Button>
-          <VStack gap="1">
-            <Text variant="headline-md">{title}</Text>
-            {subtitle ? (
-              <Text variant="body-sm" color="content.secondary">
-                {subtitle}
-              </Text>
-            ) : null}
-          </VStack>
-        </VStack>
+    <Screen>
+      <Screen.Header>
+        <Header.Title title={title} titleAlignment='left'/>
+      </Screen.Header>
+      <Screen.ScrollView>
         {children}
-      </ScrollView>
-    </Box>
+      </Screen.ScrollView>
+    </Screen>
   );
 }

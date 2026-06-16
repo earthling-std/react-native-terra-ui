@@ -28,21 +28,16 @@ const RADII: ButtonRadius[] = ['none', 'sm', 'md', 'lg', 'xl', 'full'];
 
 export function ButtonScreen() {
   return (
-    <ScreenShell
-      title="Button"
-      subtitle="Pressable actions — visual variants, sizing, and interaction states."
-    >
+    <ScreenShell title="Button">
       <DemoSection
         title="variant"
         description='Visual style. Defaults to "primary".'
       >
         <HStack gap="2" wrap>
           {VARIANTS.map((variant) => (
-            <PropDemo key={variant} code={`variant="${variant}"`}>
-              <Button variant={variant} size="sm" onPress={noop}>
+              <Button key={variant} variant={variant} size="sm" onPress={noop}>
                 {variant}
               </Button>
-            </PropDemo>
           ))}
         </HStack>
       </DemoSection>

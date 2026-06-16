@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
-import { Text } from '../text';
+import { FONT_WEIGHT_VALUE } from '#utils/typography';
 
 export interface TitleHeaderProps {
   title?: string;
@@ -44,7 +44,7 @@ export function TitleHeader({
         )}
         <View style={styles.titleContainer} pointerEvents="none">
           {!!title && (
-            <Text variant="title-md" align={titleAlignment}>
+            <Text style={styles.title}>
               {title}
             </Text>
           )}
@@ -92,6 +92,20 @@ const styles = StyleSheet.create((theme) => ({
           flex: 1,
           alignItems: 'flex-start',
         },
+      },
+    },
+  },
+  title: {
+    fontSize: theme.typography.variants['title-md'].fontSize,
+    lineHeight: theme.typography.variants['title-md'].lineHeight,
+    letterSpacing: theme.typography.variants['title-md'].letterSpacing,
+    fontWeight:
+      FONT_WEIGHT_VALUE[theme.typography.variants['title-md'].fontWeight],
+    color: theme.color.content.primary,
+    variants: {
+      titleAlignment: {
+        center: { textAlign: 'center' },
+        left: { textAlign: 'left' },
       },
     },
   },

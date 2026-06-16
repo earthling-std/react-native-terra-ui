@@ -12,6 +12,14 @@ configureTerraUI({
       screen: { margin: { x: 20, y: 16 } },
       header: { height: 50 },
     },
+    typography: {
+      fonts: {
+        regular: 'NunitoSans_400Regular',
+        medium: 'NunitoSans_500Medium',
+        semibold: 'NunitoSans_600SemiBold',
+        bold: 'NunitoSans_700Bold',
+      },
+    },
   },
   accents: {
     emerald: { light: '#00bc7d', dark: '#00bc7d' },
