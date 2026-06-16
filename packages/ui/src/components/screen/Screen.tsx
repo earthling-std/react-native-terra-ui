@@ -6,7 +6,6 @@ import {
   type ReactNode,
   useMemo,
 } from 'react';
-import { useSharedValue } from 'react-native-reanimated';
 import {
   type Edge,
   SafeAreaView,
@@ -18,9 +17,9 @@ import type { ColorToken } from '#theme/types';
 import { resolveThemeColor } from '#utils/resolve-theme-color';
 
 import { PortalProvider } from '../portal';
-import { ScreenContext, type ScreenContextValue } from './ScreenContext';
 import { ScreenFlatList } from './ScreenFlatList';
 import { ScreenScrollView } from './ScreenScrollView';
+import { ScreenScrollProvider } from './ScreenContext';
 
 export interface ScreenHeaderProps {
   children: ReactNode;
@@ -103,15 +102,8 @@ const ScreenBase = forwardRef<ComponentRef<typeof SafeAreaView>, ScreenProps>(
       return hasHeader ? [] : ['top', 'bottom'];
     }, [edges, hasHeader]);
 
-    const scrollY = useSharedValue(0);
-
-    const value = useMemo<ScreenContextValue>(
-      () => ({ scrollY, isInTabView: inTabView }),
-      [scrollY, inTabView]
-    );
-
     return (
-      <ScreenContext.Provider value={value}>
+      <ScreenScrollProvider isInTabView={inTabView}>
         <PortalProvider>
           <SafeAreaView
             ref={ref}
@@ -122,7 +114,7 @@ const ScreenBase = forwardRef<ComponentRef<typeof SafeAreaView>, ScreenProps>(
             {children}
           </SafeAreaView>
         </PortalProvider>
-      </ScreenContext.Provider>
+      </ScreenScrollProvider>
     );
   }
 ) as ScreenComponent;

@@ -6,11 +6,7 @@ import {
 } from 'react';
 import { type FlatListProps, View } from 'react-native';
 
-import Animated, {
-  useAnimatedReaction,
-  useAnimatedRef,
-  useScrollOffset,
-} from 'react-native-reanimated';
+import Animated, { type AnimatedRef } from 'react-native-reanimated';
 import { useUnistyles } from 'react-native-unistyles';
 
 import { PortalHost } from '../portal';
@@ -34,9 +30,9 @@ function renderListHeader(
 }
 
 /**
- * `FlatList` variant of `Screen.ScrollView`: mirrors scroll offset into the
- * screen's shared `scrollY`, hosts the portal target above the list (where the
- * large title is injected), and applies token-driven content padding.
+ * `FlatList` variant of `Screen.ScrollView`: binds the screen's shared scroll
+ * ref, mirrors offset into `scrollY`, hosts the portal target above the list,
+ * and applies token-driven content padding.
  *
  * @example
  * ```tsx
@@ -51,16 +47,7 @@ export function ScreenFlatList<T>({
   ...rest
 }: ScreenFlatListProps<T>) {
   const { theme } = useUnistyles();
-  const { scrollY } = useScreen();
-  const scrollRef = useAnimatedRef<Animated.FlatList<T>>();
-  const scrollOffset = useScrollOffset(scrollRef);
-
-  useAnimatedReaction(
-    () => scrollOffset.value,
-    (value) => {
-      scrollY.value = value;
-    }
-  );
+  const { scrollRef, scrollHandler, headerSnapOffsets } = useScreen();
 
   const margin = theme.layout.screen.margin;
 
@@ -73,7 +60,7 @@ export function ScreenFlatList<T>({
 
   return (
     <Animated.FlatList
-      ref={scrollRef}
+      ref={scrollRef as unknown as AnimatedRef<Animated.FlatList<T>>}
       style={style}
       contentContainerStyle={[
         {
@@ -86,7 +73,9 @@ export function ScreenFlatList<T>({
       ListHeaderComponent={headerComponent}
       showsVerticalScrollIndicator={false}
       scrollEventThrottle={16}
+      snapToOffsets={headerSnapOffsets}
       {...rest}
+      onScroll={scrollHandler}
     />
   );
 }

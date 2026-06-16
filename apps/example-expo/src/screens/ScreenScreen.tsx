@@ -9,7 +9,7 @@ export function ScreenScreen() {
   return (
     <Screen>
       <Screen.Header>
-        <Header.LargeTitle title="Screen" caption="Collapsing large title" />
+        <Header.LargeTitle title="Screen" caption="Collapsing large title" titleAlignment='left'/>
       </Screen.Header>
       <Screen.ScrollView bottomInset={32}>
         <VStack gap="3">

@@ -1,11 +1,7 @@
 import type { ReactNode } from 'react';
 import { type ScrollViewProps, View } from 'react-native';
 
-import Animated, {
-  useAnimatedReaction,
-  useAnimatedRef,
-  useScrollOffset,
-} from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import { useUnistyles } from 'react-native-unistyles';
 
 import { PortalHost } from '../portal';
@@ -21,10 +17,9 @@ export interface ScreenScrollViewProps extends ScrollViewProps {
 }
 
 /**
- * Scrollable content container for a `Screen`. Mirrors its scroll offset into
- * the screen's shared `scrollY` (so headers can animate), hosts the portal
- * target at the top (where the large title is injected), and applies
- * token-driven content padding.
+ * Scrollable content container for a `Screen`. Binds the screen's shared scroll
+ * ref, mirrors offset into `scrollY`, hosts the portal target at the top (where
+ * header content is injected), and applies token-driven content padding.
  *
  * @example
  * ```tsx
@@ -41,16 +36,7 @@ export function ScreenScrollView({
   ...rest
 }: ScreenScrollViewProps) {
   const { theme } = useUnistyles();
-  const { scrollY } = useScreen();
-  const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const scrollOffset = useScrollOffset(scrollRef);
-
-  useAnimatedReaction(
-    () => scrollOffset.value,
-    (value) => {
-      scrollY.value = value;
-    }
-  );
+  const { scrollRef, scrollHandler, headerSnapOffsets } = useScreen();
 
   const margin = theme.layout.screen.margin;
 
@@ -68,7 +54,9 @@ export function ScreenScrollView({
       ]}
       showsVerticalScrollIndicator={false}
       scrollEventThrottle={16}
+      snapToOffsets={headerSnapOffsets}
       {...rest}
+      onScroll={scrollHandler}
     >
       <View style={{ marginBottom: margin.y }}>
         <PortalHost />

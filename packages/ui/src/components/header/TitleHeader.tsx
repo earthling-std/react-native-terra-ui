@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
-import { type StyleProp, View, type ViewStyle } from 'react-native';
+import { View } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useUnistyles } from 'react-native-unistyles';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { Text } from '../text';
 
@@ -14,8 +14,6 @@ export interface TitleHeaderProps {
   RightComponent?: ReactNode;
   /** Title placement within the bar. Defaults to `'center'`. */
   titleAlignment?: 'center' | 'left';
-  /** Bar height. Defaults to the `layout.header.height` token. */
-  headerHeight?: number;
 }
 
 /**
@@ -35,53 +33,66 @@ export function TitleHeader({
   LeftComponent,
   RightComponent,
   titleAlignment = 'center',
-  headerHeight,
 }: TitleHeaderProps) {
-  const { theme } = useUnistyles();
-  const height = headerHeight ?? theme.layout.header.height;
-
-  const titleContainerStyle: StyleProp<ViewStyle> =
-    titleAlignment === 'center'
-      ? {
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          alignItems: 'center',
-        }
-      : { flex: 1, alignItems: 'flex-start' };
+  styles.useVariants({ titleAlignment });
 
   return (
-    <SafeAreaView edges={['top']} style={{ zIndex: 1000 }}>
-      <View
-        style={{
-          height,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingHorizontal: theme.layout.screen.margin.x,
-          gap: theme.spacing['3'],
-        }}
-      >
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          {LeftComponent}
-        </View>
-        <View style={titleContainerStyle} pointerEvents="none">
+    <SafeAreaView edges={['top']} style={styles.safeArea}>
+      <View style={styles.bar}>
+        {LeftComponent != null && (
+          <View style={styles.slot}>{LeftComponent}</View>
+        )}
+        <View style={styles.titleContainer} pointerEvents="none">
           {!!title && (
             <Text variant="title-md" align={titleAlignment}>
               {title}
             </Text>
           )}
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-          }}
-        >
-          {RightComponent}
-        </View>
+        {RightComponent != null && (
+          <View style={styles.slotEnd}>{RightComponent}</View>
+        )}
       </View>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create((theme) => ({
+  safeArea: {
+    zIndex: 1000,
+    backgroundColor: theme.color.surface.base,
+  },
+  bar: {
+    height: theme.layout.header.height,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: theme.layout.screen.margin.x,
+    gap: theme.spacing['3'],
+  },
+  slot: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  slotEnd: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  titleContainer: {
+    variants: {
+      titleAlignment: {
+        center: {
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          alignItems: 'center',
+        },
+        left: {
+          flex: 1,
+          alignItems: 'flex-start',
+        },
+      },
+    },
+  },
+}));
