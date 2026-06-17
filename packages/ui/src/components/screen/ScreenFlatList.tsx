@@ -8,7 +8,6 @@ import { type FlatListProps, type NativeScrollEvent, type NativeSyntheticEvent, 
 
 import Animated, {
   type AnimatedRef,
-  type ScrollHandlerProcessed,
   useAnimatedScrollHandler,
   useComposedEventHandler,
 } from 'react-native-reanimated';

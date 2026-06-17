@@ -2,14 +2,7 @@
 // `./context`, whose import-time `configureTerraUI()` default would otherwise
 // run first and lock the registry, turning this explicit call into a no-op.
 // The `/theme` entry has no such side effect, so this config wins.
-import {
-  ChevronLeft,
-  ChevronRight,
-  Plus,
-  Trash2,
-  TriangleAlert,
-  X,
-} from 'lucide-react-native';
+import { Plus, Trash2 } from 'lucide-react-native';
 
 import { configureTerraUI } from 'react-native-terra-ui/theme';
 

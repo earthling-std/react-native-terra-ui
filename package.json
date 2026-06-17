@@ -2,7 +2,7 @@
   "name": "terra-ui-monorepo",
   "version": "0.0.0",
   "private": true,
-  "description": "Monorepo for react-native-terra-ui and its example app",
+  "description": "Monorepo for react-native-terra-ui and its showcase app",
   "scripts": {
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
@@ -10,7 +10,8 @@
     "lint": "turbo run lint",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
-    "example": "yarn workspace example-expo"
+    "example": "yarn workspace showcase-expo",
+    "showcase": "yarn workspace showcase-expo"
   },
   "repository": {
     "type": "git",
@@ -31,5 +32,8 @@
     "packages/*",
     "apps/*"
   ],
-  "packageManager": "yarn@4.11.0"
+  "packageManager": "yarn@4.11.0",
+  "resolutions": {
+    "expo-modules-jsi@npm:~56.0.10": "patch:expo-modules-jsi@npm%3A56.0.10#~/.yarn/patches/expo-modules-jsi-npm-56.0.10-70e070c3a6.patch"
+  }
 }

@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 import Animated, {
+  type ScrollHandlerProcessed,
   useAnimatedScrollHandler,
   useComposedEventHandler,
 } from 'react-native-reanimated';
@@ -29,6 +30,11 @@ export interface ScreenScrollViewProps extends ScrollViewProps {
    * are enabled, otherwise `0`.
    */
   bottomInset?: number;
+  /**
+   * Optional Reanimated scroll handler composed with the screen's own scroll
+   * tracking and any JS `onScroll` callback.
+   */
+  scrollHandler?: ScrollHandlerProcessed<Record<string, unknown>>;
 }
 
 /**
@@ -50,12 +56,13 @@ export function ScreenScrollView({
   margins,
   bottomInset,
   onScroll,
+  scrollHandler: externalScrollHandler,
   ...rest
 }: ScreenScrollViewProps) {
   const { theme } = useUnistyles();
   const {
     scrollRef,
-    scrollHandler,
+    scrollHandler: screenScrollHandler,
     headerSnapOffsets,
     margins: screenMargins,
   } = useScreen();
@@ -65,10 +72,11 @@ export function ScreenScrollView({
       onScroll(event as unknown as NativeSyntheticEvent<NativeScrollEvent>);
   }, [onScroll]);
 
-  const composedHandler = useComposedEventHandler([
-    scrollHandler,
-    propScrollHandler,
-  ]);
+  const composedHandler = useComposedEventHandler(
+    externalScrollHandler
+      ? [screenScrollHandler, propScrollHandler, externalScrollHandler]
+      : [screenScrollHandler, propScrollHandler]
+  );
 
   const margin = theme.layout.screen.margin;
   const marginsEnabled = margins ?? screenMargins;

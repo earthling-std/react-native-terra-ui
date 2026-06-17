@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "TerraUi Example",
-    "slug": "react-native-terra-ui-example",
+    "name": "Terra UI Showcase",
+    "slug": "react-native-terra-ui-showcase",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,7 +13,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "terraui.example"
+      "bundleIdentifier": "terraui.showcase"
     },
     "android": {
       "adaptiveIcon": {
@@ -22,13 +22,17 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "package": "terraui.example"
+      "package": "terraui.showcase"
     },
-    "scheme": "terraui-example",
+    "scheme": "terraui-showcase",
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
-    "plugins": ["expo-router"]
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-status-bar"
+    ]
   }
 }
