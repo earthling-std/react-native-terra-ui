@@ -6,8 +6,7 @@ import {
   type Ref,
 } from 'react';
 
-import { composeRefs } from './composeRefs';
-import { mergeProps } from './mergeProps';
+import { composeRefs, mergeProps } from './utils';
 
 type AnyProps = Record<string, unknown>;
 

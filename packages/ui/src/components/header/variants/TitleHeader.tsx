@@ -11,7 +11,7 @@ import { FONT_WEIGHT_VALUE } from '#utils/typography';
 import {
   HeaderDismissButton,
   type HeaderDismissProps,
-} from './HeaderDismissButton';
+} from '../header-buttons';
 
 export interface TitleHeaderProps extends HeaderDismissProps {
   title?: string;

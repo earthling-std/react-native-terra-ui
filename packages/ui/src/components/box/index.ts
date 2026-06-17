@@ -7,4 +7,4 @@ export type {
   BorderWidthInput,
   BoxStyleProps,
   Justify,
-} from './styleProps';
+} from './utils';

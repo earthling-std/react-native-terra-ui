@@ -8,7 +8,7 @@ import {
   BOX_STYLE_PROP_KEYS,
   type BoxStyleProps,
   resolveBoxStyle,
-} from './styleProps';
+} from './utils';
 
 export interface BoxProps extends ViewProps, BoxStyleProps {
   /** Merge Box's style/props onto a single child instead of rendering a View. */

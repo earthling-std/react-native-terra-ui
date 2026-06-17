@@ -9,7 +9,7 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 
-import type { PageIndicatorConfig, ResolvedColors } from '../config';
+import type { PageIndicatorConfig, ResolvedColors } from '../utils';
 
 interface PillIndicatorDotProps {
   activeColor: string;

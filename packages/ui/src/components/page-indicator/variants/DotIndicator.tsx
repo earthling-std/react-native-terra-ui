@@ -12,7 +12,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import Svg, { Circle } from 'react-native-svg';
 
-import type { PageIndicatorConfig, ResolvedColors } from '../config';
+import type { PageIndicatorConfig, ResolvedColors } from '../utils';
 
 /**
  * Each loading arc has a peak length, its own lap duration (speed), and a

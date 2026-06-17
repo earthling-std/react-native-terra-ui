@@ -15,7 +15,7 @@ import { useUnistyles } from 'react-native-unistyles';
 
 import { PortalHost } from '../portal';
 import { useScreen } from './ScreenContext';
-import { resolveScreenContentInsets } from './screenContentInsets';
+import { resolveScreenContentInsets } from './utils';
 
 export interface ScreenFlatListProps<T>
   extends Omit<FlatListProps<T>, 'CellRendererComponent'> {

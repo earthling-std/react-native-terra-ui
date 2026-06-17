@@ -10,7 +10,7 @@ import {
   type PageIndicatorColors,
   type PageIndicatorConfig,
   resolvePageIndicatorConfig,
-} from './config';
+} from './utils';
 import { DotIndicator } from './variants/DotIndicator';
 import { PillIndicator } from './variants/PillIndicator';
 

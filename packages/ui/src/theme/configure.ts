@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native-unistyles';
 
-import { defaultIcons } from '#components/icon/defaultIcons';
+import { defaultIcons } from '#components/icon/utils';
 import { normalizeAccent } from '#utils/accent-utils';
 import { deepMerge } from '#utils/deep-merge';
 

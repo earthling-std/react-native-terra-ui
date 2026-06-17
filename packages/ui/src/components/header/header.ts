@@ -1,5 +1,5 @@
-import { LargeTitleHeader } from './LargeTitleHeader';
-import { TitleHeader } from './TitleHeader';
+import { LargeTitleHeader } from './variants/LargeTitleHeader';
+import { TitleHeader } from './variants/TitleHeader';
 
 /**
  * Composite header namespace.
