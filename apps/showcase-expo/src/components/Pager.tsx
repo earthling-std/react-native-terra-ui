@@ -2,6 +2,7 @@ import { View } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { PageIndicator } from 'react-native-terra-ui';
+import {StyleSheet} from 'react-native-unistyles';
 
 interface PagerProps {
   count: number;
@@ -23,6 +24,7 @@ export function Pager({ count, progress, isLoading }: PagerProps) {
       }}
     >
       <PageIndicator
+        style={styles.page}
         count={count}
         progress={progress}
         variant="pill"
@@ -31,3 +33,11 @@ export function Pager({ count, progress, isLoading }: PagerProps) {
     </View>
   );
 }
+
+const styles = StyleSheet.create((theme) => ({
+  page: {
+    backgroundColor: theme.color.surface.base,
+    padding: theme.spacing[2],
+    borderRadius: theme.radius.full,
+  },
+}));

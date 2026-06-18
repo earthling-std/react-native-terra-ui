@@ -55,8 +55,8 @@ export function ScreenScrollView({
   contentContainerStyle,
   margins,
   bottomInset,
-  onScroll,
   scrollHandler: externalScrollHandler,
+  onScroll: onScrollProp,
   ...rest
 }: ScreenScrollViewProps) {
   const { theme } = useUnistyles();
@@ -67,16 +67,25 @@ export function ScreenScrollView({
     margins: screenMargins,
   } = useScreen();
 
-  const propScrollHandler = useAnimatedScrollHandler((event) => {
-    if (onScroll)
-      onScroll(event as unknown as NativeSyntheticEvent<NativeScrollEvent>);
-  }, [onScroll]);
-
-  const composedHandler = useComposedEventHandler(
-    externalScrollHandler
-      ? [screenScrollHandler, propScrollHandler, externalScrollHandler]
-      : [screenScrollHandler, propScrollHandler]
+  const jsScrollHandler = useAnimatedScrollHandler(
+    onScrollProp
+      ? {
+          onScroll: (event) => {
+            onScrollProp({
+              nativeEvent: event,
+            } as unknown as NativeSyntheticEvent<NativeScrollEvent>);
+          },
+        }
+      : {}
   );
+
+  const handlers: ScrollHandlerProcessed<Record<string, unknown>>[] = [
+    screenScrollHandler,
+    ...(externalScrollHandler ? [externalScrollHandler] : []),
+    ...(onScrollProp ? [jsScrollHandler] : []),
+  ];
+
+  const composedHandler = useComposedEventHandler(handlers);
 
   const margin = theme.layout.screen.margin;
   const marginsEnabled = margins ?? screenMargins;

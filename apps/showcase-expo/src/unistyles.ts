@@ -4,7 +4,15 @@
 // The `/theme` entry has no such side effect, so this config wins.
 import { Plus, Trash2 } from 'lucide-react-native';
 
-import { configureTerraUI } from 'react-native-terra-ui/theme';
+import { configureTerraUI, type TerraTheme } from 'react-native-terra-ui/theme';
+
+
+declare module 'react-native-unistyles' {
+  interface UnistylesThemes {
+    light: TerraTheme;
+    dark: TerraTheme;
+  }
+}
 
 // Configure BEFORE any component loads (this module is imported first in index.js).
 configureTerraUI({
