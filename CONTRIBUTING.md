@@ -6,14 +6,12 @@ We want this community to be friendly and respectful to each other. Please follo
 
 ## Development workflow
 
-This project is a monorepo managed using [Yarn workspaces](https://yarnpkg.com/features/workspaces). It contains the following packages:
+This project is a monorepo managed using [Yarn workspaces](https://yarnpkg.com/features/workspaces). It contains:
 
-- The library package in the root directory.
-- An example app in the `example/` directory.
+- **`packages/ui`** — the `react-native-terra-ui` library
+- **`apps/showcase-expo`** — an Expo gallery app for exploring components and themes
 
-To get started with the project, make sure you have the correct version of [Node.js](https://nodejs.org/) installed. See the [`.nvmrc`](./.nvmrc) file for the version used in this project.
-
-Run `yarn` in the root directory to install the required dependencies for each package:
+To get started, install the correct version of [Node.js](https://nodejs.org/) (see [`.nvmrc`](./.nvmrc)) and run:
 
 ```sh
 yarn
@@ -21,86 +19,55 @@ yarn
 
 > Since the project relies on Yarn workspaces, you cannot use [`npm`](https://github.com/npm/cli) for development without manually migrating.
 
-The [example app](/example/) demonstrates usage of the library. You need to run it to test any changes you make.
+The [showcase app](apps/showcase-expo) demonstrates usage of the library. Run it to test changes interactively.
 
-It is configured to use the local version of the library, so any changes you make to the library's source code will be reflected in the example app. Changes to the library's JavaScript code will be reflected in the example app without a rebuild, but native code changes will require a rebuild of the example app.
+The showcase resolves the library from **source** via Metro, so JavaScript changes in `packages/ui/src` hot-reload without rebuilding. Native code changes require a rebuild of the showcase dev client.
 
-You can use various commands from the root directory to work with the project.
+### Showcase commands
 
-To start the packager:
-
-```sh
-yarn example start
-```
-
-To run the example app on Android:
+From the repo root (`yarn example` is an alias for `yarn showcase`):
 
 ```sh
-yarn example android
+yarn showcase start          # start Metro for the dev client
+yarn showcase start:reset    # clear Metro + Watchman if reloads stall
+yarn showcase ios            # build & run on iOS (requires prebuild)
+yarn showcase android        # build & run on Android (requires prebuild)
+yarn showcase web            # run on web
+yarn showcase build:web      # production web build
 ```
 
-To run the example app on iOS:
+### Dev build required
+
+The showcase uses **react-native-unistyles v3**, which requires native modules. **Expo Go will not work.** See [apps/showcase-expo/README.md](apps/showcase-expo/README.md) for prebuild instructions.
+
+### Quality checks
 
 ```sh
-yarn example ios
+yarn typecheck   # TypeScript across all workspaces
+yarn lint        # Biome lint + format check
+yarn lint:fix    # auto-fix lint and formatting
+yarn test        # Jest unit tests (packages/ui)
 ```
 
-To confirm that the app is running with the new architecture, you can check the Metro logs for a message like this:
+### Scripts reference
 
-```sh
-Running "TerraUiExample" with {"fabric":true,"initialProps":{"concurrentRoot":true},"rootTag":1}
-```
+| Script | Description |
+|--------|-------------|
+| `yarn` | Install dependencies |
+| `yarn typecheck` | Type-check with TypeScript |
+| `yarn lint` | Lint and format-check with [Biome](https://biomejs.dev/) |
+| `yarn lint:fix` | Auto-fix lint and formatting |
+| `yarn test` | Run unit tests with [Jest](https://jestjs.io/) |
+| `yarn showcase start` | Start Metro for the showcase app |
+| `yarn showcase ios` / `android` | Run showcase on a device/simulator |
+| `yarn showcase web` | Run showcase on web |
+| `yarn build` | Build the library package |
 
-Note the `"fabric":true` and `"concurrentRoot":true` properties.
+### Theme setup for contributors
 
-To run the example app on Web:
+When customizing the theme in the showcase, import from `react-native-terra-ui/theme` (not the root entry) so your `configureTerraUI()` call runs before the default auto-configure. See [docs/getting-started.md](docs/getting-started.md).
 
-```sh
-yarn example web
-```
-
-Make sure your code passes TypeScript:
-
-```sh
-yarn typecheck
-```
-
-To check for linting errors, run the following:
-
-```sh
-yarn lint
-```
-
-To fix linting and formatting errors, run the following:
-
-```sh
-yarn lint:fix
-```
-
-Remember to add tests for your change if possible. Run the unit tests by:
-
-```sh
-yarn test
-```
-
-
-
-### Scripts
-
-The `package.json` file contains various scripts for common tasks:
-
-- `yarn`: setup project by installing dependencies.
-- `yarn typecheck`: type-check files with TypeScript.
-  - `yarn lint`: lint and format-check files with [Biome](https://biomejs.dev/).
-  - `yarn lint:fix`: auto-fix lint and formatting issues with Biome.
-    - `yarn test`: run unit tests with [Jest](https://jestjs.io/).
-  - `yarn example start`: start the Metro server for the example app.
-- `yarn example android`: run the example app on Android.
-- `yarn example ios`: run the example app on iOS.
-  - `yarn example web`: run the example app on Web.
-- `yarn example build:web`: build the example app for Web.
-  
-### Sending a pull request
+## Sending a pull request
 
 > **Working on your first pull request?** You can learn how from this _free_ series: [How to Contribute to an Open Source Project on GitHub](https://app.egghead.io/playlists/how-to-contribute-to-an-open-source-project-on-github).
 
@@ -109,5 +76,5 @@ When you're sending a pull request:
 - Prefer small pull requests focused on one change.
 - Verify that linters and tests are passing.
 - Review the documentation to make sure it looks good.
-- Follow the pull request template when opening a pull request.
+- Follow the [pull request template](.github/pull_request_template.md) when opening a pull request.
 - For pull requests that change the API or implementation, discuss with maintainers first by opening an issue.

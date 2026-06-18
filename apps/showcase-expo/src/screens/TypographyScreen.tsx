@@ -11,9 +11,8 @@ import {
   type TextVariant,
   VStack,
 } from 'react-native-terra-ui';
-
-import { Pager } from '../components/Pager';
 import { useUnistyles } from 'react-native-unistyles';
+import { Pager } from '../components/Pager';
 
 const TEXT_VARIANTS: TextVariant[] = [
   'display-lg',
@@ -83,11 +82,14 @@ function VariantCatalogPage(props: { width: number }) {
 
 function ArticleSamplePage(props: { width: number }) {
   const { width } = props;
-const {theme} = useUnistyles();
+  const { theme } = useUnistyles();
   return (
     <ScrollView
       style={{ width }}
-      contentContainerStyle={{ paddingHorizontal: theme.layout.screen.margin.x, paddingVertical: theme.layout.screen.margin.y }}
+      contentContainerStyle={{
+        paddingHorizontal: theme.layout.screen.margin.x,
+        paddingVertical: theme.layout.screen.margin.y,
+      }}
     >
       <VStack gap="4">
         <VStack gap="1">

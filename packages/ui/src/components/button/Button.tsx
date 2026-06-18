@@ -7,7 +7,7 @@ import {
   useContext,
 } from 'react';
 import type { PressableProps } from 'react-native';
-import { ActivityIndicator, Pressable } from 'react-native';
+import { Pressable } from 'react-native';
 
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
@@ -21,6 +21,7 @@ import type {
 } from '#theme/types';
 
 import { Icon } from '../icon';
+import { Spinner } from '../spinner';
 import { Text } from '../text';
 
 export type ButtonVariant =
@@ -74,17 +75,47 @@ function getColors(variant: ButtonVariant, theme: TerraTheme): ButtonColors {
   const { action, status, border, content } = theme.color;
   switch (variant) {
     case 'primary':
-      return { bg: action.primary.bg, border: action.primary.bg, borderWidth: 0, fg: action.primary.fg };
+      return {
+        bg: action.primary.bg,
+        border: action.primary.bg,
+        borderWidth: 0,
+        fg: action.primary.fg,
+      };
     case 'secondary':
-      return { bg: action.secondary.bg, border: action.secondary.bg, borderWidth: 0, fg: action.secondary.fg };
+      return {
+        bg: action.secondary.bg,
+        border: action.secondary.bg,
+        borderWidth: 0,
+        fg: action.secondary.fg,
+      };
     case 'neutral':
-      return { bg: action.neutral.hover, border: action.neutral.hover, borderWidth: 0, fg: action.neutral.fg };
+      return {
+        bg: action.neutral.hover,
+        border: action.neutral.hover,
+        borderWidth: 0,
+        fg: action.neutral.fg,
+      };
     case 'outline':
-      return { bg: 'transparent', border: border.default, borderWidth: 1, fg: content.primary };
+      return {
+        bg: 'transparent',
+        border: border.default,
+        borderWidth: 1,
+        fg: content.primary,
+      };
     case 'ghost':
-      return { bg: 'transparent', border: 'transparent', borderWidth: 0, fg: content.primary };
+      return {
+        bg: 'transparent',
+        border: 'transparent',
+        borderWidth: 0,
+        fg: content.primary,
+      };
     case 'danger':
-      return { bg: status.danger.solid, border: status.danger.solid, borderWidth: 0, fg: status.danger.onSolid };
+      return {
+        bg: status.danger.solid,
+        border: status.danger.solid,
+        borderWidth: 0,
+        fg: status.danger.onSolid,
+      };
   }
 }
 
@@ -212,7 +243,7 @@ const ButtonRoot = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
           ]}
         >
           {isLoading ? (
-            <ActivityIndicator size="small" color={fg} />
+            <Spinner size="sm" color={fg} />
           ) : (
             renderChildren(children)
           )}

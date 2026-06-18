@@ -23,7 +23,10 @@ export interface PageIndicatorProps extends PageIndicatorColors {
   count: number;
   /** Animated page progress, where `0` is page one and `1` is page two. */
   progress: SharedValue<number>;
-  /** External loading state. Only affects `variant="dot"`. */
+  /**
+   * External loading state. Only used when `variant="dot"` — renders a ring
+   * around the active dot. Ignored by the `pill` variant.
+   */
   isLoading?: boolean;
 
   config?: Partial<PageIndicatorConfig>;

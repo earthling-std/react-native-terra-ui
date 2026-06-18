@@ -59,6 +59,7 @@
     "@jest/globals": "^29.7.0",
     "@react-native/babel-preset": "0.85.0",
     "@react-native/jest-preset": "0.85.0",
+    "@testing-library/react-native": "^13.3.3",
     "@types/react": "^19.2.0",
     "babel-plugin-module-resolver": "^5.0.3",
     "del-cli": "^7.0.0",
@@ -72,6 +73,7 @@
     "react-native-safe-area-context": "^5.8.0",
     "react-native-svg": "15.15.4",
     "react-native-unistyles": "^3.2.5",
+    "react-test-renderer": "19.2.0",
     "typescript": "^6.0.3"
   },
   "peerDependencies": {
@@ -102,9 +104,26 @@
   },
   "jest": {
     "preset": "@react-native/jest-preset",
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.ts"
+    ],
     "modulePathIgnorePatterns": [
       "<rootDir>/lib/"
-    ]
+    ],
+    "collectCoverageFrom": [
+      "src/theme/**/*.ts",
+      "src/utils/**/*.ts",
+      "src/components/**/*.{ts,tsx}",
+      "!src/**/__tests__/**"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 5,
+        "functions": 5,
+        "lines": 5,
+        "statements": 5
+      }
+    }
   },
   "create-react-native-library": {
     "type": "library",

@@ -6,5 +6,6 @@ export * from './page-indicator';
 export * from './portal';
 export * from './screen';
 export * from './slot';
+export * from './spinner';
 export * from './surface';
 export * from './text';

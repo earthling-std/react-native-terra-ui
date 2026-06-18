@@ -17,7 +17,7 @@ import type { ColorToken } from '#theme/types';
 import { resolveThemeColor } from '#utils/resolve-theme-color';
 
 import { PortalProvider } from '../portal';
-import { ScreenScrollProvider } from './ScreenContext';
+import { ScreenHeaderSlotContext, ScreenScrollProvider } from './ScreenContext';
 import { ScreenFlatList } from './ScreenFlatList';
 import { ScreenScrollView } from './ScreenScrollView';
 
@@ -33,7 +33,11 @@ export interface ScreenHeaderProps {
  * Place a `Header.Title` / `Header.LargeTitle` (or any custom header) inside it.
  */
 function ScreenHeader({ children }: ScreenHeaderProps) {
-  return <>{children}</>;
+  return (
+    <ScreenHeaderSlotContext.Provider value={true}>
+      {children}
+    </ScreenHeaderSlotContext.Provider>
+  );
 }
 
 /** True if `children` directly contains a `Screen.Header`. */

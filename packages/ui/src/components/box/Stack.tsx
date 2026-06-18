@@ -10,7 +10,17 @@ export interface StackProps extends BoxProps {
 
 type Ref = ComponentRef<typeof View>;
 
-/** A `Box` that lays children out along a direction (default column). */
+/**
+ * A `Box` that lays children out along a direction (default column).
+ *
+ * @example
+ * ```tsx
+ * <Stack gap="4" p="4">
+ *   <Text>One</Text>
+ *   <Text>Two</Text>
+ * </Stack>
+ * ```
+ */
 export const Stack = forwardRef<Ref, StackProps>(function Stack(
   { direction = 'column', ...rest },
   ref

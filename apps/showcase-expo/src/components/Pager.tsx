@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { PageIndicator } from 'react-native-terra-ui';
-import {StyleSheet} from 'react-native-unistyles';
+import { StyleSheet } from 'react-native-unistyles';
 
 interface PagerProps {
   count: number;

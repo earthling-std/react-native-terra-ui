@@ -6,7 +6,13 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": ["**", "!**/node_modules", "!**/lib", "!**/build"]
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/lib",
+      "!**/build",
+      "!**/coverage"
+    ]
   },
   "formatter": {
     "enabled": true,

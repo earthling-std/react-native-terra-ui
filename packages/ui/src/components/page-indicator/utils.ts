@@ -40,13 +40,13 @@ export const resolvePageIndicatorConfig = (
   return { ...defaultPageIndicatorConfig, ...config };
 };
 
-/** Color tokens that can be passed directly as props (override `config`). */
+/** Color tokens for page indicator states. Top-level props on `PageIndicator`. */
 export interface PageIndicatorColors {
-  /** Active page color token. Overrides `config.activeColor`. */
+  /** Active page color token. */
   activeColor?: ColorToken;
-  /** Inactive page color token. Overrides `config.inactiveColor`. */
+  /** Inactive page color token. */
   inactiveColor?: ColorToken;
-  /** Loading ring color token. Overrides `config.loadingColor`. */
+  /** Loading ring color token (dot variant only). */
   loadingColor?: ColorToken;
 }
 

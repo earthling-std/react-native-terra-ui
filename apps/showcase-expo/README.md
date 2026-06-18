@@ -44,4 +44,5 @@ On a device or CI, build a dev client with EAS instead (`eas build --profile dev
   demonstrating runtime accent + radius switching.
 - **Typography** — representative `Text` variants.
 - **Buttons** — variants, sizes, and loading/disabled/full-width states.
+- **Icon / Spinner / PageIndicator / Portal** — semantic icons, loading states, pager indicators, portal API.
 - **Layout** — `Box`/`Stack` surfaces and an `asChild` → `Pressable` example.

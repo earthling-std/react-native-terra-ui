@@ -53,6 +53,9 @@ export interface ScreenContextValue {
 
 export const ScreenContext = createContext<ScreenContextValue | null>(null);
 
+/** Set to `true` inside `Screen.Header` so header variants can warn on misuse. */
+export const ScreenHeaderSlotContext = createContext(false);
+
 export interface ScreenScrollProviderProps {
   children: ReactNode;
   isInTabView: boolean;

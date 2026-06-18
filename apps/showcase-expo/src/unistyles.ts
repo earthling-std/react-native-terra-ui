@@ -6,7 +6,6 @@ import { Plus, Trash2 } from 'lucide-react-native';
 
 import { configureTerraUI, type TerraTheme } from 'react-native-terra-ui/theme';
 
-
 declare module 'react-native-unistyles' {
   interface UnistylesThemes {
     light: TerraTheme;

@@ -9,12 +9,24 @@ import type { ColorToken, TerraIconName } from '#theme/types';
 import { resolveThemeColor } from '#utils/resolve-theme-color';
 
 export interface IconProps extends Omit<ViewProps, 'children'> {
+  /** Semantic or configured icon name from the theme registry. */
   name: TerraIconName;
+  /** Icon size in density-independent pixels. Defaults to `20`. */
   size?: number;
+  /** Theme color token or raw CSS color. Defaults to `content.primary`. */
   color?: ColorToken;
   strokeWidth?: number;
 }
 
+/**
+ * Renders an icon from the Terra UI icon registry (`configureTerraUI({ icons })`
+ * plus built-in semantic names like `navigation.back`).
+ *
+ * @example
+ * ```tsx
+ * <Icon name="navigation.close" size={24} color="content.primary" />
+ * ```
+ */
 export const Icon = forwardRef<ComponentRef<typeof View>, IconProps>(
   function Icon(
     { name, size = 20, color = 'content.primary', strokeWidth, style, ...rest },

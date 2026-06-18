@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId } from 'react';
+import { useCallback, useContext, useEffect, useId } from 'react';
 import { type LayoutChangeEvent, Text, View } from 'react-native';
 
 import Animated, {
@@ -14,7 +14,7 @@ import { resolveThemeColor } from '#utils/resolve-theme-color';
 import { FONT_WEIGHT_VALUE } from '#utils/typography';
 
 import { usePortal } from '../../portal';
-import { useScreen } from '../../screen/ScreenContext';
+import { ScreenHeaderSlotContext, useScreen } from '../../screen/ScreenContext';
 import { HeaderDismissButton } from '../header-buttons';
 import type { TitleHeaderProps } from './TitleHeader';
 
@@ -120,12 +120,21 @@ export function LargeTitleHeader({
   bg = 'surface.base',
 }: LargeTitleHeaderProps) {
   const { theme } = useUnistyles();
+  const inScreenHeader = useContext(ScreenHeaderSlotContext);
   const surfaceBase = resolveThemeColor(bg, theme) ?? theme.color.surface.base;
   const { scrollY, headerCollapseHeight, setHeaderCollapseHeight } =
     useScreen();
   const { registerContent, unregisterContent } = usePortal();
   const portalId = useId();
   const isLargeTitleHiddenValue = useSharedValue(isLargeTitleHidden);
+
+  useEffect(() => {
+    if (__DEV__ && !inScreenHeader) {
+      console.warn(
+        '[react-native-terra-ui] Header.LargeTitle should be placed inside <Screen.Header>.'
+      );
+    }
+  }, [inScreenHeader]);
 
   styles.useVariants({ titleAlignment });
 

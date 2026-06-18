@@ -1,8 +1,9 @@
 export { Header } from './Header';
-export type {
-  HeaderDismissAction,
-  HeaderDismissNavigation,
-  HeaderDismissProps,
+export {
+  type HeaderDismissAction,
+  HeaderDismissButton,
+  type HeaderDismissNavigation,
+  type HeaderDismissProps,
 } from './header-buttons';
 export type { LargeTitleHeaderProps } from './variants/LargeTitleHeader';
 export { LargeTitleHeader } from './variants/LargeTitleHeader';

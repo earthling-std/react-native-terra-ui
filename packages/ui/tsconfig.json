@@ -7,5 +7,6 @@
       "react-native-terra-ui/theme": ["./src/theme/index"],
       "#*": ["./src/*"]
     }
-  }
+  },
+  "exclude": ["jest.setup.ts", "lib"]
 }

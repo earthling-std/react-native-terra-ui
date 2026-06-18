@@ -4,7 +4,12 @@ import {
   isValidElement,
   type ReactElement,
 } from 'react';
-import { type FlatListProps, type NativeScrollEvent, type NativeSyntheticEvent, View } from 'react-native';
+import {
+  type FlatListProps,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
+  View,
+} from 'react-native';
 
 import Animated, {
   type AnimatedRef,
@@ -75,10 +80,13 @@ export function ScreenFlatList<T>({
     bottomInset
   );
 
-  const jsScrollHandler = useAnimatedScrollHandler((event) => {
-    if (onScroll)
-      onScroll(event as unknown as NativeSyntheticEvent<NativeScrollEvent>);
-  }, [onScroll]);
+  const jsScrollHandler = useAnimatedScrollHandler(
+    (event) => {
+      if (onScroll)
+        onScroll(event as unknown as NativeSyntheticEvent<NativeScrollEvent>);
+    },
+    [onScroll]
+  );
 
   const composedHandler = useComposedEventHandler([
     scrollHandler,
