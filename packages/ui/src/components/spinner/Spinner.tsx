@@ -30,7 +30,7 @@ const STROKE: Record<SpinnerSize, number> = { sm: 2.5, md: 3.5, lg: 4.5 };
 // ~324° visible arc — short gap at the trailing end.
 const ARC_FRACTION = 0.7;
 
-const ROTATION_DURATION = 850;
+const ROTATION_DURATION = 900;
 
 let spinnerInstance = 0;
 
@@ -73,7 +73,7 @@ const SpinnerArc = memo(function SpinnerArc({
           gradientUnits="userSpaceOnUse"
         >
           {/* <Stop offset="0" stopColor={color} stopOpacity="0.2" /> */}
-          <Stop offset="0.1" stopColor={color} stopOpacity="0.4" />
+          <Stop offset="0.1" stopColor={color} stopOpacity="0.2" />
           <Stop offset="1" stopColor={color} stopOpacity="1" />
         </LinearGradient>
       </Defs>

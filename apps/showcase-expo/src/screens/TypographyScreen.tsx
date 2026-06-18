@@ -33,7 +33,7 @@ const TEXT_VARIANTS: TextVariant[] = [
   'caption',
 ];
 
-const PAGE_COUNT = 2;
+const PAGE_TITLES = ['Variants', 'Article'];
 const isArticleLoading = true;
 
 const SIZE_LABELS: Record<string, string> = {
@@ -296,7 +296,7 @@ export function TypographyScreen() {
         <ArticleSamplePage width={width} />
       </Screen.ScrollView>
       <Pager
-        count={PAGE_COUNT}
+        titles={PAGE_TITLES}
         progress={pageProgress}
         isLoading={isArticleLoading}
       />
