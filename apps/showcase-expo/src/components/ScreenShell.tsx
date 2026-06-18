@@ -15,7 +15,6 @@ export function ScreenShell({
     <Screen>
       <Screen.Header>
         <Header.Title
-          bg="transparent"
           dismissAction="back"
           onDismiss={() => router.back()}
           title={title}

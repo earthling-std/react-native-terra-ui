@@ -259,16 +259,12 @@ export function LargeTitleHeader({
 
   return (
     <View style={styles.safeArea}>
-      {isTransparent ? (
-        <Animated.View
-          style={[
-            { height: top, backgroundColor: theme.color.background },
-            gradientOpacityStyle,
-          ]}
-        />
-      ) : (
-        <View style={{ height: top, backgroundColor: bgColor }} />
-      )}
+      <Animated.View
+        style={[
+          { height: top, backgroundColor: gradientColor },
+          gradientOpacityStyle,
+        ]}
+      />
       <View style={styles.bar}>
         <Animated.View
           style={[styles.gradient, gradientOpacityStyle]}

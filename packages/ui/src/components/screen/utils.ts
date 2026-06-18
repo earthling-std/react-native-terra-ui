@@ -13,6 +13,5 @@ export function resolveScreenContentInsets(
       paddingHorizontal: margins ? margin.x : 0,
       paddingBottom: bottomInset ?? (margins ? margin.y : 0),
     },
-    portalSpacing: margins ? margin.y : 0,
   };
 }

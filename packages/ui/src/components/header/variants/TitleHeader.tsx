@@ -56,7 +56,7 @@ export function TitleHeader({
   const { theme } = useUnistyles();
   const { top } = useSafeAreaInsets();
   const gradientId = useId();
-  const bgColor = resolveThemeColor(bg, theme) ?? theme.color.surface.base;
+  const bgColor = resolveThemeColor(bg, theme) as string;
   const isTransparent = bgColor === 'transparent';
   const gradientColor = isTransparent ? theme.color.background : bgColor;
 
@@ -94,6 +94,7 @@ export function TitleHeader({
       <View
         style={{
           height: top,
+          backgroundColor: isTransparent ? 'transparent' : bgColor,
         }}
       />
       <View style={styles.bar}>

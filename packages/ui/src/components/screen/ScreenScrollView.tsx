@@ -24,7 +24,7 @@ export interface ScreenScrollViewProps extends ScrollViewProps {
    * Apply `layout.screen.margin` padding. Defaults to the enclosing `Screen`'s
    * `margins` value.
    */
-  margins?: boolean;
+  hasMargins?: boolean;
   /**
    * Extra bottom padding on the scroll content — clearance for a tab bar or
    * home indicator. Defaults to the `layout.screen.margin.y` token when margins
@@ -54,10 +54,11 @@ export function ScreenScrollView({
   children,
   style,
   contentContainerStyle,
-  margins,
+  hasMargins,
   bottomInset,
   scrollHandler: externalScrollHandler,
   onScroll: onScrollProp,
+  horizontal = false,
   ...rest
 }: ScreenScrollViewProps) {
   const { theme } = useUnistyles();
@@ -91,9 +92,9 @@ export function ScreenScrollView({
   const composedHandler = useComposedEventHandler(handlers);
 
   const margin = theme.layout.screen.margin;
-  const marginsEnabled = margins ?? screenMargins;
+  const marginsEnabled = hasMargins ?? screenMargins;
   const compactHeaderHeight = hasHeader ? top + theme.layout.header.height : 0;
-  const { contentPadding, portalSpacing } = resolveScreenContentInsets(
+  const { contentPadding } = resolveScreenContentInsets(
     margin,
     marginsEnabled,
     bottomInset,
@@ -104,19 +105,20 @@ export function ScreenScrollView({
     <Animated.ScrollView
       ref={scrollRef}
       style={style}
-      contentContainerStyle={[contentPadding, contentContainerStyle]}
+      horizontal={horizontal}
       showsVerticalScrollIndicator={false}
       scrollEventThrottle={16}
+      contentContainerStyle={contentPadding}
       snapToOffsets={headerSnapOffsets}
       {...rest}
       onScroll={composedHandler}
     >
-      <View
-        style={portalSpacing > 0 ? { marginBottom: portalSpacing } : undefined}
-      >
+      <View>
         <PortalHost />
       </View>
-      {children}
+      <View style={[contentContainerStyle, { flexDirection: horizontal ? 'row' : 'column' }]}>{/* content spacing */}
+        {children}
+      </View>
     </Animated.ScrollView>
   );
 }

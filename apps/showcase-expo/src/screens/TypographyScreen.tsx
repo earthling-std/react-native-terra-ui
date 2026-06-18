@@ -64,7 +64,6 @@ function VariantCatalogPage(props: { width: number }) {
       style={{
         flex: 1,
         width,
-        justifyContent: 'center',
         alignItems: 'center',
         paddingVertical: 32,
       }}

@@ -25,7 +25,7 @@ export function GalleryScreen() {
           titleAlignment="left"
         />
       </Screen.Header>
-      <Screen.ScrollView bottomInset={32} contentContainerStyle={{ gap: 32 }}>
+      <Screen.ScrollView>
         <ThemeConfigSection />
 
         <VStack gap="2">
