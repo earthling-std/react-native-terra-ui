@@ -24,6 +24,8 @@ export interface ScreenContextValue {
    * Overridable per `Screen.ScrollView` / `Screen.FlatList`.
    */
   margins: boolean;
+  /** Whether a `Screen.Header` is present. Used by scroll containers to add top inset. */
+  hasHeader: boolean;
   /**
    * Live vertical scroll offset of the screen's scroll container, driven by
    * `Screen.ScrollView` / `Screen.FlatList`. Headers (and consumer UI) read it
@@ -61,6 +63,8 @@ export interface ScreenScrollProviderProps {
   isInTabView: boolean;
   /** Apply `layout.screen.margin` to scroll containers. Default true. */
   margins?: boolean;
+  /** Whether a `Screen.Header` child is present. Default false. */
+  hasHeader?: boolean;
 }
 
 /**
@@ -72,6 +76,7 @@ export function ScreenScrollProvider({
   children,
   isInTabView,
   margins = true,
+  hasHeader = false,
 }: ScreenScrollProviderProps) {
   const scrollY = useSharedValue(0);
   const headerCollapseHeight = useSharedValue(0);
@@ -96,6 +101,7 @@ export function ScreenScrollProvider({
   const value = useMemo<ScreenContextValue>(
     () => ({
       margins,
+      hasHeader,
       scrollY,
       headerCollapseHeight,
       headerSnapOffsets,
@@ -106,6 +112,7 @@ export function ScreenScrollProvider({
     }),
     [
       margins,
+      hasHeader,
       scrollY,
       headerCollapseHeight,
       headerSnapOffsets,

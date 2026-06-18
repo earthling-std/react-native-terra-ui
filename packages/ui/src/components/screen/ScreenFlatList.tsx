@@ -16,6 +16,7 @@ import Animated, {
   useAnimatedScrollHandler,
   useComposedEventHandler,
 } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useUnistyles } from 'react-native-unistyles';
 
 import { PortalHost } from '../portal';
@@ -65,19 +66,23 @@ export function ScreenFlatList<T>({
   ...rest
 }: ScreenFlatListProps<T>) {
   const { theme } = useUnistyles();
+  const { top } = useSafeAreaInsets();
   const {
     scrollRef,
     scrollHandler,
     headerSnapOffsets,
     margins: screenMargins,
+    hasHeader,
   } = useScreen();
 
   const margin = theme.layout.screen.margin;
   const marginsEnabled = margins ?? screenMargins;
+  const compactHeaderHeight = hasHeader ? top + theme.layout.header.height : 0;
   const { contentPadding, portalSpacing } = resolveScreenContentInsets(
     margin,
     marginsEnabled,
-    bottomInset
+    bottomInset,
+    compactHeaderHeight
   );
 
   const jsScrollHandler = useAnimatedScrollHandler(

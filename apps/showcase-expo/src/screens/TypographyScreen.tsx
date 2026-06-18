@@ -281,7 +281,6 @@ export function TypographyScreen() {
     <Screen margins={false}>
       <Screen.Header>
         <Header.Title
-          bg="transparent"
           dismissAction="back"
           onDismiss={() => router.back()}
           title="Typography"

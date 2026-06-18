@@ -1,7 +1,13 @@
-import type { ReactNode } from 'react';
+import { type ReactNode, useId } from 'react';
 import { Text, View } from 'react-native';
 
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Svg, {
+  Defs,
+  Rect,
+  Stop,
+  LinearGradient as SvgLinearGradient,
+} from 'react-native-svg';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 import type { ColorToken } from '#theme/types';
@@ -48,8 +54,11 @@ export function TitleHeader({
   bg = 'surface.base',
 }: TitleHeaderProps) {
   const { theme } = useUnistyles();
-  const backgroundColor =
-    resolveThemeColor(bg, theme) ?? theme.color.surface.base;
+  const { top } = useSafeAreaInsets();
+  const gradientId = useId();
+  const bgColor = resolveThemeColor(bg, theme) ?? theme.color.surface.base;
+  const isTransparent = bgColor === 'transparent';
+  const gradientColor = isTransparent ? theme.color.background : bgColor;
 
   styles.useVariants({ titleAlignment });
 
@@ -80,26 +89,49 @@ export function TitleHeader({
     ) : (
       RightComponent
     );
-
   return (
-    <SafeAreaView
-      edges={['top']}
-      style={[styles.safeArea, { backgroundColor }]}
-    >
+    <View style={styles.safeArea}>
+      <View
+        style={{
+          height: top,
+        }}
+      />
       <View style={styles.bar}>
+        <View style={styles.gradient} pointerEvents="none">
+          <Svg height="100%" width="100%">
+            <Defs>
+              <SvgLinearGradient id={gradientId} x1="0" y1="0.4" x2="0" y2="1">
+                <Stop offset="0" stopColor={gradientColor} stopOpacity="0.9" />
+                <Stop offset="1" stopColor={gradientColor} stopOpacity="0.2" />
+              </SvgLinearGradient>
+            </Defs>
+            <Rect width="100%" height="100%" fill={`url(#${gradientId})`} />
+          </Svg>
+        </View>
         {leading != null && <View style={styles.slot}>{leading}</View>}
         <View style={styles.titleContainer} pointerEvents="none">
           {!!title && <Text style={styles.title}>{title}</Text>}
         </View>
         {trailing != null && <View style={styles.slotEnd}>{trailing}</View>}
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create((theme) => ({
   safeArea: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
     zIndex: 1000,
+  },
+  gradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   bar: {
     height: theme.layout.header.height,

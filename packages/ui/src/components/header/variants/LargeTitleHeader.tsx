@@ -3,11 +3,16 @@ import { type LayoutChangeEvent, Text, View } from 'react-native';
 
 import Animated, {
   interpolate,
-  interpolateColor,
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Svg, {
+  Defs,
+  Rect,
+  Stop,
+  LinearGradient as SvgLinearGradient,
+} from 'react-native-svg';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 import { resolveThemeColor } from '#utils/resolve-theme-color';
@@ -19,7 +24,6 @@ import { HeaderDismissButton } from '../header-buttons';
 import type { TitleHeaderProps } from './TitleHeader';
 
 const AnimatedText = Animated.createAnimatedComponent(Text);
-const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
 
 /** Compact title offset (px) when the large title is fully expanded. */
 const COMPACT_TITLE_SLIDE_OFFSET = 8;
@@ -120,8 +124,12 @@ export function LargeTitleHeader({
   bg = 'surface.base',
 }: LargeTitleHeaderProps) {
   const { theme } = useUnistyles();
+  const { top } = useSafeAreaInsets();
+  const gradientId = useId();
   const inScreenHeader = useContext(ScreenHeaderSlotContext);
-  const surfaceBase = resolveThemeColor(bg, theme) ?? theme.color.surface.base;
+  const bgColor = resolveThemeColor(bg, theme) ?? theme.color.surface.base;
+  const isTransparent = bgColor === 'transparent';
+  const gradientColor = isTransparent ? theme.color.background : bgColor;
   const { scrollY, headerCollapseHeight, setHeaderCollapseHeight } =
     useScreen();
   const { registerContent, unregisterContent } = usePortal();
@@ -145,23 +153,17 @@ export function LargeTitleHeader({
     [setHeaderCollapseHeight]
   );
 
-  const headerBackgroundStyle = useAnimatedStyle(() => {
+  // Animate the gradient overlay's opacity: 0 (expanded) → 1 (collapsed).
+  const gradientOpacityStyle = useAnimatedStyle(() => {
     if (isLargeTitleHiddenValue.value) {
-      return { backgroundColor: surfaceBase };
+      return { opacity: 1 };
     }
-
     const height = headerCollapseHeight.value;
     if (height <= 0) {
-      return { backgroundColor: 'transparent' };
+      return { opacity: 0 };
     }
-
-    const progress = interpolate(scrollY.value, [0, height], [0, 1], 'clamp');
     return {
-      backgroundColor: interpolateColor(
-        progress,
-        [0, 1],
-        ['transparent', surfaceBase]
-      ),
+      opacity: interpolate(scrollY.value, [0, height], [0, 1], 'clamp'),
     };
   });
 
@@ -256,11 +258,32 @@ export function LargeTitleHeader({
     );
 
   return (
-    <AnimatedSafeAreaView
-      edges={['top']}
-      style={[styles.safeArea, headerBackgroundStyle]}
-    >
+    <View style={styles.safeArea}>
+      {isTransparent ? (
+        <Animated.View
+          style={[
+            { height: top, backgroundColor: theme.color.background },
+            gradientOpacityStyle,
+          ]}
+        />
+      ) : (
+        <View style={{ height: top, backgroundColor: bgColor }} />
+      )}
       <View style={styles.bar}>
+        <Animated.View
+          style={[styles.gradient, gradientOpacityStyle]}
+          pointerEvents="none"
+        >
+          <Svg height="100%" width="100%">
+            <Defs>
+              <SvgLinearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+                <Stop offset="0" stopColor={gradientColor} stopOpacity="1" />
+                <Stop offset="1" stopColor={gradientColor} stopOpacity="0" />
+              </SvgLinearGradient>
+            </Defs>
+            <Rect width="100%" height="100%" fill={`url(#${gradientId})`} />
+          </Svg>
+        </Animated.View>
         {leading != null && <View style={styles.slot}>{leading}</View>}
         <Animated.View
           style={[styles.titleContainer, compactTitleAnimatedStyle]}
@@ -277,13 +300,24 @@ export function LargeTitleHeader({
         </Animated.View>
         {trailing != null && <View style={styles.slotEnd}>{trailing}</View>}
       </View>
-    </AnimatedSafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create((theme) => ({
   safeArea: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
     zIndex: 1000,
+  },
+  gradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   bar: {
     height: theme.layout.header.height,

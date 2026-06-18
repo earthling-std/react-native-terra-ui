@@ -11,6 +11,7 @@ import Animated, {
   useAnimatedScrollHandler,
   useComposedEventHandler,
 } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useUnistyles } from 'react-native-unistyles';
 
 import { PortalHost } from '../portal';
@@ -60,11 +61,13 @@ export function ScreenScrollView({
   ...rest
 }: ScreenScrollViewProps) {
   const { theme } = useUnistyles();
+  const { top } = useSafeAreaInsets();
   const {
     scrollRef,
     scrollHandler: screenScrollHandler,
     headerSnapOffsets,
     margins: screenMargins,
+    hasHeader,
   } = useScreen();
 
   const jsScrollHandler = useAnimatedScrollHandler(
@@ -89,10 +92,12 @@ export function ScreenScrollView({
 
   const margin = theme.layout.screen.margin;
   const marginsEnabled = margins ?? screenMargins;
+  const compactHeaderHeight = hasHeader ? top + theme.layout.header.height : 0;
   const { contentPadding, portalSpacing } = resolveScreenContentInsets(
     margin,
     marginsEnabled,
-    bottomInset
+    bottomInset,
+    compactHeaderHeight
   );
 
   return (
