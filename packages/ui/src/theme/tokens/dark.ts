@@ -7,26 +7,26 @@
  */
 export const dark = {
   // ── color: layout surfaces ────────────────────────────────────────────────
-  'color.background': '#0f172b',
-  'color.surface.base': '#1d293d',
-  'color.surface.raised': '#314158',
-  'color.surface.sunken': '#020618',
-  'color.surface.overlay': 'rgba(0, 0, 0, 0.6)',
+  'color.background': '#09090b',
+  'color.surface.base': '#18181b',
+  'color.surface.raised': '#27272a',
+  'color.surface.sunken': '#000000',
+  'color.surface.overlay': 'rgba(0, 0, 0, 0.72)',
 
   // ── color: content (text/icons) ───────────────────────────────────────────
-  'color.content.primary': '#f8fafc',
-  'color.content.secondary': '#cad5e2',
-  'color.content.tertiary': '#90a1b9',
-  'color.content.disabled': '#45556c',
-  'color.content.inverse': '#020618',
+  'color.content.primary': '#fafafa',
+  'color.content.secondary': '#a1a1aa',
+  'color.content.tertiary': '#71717a',
+  'color.content.disabled': '#3f3f46',
+  'color.content.inverse': '#09090b',
   'color.content.link': '#8ec5ff',
   'color.content.accent': '#00d492',
-  'color.content.onAccent': '#020618',
+  'color.content.onAccent': '#09090b',
 
   // ── color: borders ────────────────────────────────────────────────────────
-  'color.border.default': '#314158',
-  'color.border.subtle': '#1d293d',
-  'color.border.strong': '#45556c',
+  'color.border.default': '#3f3f46',
+  'color.border.subtle': '#27272a',
+  'color.border.strong': '#52525b',
   'color.border.focus': '#51a2ff',
 
   // ── color: interactive actions ────────────────────────────────────────────
@@ -39,11 +39,11 @@ export const dark = {
   'color.action.secondary.fg': '#5ee9b5',
   'color.action.secondary.hover': '#004f3b',
   'color.action.secondary.active': '#006045',
-  'color.action.secondary.disabled': '#1d293d',
+  'color.action.secondary.disabled': '#18181b',
   'color.action.neutral.bg': 'transparent',
-  'color.action.neutral.fg': '#cad5e2',
-  'color.action.neutral.hover': '#1d293d',
-  'color.action.neutral.active': '#314158',
+  'color.action.neutral.fg': '#a1a1aa',
+  'color.action.neutral.hover': '#27272a',
+  'color.action.neutral.active': '#3f3f46',
   'color.action.neutral.disabled': 'transparent',
 
   // ── color: feedback status ────────────────────────────────────────────────

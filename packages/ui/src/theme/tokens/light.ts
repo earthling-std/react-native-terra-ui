@@ -7,26 +7,26 @@
  */
 export const light = {
   // ── color: layout surfaces ────────────────────────────────────────────────
-  'color.background': '#f1f5f9',
+  'color.background': '#f9f9fb',
   'color.surface.base': '#ffffff',
   'color.surface.raised': '#ffffff',
-  'color.surface.sunken': '#f1f5f9',
-  'color.surface.overlay': 'rgba(2, 6, 24, 0.45)',
+  'color.surface.sunken': '#f4f4f5',
+  'color.surface.overlay': 'rgba(9, 9, 11, 0.48)',
 
   // ── color: content (text/icons) ───────────────────────────────────────────
-  'color.content.primary': '#020618',
-  'color.content.secondary': '#45556c',
-  'color.content.tertiary': '#62748e',
-  'color.content.disabled': '#90a1b9',
+  'color.content.primary': '#09090b',
+  'color.content.secondary': '#4b5060',
+  'color.content.tertiary': '#6b7280',
+  'color.content.disabled': '#9ca3af',
   'color.content.inverse': '#ffffff',
   'color.content.link': '#155dfc',
   'color.content.accent': '#009966',
   'color.content.onAccent': '#ffffff',
 
   // ── color: borders ────────────────────────────────────────────────────────
-  'color.border.default': '#e2e8f0',
-  'color.border.subtle': '#f1f5f9',
-  'color.border.strong': '#cad5e2',
+  'color.border.default': '#e4e4e7',
+  'color.border.subtle': '#f4f4f5',
+  'color.border.strong': '#d1d5db',
   'color.border.focus': '#2b7fff',
 
   // ── color: interactive actions ────────────────────────────────────────────

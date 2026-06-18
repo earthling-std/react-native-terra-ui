@@ -66,6 +66,7 @@ export const useButtonContext = (): ButtonContextValue =>
 interface ButtonColors {
   bg: string;
   border: string;
+  borderWidth: number;
   fg: string;
 }
 
@@ -73,33 +74,17 @@ function getColors(variant: ButtonVariant, theme: TerraTheme): ButtonColors {
   const { action, status, border, content } = theme.color;
   switch (variant) {
     case 'primary':
-      return {
-        bg: action.primary.bg,
-        border: action.primary.bg,
-        fg: action.primary.fg,
-      };
+      return { bg: action.primary.bg, border: action.primary.bg, borderWidth: 0, fg: action.primary.fg };
     case 'secondary':
-      return {
-        bg: action.secondary.bg,
-        border: action.secondary.bg,
-        fg: action.secondary.fg,
-      };
+      return { bg: action.secondary.bg, border: action.secondary.bg, borderWidth: 0, fg: action.secondary.fg };
     case 'neutral':
-      return {
-        bg: action.neutral.hover,
-        border: action.neutral.hover,
-        fg: action.neutral.fg,
-      };
+      return { bg: action.neutral.hover, border: action.neutral.hover, borderWidth: 0, fg: action.neutral.fg };
     case 'outline':
-      return { bg: 'transparent', border: border.default, fg: content.primary };
+      return { bg: 'transparent', border: border.default, borderWidth: 1, fg: content.primary };
     case 'ghost':
-      return { bg: 'transparent', border: 'transparent', fg: content.primary };
+      return { bg: 'transparent', border: 'transparent', borderWidth: 0, fg: content.primary };
     case 'danger':
-      return {
-        bg: status.danger.solid,
-        border: status.danger.solid,
-        fg: status.danger.onSolid,
-      };
+      return { bg: status.danger.solid, border: status.danger.solid, borderWidth: 0, fg: status.danger.onSolid };
   }
 }
 
@@ -199,7 +184,7 @@ const ButtonRoot = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
     const { theme } = useUnistyles();
     styles.useVariants({ size, radius, fullWidth, iconOnly: isIconOnly });
 
-    const { bg, border, fg } = getColors(variant, theme);
+    const { bg, border, borderWidth, fg } = getColors(variant, theme);
     const blocked = isDisabled || isLoading;
     const { style: externalStyle, ...pressableRest } = rest as typeof rest & {
       style?: PressableProps['style'];
@@ -216,7 +201,7 @@ const ButtonRoot = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
           {...pressableRest}
           style={(state) => [
             styles.base,
-            { backgroundColor: bg, borderColor: border },
+            { backgroundColor: bg, borderColor: border, borderWidth },
             state.pressed && !blocked
               ? { opacity: theme.opacity.pressed }
               : null,
@@ -253,7 +238,6 @@ const styles = StyleSheet.create((theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1.5,
     alignSelf: 'flex-start',
     variants: {
       size: {
