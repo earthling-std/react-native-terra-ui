@@ -17,6 +17,12 @@ describe('resolveThemeColor', () => {
     );
   });
 
+  it('resolves status group shorthand to solid', () => {
+    expect(resolveThemeColor('status.danger', defaultLightTheme)).toBe(
+      defaultLightTheme.color.status.danger.solid
+    );
+  });
+
   it('returns undefined for unknown tokens', () => {
     expect(resolveThemeColor('content.missing', defaultLightTheme)).toBe(
       undefined

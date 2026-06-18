@@ -36,5 +36,11 @@ export function resolveThemeColor(
   if (!token) return undefined;
   if (isColorLiteral(token)) return token;
   const value = getNested(theme.color, token);
-  return typeof value === 'string' ? value : undefined;
+  if (typeof value === 'string') return value;
+  // Status group shorthand (e.g. `status.danger`) resolves to `.solid`.
+  if (value && typeof value === 'object' && 'solid' in value) {
+    const solid = (value as { solid: unknown }).solid;
+    return typeof solid === 'string' ? solid : undefined;
+  }
+  return undefined;
 }

@@ -10,7 +10,7 @@ export const dark = {
   'color.background': '#09090b',
   'color.surface.base': '#18181b',
   'color.surface.raised': '#27272a',
-  'color.surface.sunken': '#000000',
+  'color.surface.sunken': '#050506',
   'color.surface.overlay': 'rgba(0, 0, 0, 0.72)',
 
   // ── color: content (text/icons) ───────────────────────────────────────────

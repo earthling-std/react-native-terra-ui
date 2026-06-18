@@ -27,7 +27,7 @@ export function SurfaceScreen() {
     >
       <DemoSection
         title="variant"
-        description='Background surface level. Defaults to "base".'
+        description='Background surface level. In light mode base and raised share the same fill — raised adds a hairline border and defaults to elevation "sm". In dark mode raised is a step lighter than base.'
       >
         <PropDemoGroup>
           {SURFACE_VARIANTS.map((variant) => (
@@ -101,6 +101,11 @@ export function SurfaceScreen() {
           <PropDemo code='variant="base"'>
             <Surface variant="base" p="4">
               <Text variant="label-md">Outer base</Text>
+            </Surface>
+          </PropDemo>
+          <PropDemo code='variant="raised"'>
+            <Surface variant="raised" p="4">
+              <Text variant="label-md">Raised (default sm elevation)</Text>
             </Surface>
           </PropDemo>
           <PropDemo code='variant="raised" elevation="md"'>

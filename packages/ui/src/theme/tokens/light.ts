@@ -10,7 +10,7 @@ export const light = {
   'color.background': '#f9f9fb',
   'color.surface.base': '#ffffff',
   'color.surface.raised': '#ffffff',
-  'color.surface.sunken': '#f4f4f5',
+  'color.surface.sunken': '#ececee',
   'color.surface.overlay': 'rgba(9, 9, 11, 0.48)',
 
   // ── color: content (text/icons) ───────────────────────────────────────────
@@ -25,7 +25,7 @@ export const light = {
 
   // ── color: borders ────────────────────────────────────────────────────────
   'color.border.default': '#e4e4e7',
-  'color.border.subtle': '#f4f4f5',
+  'color.border.subtle': '#ebebed',
   'color.border.strong': '#d1d5db',
   'color.border.focus': '#2b7fff',
 
@@ -76,14 +76,14 @@ export const light = {
   'elevation.none.shadowOffset.height': 0,
   'elevation.none.elevation': 0,
   'elevation.sm.shadowColor': '#000000',
-  'elevation.sm.shadowOpacity': 0.08,
-  'elevation.sm.shadowRadius': 2,
+  'elevation.sm.shadowOpacity': 0.1,
+  'elevation.sm.shadowRadius': 3,
   'elevation.sm.shadowOffset.width': 0,
   'elevation.sm.shadowOffset.height': 1,
   'elevation.sm.elevation': 1,
   'elevation.md.shadowColor': '#000000',
-  'elevation.md.shadowOpacity': 0.1,
-  'elevation.md.shadowRadius': 6,
+  'elevation.md.shadowOpacity': 0.12,
+  'elevation.md.shadowRadius': 8,
   'elevation.md.shadowOffset.width': 0,
   'elevation.md.shadowOffset.height': 2,
   'elevation.md.elevation': 3,
