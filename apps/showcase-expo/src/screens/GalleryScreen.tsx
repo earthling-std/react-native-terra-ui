@@ -10,7 +10,7 @@ const COMPONENTS = [
   { href: '/button', label: 'Button' },
   { href: '/icon', label: 'Icon' },
   { href: '/spinner', label: 'Spinner' },
-  { href: '/page-indicator', label: 'PageIndicator' },
+  { href: '/page-indicator', label: 'Page Indicator' },
   { href: '/portal', label: 'Portal' },
   { href: '/screen', label: 'Screen' },
 ] as const;

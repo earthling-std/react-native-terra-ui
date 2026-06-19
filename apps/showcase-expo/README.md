@@ -44,5 +44,11 @@ On a device or CI, build a dev client with EAS instead (`eas build --profile dev
   demonstrating runtime accent + radius switching.
 - **Typography** — representative `Text` variants.
 - **Buttons** — variants, sizes, and loading/disabled/full-width states.
-- **Icon / Spinner / PageIndicator / Portal** — semantic icons, loading states, pager indicators, portal API.
+- **Icon / Spinner / Page Indicator / Portal** — semantic icons, loading states, pager indicators, portal API.
 - **Layout** — `Box`/`Stack` surfaces and an `asChild` → `Pressable` example.
+
+## Agent skills
+
+Paged showcase screens follow a shared pattern (`Screen` + horizontal swipe + `Pager` footer). To add or migrate a component screen, use the **`terra-ui-showcase`** skill.
+
+Skills live in `.agents/skills/`; `.cursor/skills/` contains symlinks to the same folders (edit the `.agents/skills/` copy only).
