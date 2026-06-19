@@ -45,12 +45,23 @@ const PathIcon = ({ d, ...props }: TerraIconProps & { d: string }) => {
   );
 };
 
+// Lucide chevron geometry scaled 20% from the 24×24 viewBox center (45° arms unchanged).
+const NAV_CENTER = 12;
+const NAV_CHEVRON_OPEN = 3 * 1.2;
+const NAV_CHEVRON_ARM = 6 * 1.2;
+
 const BackIcon: TerraIconComponent = (props) => (
-  <PathIcon d="M15 18l-6-6 6-6" {...props} />
+  <PathIcon
+    d={`M${NAV_CENTER + NAV_CHEVRON_OPEN} ${NAV_CENTER + NAV_CHEVRON_ARM}L${NAV_CENTER - NAV_CHEVRON_OPEN} ${NAV_CENTER} ${NAV_CENTER + NAV_CHEVRON_OPEN} ${NAV_CENTER - NAV_CHEVRON_ARM}`}
+    {...props}
+  />
 );
 
 const ForwardIcon: TerraIconComponent = (props) => (
-  <PathIcon d="M9 18l6-6-6-6" {...props} />
+  <PathIcon
+    d={`M${NAV_CENTER - NAV_CHEVRON_OPEN} ${NAV_CENTER + NAV_CHEVRON_ARM}L${NAV_CENTER + NAV_CHEVRON_OPEN} ${NAV_CENTER} ${NAV_CENTER - NAV_CHEVRON_OPEN} ${NAV_CENTER - NAV_CHEVRON_ARM}`}
+    {...props}
+  />
 );
 
 const CloseIcon: TerraIconComponent = (props) => (
