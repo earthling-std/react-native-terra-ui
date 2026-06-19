@@ -1,82 +1,105 @@
-import { useMemo } from 'react';
-import { type StyleProp, View, type ViewStyle } from 'react-native';
+import { type StyleProp, type ViewStyle } from 'react-native';
 
 import type { SharedValue } from 'react-native-reanimated';
-import { useUnistyles } from 'react-native-unistyles';
 
-import { resolveThemeColor } from '#utils/resolve-theme-color';
+import type { ColorToken } from '#theme/types';
 
-import {
-  type PageIndicatorColors,
-  type PageIndicatorConfig,
-  resolvePageIndicatorConfig,
-} from './utils';
 import { DotIndicator } from './variants/DotIndicator';
 import { PillIndicator } from './variants/PillIndicator';
+import { DEFAULT_PAGE_INDICATOR_WINDOW_SIZE } from './window';
 
 export type PageIndicatorVariant = 'pill' | 'dot';
 
-export interface PageIndicatorProps extends PageIndicatorColors {
-  /** Indicator style. `pill` preserves the default active-pill animation. */
-  variant?: PageIndicatorVariant;
+type PageIndicatorCoreProps = {
   /** Number of pages represented by the indicator. */
   count: number;
-  /** Animated page progress, where `0` is page one and `1` is page two. */
-  progress: SharedValue<number>;
   /**
-   * External loading state. Only used when `variant="dot"` — renders a ring
-   * around the active dot. Ignored by the `pill` variant.
+   * Active page index, or a shared value for scroll-linked motion.
+   * Index `0` is the first page; fractional values animate between pages.
    */
-  isLoading?: boolean;
-
-  config?: Partial<PageIndicatorConfig>;
-
+  current?: number | SharedValue<number>;
+  /** Duration for discrete `current` changes. */
+  duration?: number;
+  /** Active page color token. */
+  activeColor?: ColorToken;
+  /** Inactive page color token. */
+  inactiveColor?: ColorToken;
+  /** Stack dots vertically instead of horizontally. */
+  vertical?: boolean;
+  /**
+   * Maximum dots visible before the track scrolls and edge-scales.
+   * Defaults to `5`. Windowing is off when `count <= windowSize`.
+   */
+  windowSize?: number;
   style?: StyleProp<ViewStyle>;
-}
+};
 
-export function PageIndicator({
-  count,
-  progress,
-  variant = 'pill',
-  isLoading = false,
-  activeColor = 'content.primary',
-  inactiveColor = 'content.disabled',
-  loadingColor = 'content.disabled',
-  style,
-  config,
-}: PageIndicatorProps) {
-  const { theme } = useUnistyles();
+/** Pill indicator — active page widens into a pill. Default when `variant` is omitted. */
+export type PageIndicatorPillProps = PageIndicatorCoreProps & {
+  variant?: 'pill';
+  loading?: never;
+  loadingColor?: never;
+};
 
-  // Top-level color props take precedence over the config's color tokens.
-  const colors = useMemo(() => {
-    return {
-      activeColor:
-        resolveThemeColor(activeColor, theme) ?? theme.color.content.primary,
-      inactiveColor:
-        resolveThemeColor(inactiveColor, theme) ?? theme.color.content.disabled,
-      loadingColor:
-        resolveThemeColor(loadingColor, theme) ?? theme.color.content.disabled,
-    };
-  }, [activeColor, inactiveColor, loadingColor, theme]);
+/** Dot indicator — traveling dot with optional loading ring on the active page. */
+export type PageIndicatorDotProps = PageIndicatorCoreProps & {
+  variant: 'dot';
+  /** Loading ring color token. */
+  loadingColor?: ColorToken;
+  /** Renders a ring around the active dot while loading. */
+  loading?: boolean;
+};
+
+export type PageIndicatorProps =
+  | PageIndicatorPillProps
+  | PageIndicatorDotProps;
+
+export function PageIndicator(props: PageIndicatorProps) {
+  const {
+    count,
+    current,
+    duration,
+    activeColor,
+    inactiveColor,
+    vertical,
+    windowSize = DEFAULT_PAGE_INDICATOR_WINDOW_SIZE,
+    style,
+  } = props;
+
+  if (props.variant === 'dot') {
+    const { loadingColor, loading } = props;
+
+    return (
+      <DotIndicator
+        count={count}
+        current={current}
+        duration={duration}
+        activeColor={activeColor}
+        inactiveColor={inactiveColor}
+        loadingColor={loadingColor}
+        loading={loading}
+        vertical={vertical}
+        windowSize={windowSize}
+        style={style}
+      />
+    );
+  }
 
   return (
-    <View pointerEvents="none" style={style}>
-      {variant === 'dot' ? (
-        <DotIndicator
-          config={resolvePageIndicatorConfig(config)}
-          colors={colors}
-          count={count}
-          isLoading={isLoading}
-          progress={progress}
-        />
-      ) : (
-        <PillIndicator
-          config={resolvePageIndicatorConfig(config)}
-          colors={colors}
-          count={count}
-          progress={progress}
-        />
-      )}
-    </View>
+    <PillIndicator
+      count={count}
+      current={current}
+      duration={duration}
+      activeColor={activeColor}
+      inactiveColor={inactiveColor}
+      vertical={vertical}
+      windowSize={windowSize}
+      style={style}
+    />
   );
 }
+
+export type { DotIndicatorProps } from './variants/DotIndicator';
+export { DotIndicator } from './variants/DotIndicator';
+export type { PillIndicatorProps } from './variants/PillIndicator';
+export { PillIndicator } from './variants/PillIndicator';

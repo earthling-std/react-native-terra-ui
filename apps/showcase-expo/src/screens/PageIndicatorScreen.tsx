@@ -6,6 +6,7 @@ import {
   useSharedValue,
 } from 'react-native-reanimated';
 import {
+  Box,
   Header,
   HStack,
   PageIndicator,
@@ -16,10 +17,14 @@ import {
 
 import { Pager } from '../components/Pager';
 
-const PAGE_COUNT = 4;
-const PAGES = ['Page 1', 'Page 2', 'Page 3', 'Page 4'] as const;
+const PAGES = ['1', '2', '3', '4', '5'] as const;
+const PAGE_TITLES = ['Pill', 'Dot', 'Colors', 'Many'];
 
-const PAGE_TITLES = ['Pill', 'Dot', 'Colors'];
+const MANY_PAGE_COUNT = 10;
+const MANY_PAGES = Array.from(
+  { length: MANY_PAGE_COUNT },
+  (_, index) => `${index + 1}`
+);
 
 function pageStyle(width: number) {
   return {
@@ -31,14 +36,16 @@ function pageStyle(width: number) {
 }
 
 function PageControls(props: {
+  direction?: 'row' | 'column';
+  pages: readonly string[];
   activeIndex: number;
   onSelect: (index: number) => void;
 }) {
-  const { activeIndex, onSelect } = props;
+  const { pages, activeIndex, onSelect, direction = 'row' } = props;
 
   return (
-    <HStack gap="2">
-      {PAGES.map((label, index) => (
+    <Box gap="2" wrap direction={direction}>
+      {pages.map((label, index) => (
         <Pressable key={label} onPress={() => onSelect(index)}>
           <Text
             variant="label-sm"
@@ -46,29 +53,35 @@ function PageControls(props: {
               index === activeIndex ? 'content.primary' : 'content.tertiary'
             }
           >
-            {label}
+            Page {label}
           </Text>
         </Pressable>
       ))}
-    </HStack>
+    </Box>
   );
 }
 
 function PillPage(props: { width: number }) {
   const { width } = props;
   const [activeIndex, setActiveIndex] = useState(0);
-  const progress = useSharedValue(0);
-
-  const goToPage = (index: number) => {
-    setActiveIndex(index);
-    progress.value = index;
-  };
 
   return (
     <View style={pageStyle(width)}>
       <VStack gap="4" align="center">
-        <PageIndicator count={PAGE_COUNT} progress={progress} variant="pill" />
-        <PageControls activeIndex={activeIndex} onSelect={goToPage} />
+        <HStack gap="6" align="center">
+          <PageIndicator count={PAGES.length} current={activeIndex} variant="pill" />
+          <PageIndicator
+            count={PAGES.length}
+            current={activeIndex}
+            variant="pill"
+            vertical
+          />
+        </HStack>
+        <PageControls
+          pages={PAGES}
+          activeIndex={activeIndex}
+          onSelect={setActiveIndex}
+        />
       </VStack>
     </View>
   );
@@ -77,27 +90,35 @@ function PillPage(props: { width: number }) {
 function DotPage(props: { width: number }) {
   const { width } = props;
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const progress = useSharedValue(0);
-
-  const goToPage = (index: number) => {
-    setActiveIndex(index);
-    progress.value = index;
-  };
+  const [loading, setLoading] = useState(false);
 
   return (
     <View style={pageStyle(width)}>
       <VStack gap="4" align="center">
-        <PageIndicator
-          count={PAGE_COUNT}
-          progress={progress}
-          variant="dot"
-          isLoading={isLoading}
+        <VStack gap="6" align="center">
+          <PageIndicator
+            count={PAGES.length}
+            current={activeIndex}
+            variant="dot"
+            loading={loading}
+          />
+          <PageIndicator
+            count={PAGES.length}
+            current={activeIndex}
+            variant="dot"
+            loading={loading}
+            vertical
+          />
+        </VStack>
+        <PageControls
+          
+          pages={PAGES}
+          activeIndex={activeIndex}
+          onSelect={setActiveIndex}
         />
-        <PageControls activeIndex={activeIndex} onSelect={goToPage} />
-        <Pressable onPress={() => setIsLoading((value) => !value)}>
+        <Pressable onPress={() => setLoading((value) => !value)}>
           <Text variant="label-sm" color="content.accent">
-            {isLoading ? 'Stop loading' : 'Toggle loading'}
+            {loading ? 'Stop loading' : 'Toggle loading'}
           </Text>
         </Pressable>
       </VStack>
@@ -108,26 +129,27 @@ function DotPage(props: { width: number }) {
 function ColorsPage(props: { width: number }) {
   const { width } = props;
   const [activeIndex, setActiveIndex] = useState(0);
-  const progress = useSharedValue(0);
-
-  const goToPage = (index: number) => {
-    setActiveIndex(index);
-    progress.value = index;
-  };
 
   return (
     <View style={pageStyle(width)}>
       <VStack gap="4" align="center">
         <PageIndicator
           count={3}
-          progress={progress}
+          current={activeIndex}
           variant="pill"
+          activeColor="content.accent"
+          inactiveColor="content.tertiary"
+        />
+        <PageIndicator
+          count={3}
+          current={activeIndex}
+          variant="dot"
           activeColor="content.accent"
           inactiveColor="content.tertiary"
         />
         <HStack gap="2">
           {['Page 1', 'Page 2', 'Page 3'].map((label, index) => (
-            <Pressable key={label} onPress={() => goToPage(index)}>
+            <Pressable key={label} onPress={() => setActiveIndex(index)}>
               <Text
                 variant="label-sm"
                 color={
@@ -139,6 +161,34 @@ function ColorsPage(props: { width: number }) {
             </Pressable>
           ))}
         </HStack>
+      </VStack>
+    </View>
+  );
+}
+
+function ManyPage(props: { width: number }) {
+  const { width } = props;
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  return (
+    <View style={pageStyle(width)}>
+      <VStack gap="4" align="center">
+        <PageIndicator
+          count={MANY_PAGE_COUNT}
+          current={activeIndex}
+          variant="pill"
+        />
+        <PageIndicator
+          count={MANY_PAGE_COUNT}
+          current={activeIndex}
+          variant="dot"
+        />
+        <PageControls
+          direction="column"
+          pages={MANY_PAGES}
+          activeIndex={activeIndex}
+          onSelect={setActiveIndex}
+        />
       </VStack>
     </View>
   );
@@ -173,6 +223,7 @@ export function PageIndicatorScreen() {
         <PillPage width={width} />
         <DotPage width={width} />
         <ColorsPage width={width} />
+        <ManyPage width={width} />
       </Screen.ScrollView>
       <Pager titles={PAGE_TITLES} progress={pageProgress} />
     </Screen>

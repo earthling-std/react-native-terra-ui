@@ -23,7 +23,7 @@ Use the `/theme` entry for `configureTerraUI()` in your app entry file. See [doc
 | `Spinner` | Loading indicator |
 | `Screen` | Page shell with `Screen.Header`, `Screen.ScrollView`, `Screen.FlatList` |
 | `Header` | `Header.Title`, `Header.LargeTitle`, `HeaderDismissButton` navigation headers |
-| `PageIndicator` | Dot and pill pager indicators |
+| `PageIndicator` | Dot and pill pager indicators — see [page-indicator.md](../../docs/page-indicator.md) |
 | `PortalProvider`, `PortalHost`, `usePortal` | Portal rendering |
 | `Slot`, `composeRefs`, `mergeProps` | Composition primitives (advanced) |
 

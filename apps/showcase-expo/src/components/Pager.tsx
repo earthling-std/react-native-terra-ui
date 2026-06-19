@@ -18,7 +18,6 @@ import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 interface PagerProps {
   titles: string[];
   progress: SharedValue<number>;
-  isLoading?: boolean;
 }
 
 let pagerGradientInstance = 0;
@@ -48,7 +47,7 @@ function PagerTitle(props: {
   );
 }
 
-export function Pager({ titles, progress, isLoading }: PagerProps) {
+export function Pager({ titles, progress }: PagerProps) {
   const { bottom } = useSafeAreaInsets();
   const { theme } = useUnistyles();
   const gradientId = useRef(`pager-gradient-${++pagerGradientInstance}`).current;
@@ -88,9 +87,8 @@ export function Pager({ titles, progress, isLoading }: PagerProps) {
           <PageIndicator
             style={styles.page}
             count={titles.length}
-            progress={progress}
+            current={progress}
             variant="pill"
-            isLoading={isLoading}
           />
         </HStack>
       </View>

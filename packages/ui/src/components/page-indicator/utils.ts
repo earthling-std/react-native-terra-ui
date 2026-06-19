@@ -1,58 +1,43 @@
-import type { ColorToken } from '#theme/types';
+import type { SharedValue } from 'react-native-reanimated';
+
+/** Duration for a single-page `current` transition. */
+export const PAGE_INDICATOR_SINGLE_PAGE_DURATION = 420;
+
+/** Extra duration per additional page when jumping more than one step. */
+export const PAGE_INDICATOR_MULTI_PAGE_DURATION_STEP = 90;
+
+/** Upper bound for multi-page `current` transitions. */
+export const PAGE_INDICATOR_MULTI_PAGE_DURATION_MAX = 650;
+
+/** Absolute page delta between two indices. */
+export function pageIndicatorPageJumpDistance(
+  from: number,
+  to: number
+): number {
+  return Math.abs(to - from);
+}
 
 /**
- * Shared, reusable config for both `PageIndicator` variants — geometry and
- * color tokens in one object. Pass a partial override via the `config` prop;
- * anything omitted falls back to `defaultPageIndicatorConfig`. Define one object
- * and reuse it across instances. Top-level color props (`activeColor`, …) take
- * precedence over `config` when both are set.
+ * Scales transition time for discrete `current` changes. Single-step jumps stay
+ * snappy; longer jumps get more time (capped) so the pill does not blur
+ * through intermediate dots.
  */
-export interface PageIndicatorConfig {
-  /** Diameter of a resting dot (both variants). */
-  dotSize: number;
-  /** Gap between adjacent dots (both variants). */
-  gap: number;
-  /** Width of the active pill in the `pill` variant. */
-  activeWidth: number;
-  /** Opacity of inactive dots in the `pill` variant. */
-  inactiveOpacity: number;
-  /** Scale of inactive dots in the `pill` variant. */
-  inactiveScale: number;
-  /** Diameter of the loading ring in the `dot` variant. */
-  ringSize: number;
-  /** Stroke width of the loading ring in the `dot` variant. */
-  ringStroke: number;
+export function pageIndicatorPageJumpDuration(
+  from: number,
+  to: number
+): number {
+  const distance = pageIndicatorPageJumpDistance(from, to);
+  if (distance <= 1) return PAGE_INDICATOR_SINGLE_PAGE_DURATION;
+
+  return Math.min(
+    PAGE_INDICATOR_SINGLE_PAGE_DURATION +
+      PAGE_INDICATOR_MULTI_PAGE_DURATION_STEP * (distance - 1),
+    PAGE_INDICATOR_MULTI_PAGE_DURATION_MAX
+  );
 }
 
-export const defaultPageIndicatorConfig: PageIndicatorConfig = {
-  dotSize: 8,
-  gap: 8,
-  activeWidth: 24,
-  inactiveOpacity: 0.42,
-  inactiveScale: 0.8,
-  ringSize: 16,
-  ringStroke: 2,
-};
-
-export const resolvePageIndicatorConfig = (
-  config?: Partial<PageIndicatorConfig>
-): PageIndicatorConfig => {
-  return { ...defaultPageIndicatorConfig, ...config };
-};
-
-/** Color tokens for page indicator states. Top-level props on `PageIndicator`. */
-export interface PageIndicatorColors {
-  /** Active page color token. */
-  activeColor?: ColorToken;
-  /** Inactive page color token. */
-  inactiveColor?: ColorToken;
-  /** Loading ring color token (dot variant only). */
-  loadingColor?: ColorToken;
-}
-
-/** Resolved (theme-applied) colors passed down to the variant components. */
-export interface ResolvedColors {
-  activeColor: string;
-  inactiveColor: string;
-  loadingColor: string;
+export function isPageIndicatorSharedValue(
+  value: number | SharedValue<number>
+): value is SharedValue<number> {
+  return typeof value === 'object' && value !== null && 'value' in value;
 }

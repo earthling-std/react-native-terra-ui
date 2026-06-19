@@ -34,13 +34,21 @@ jest.mock('react-native-reanimated', () => {
     },
     useSharedValue: (initial: unknown) => ({ value: initial }),
     useAnimatedStyle: (fn: () => object) => fn(),
+    useAnimatedProps: (fn: () => object) => fn(),
     useAnimatedScrollHandler: () => () => undefined,
     useAnimatedRef: () => ({ current: null }),
+    useFrameCallback: () => ({ setActive: () => undefined }),
     interpolate: (value: number) => value,
     interpolateColor: () => '#000000',
+    Extrapolation: { CLAMP: 'clamp', EXTEND: 'extend', IDENTITY: 'identity' },
     withRepeat: (value: unknown) => value,
     withTiming: (value: unknown) => value,
-    Easing: { linear: (v: unknown) => v },
+    Easing: {
+      linear: (v: unknown) => v,
+      out: (fn: unknown) => fn,
+      cubic: (v: unknown) => v,
+      bezier: () => (v: unknown) => v,
+    },
     cancelAnimation: () => undefined,
   };
 });

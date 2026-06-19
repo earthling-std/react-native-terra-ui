@@ -108,7 +108,7 @@ Pick layouts that match the prop being demonstrated:
 | **Variant catalog** | `VStack gap="3"` or `gap="4"` — one sample per row |
 | **Full-width blocks** | `contentWidth = width - theme.layout.screen.margin.x * 2` on `VStack` |
 | **Inline / toolbar** | `HStack gap="2"` with `fullWidth={false}` on `Button` |
-| **Interactive** | Local `useState` + `useSharedValue` per page (don't share across swipe pages) |
+| **Interactive** | Local `useState` + `PageIndicator page={index}` per page (don't share across swipe pages) |
 
 ## Gallery registration
 
