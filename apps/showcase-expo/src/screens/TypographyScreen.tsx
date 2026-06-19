@@ -5,11 +5,11 @@ import {
   useSharedValue,
 } from 'react-native-reanimated';
 import {
+  Box,
   Header,
   Screen,
   Text,
   type TextVariant,
-  VStack,
 } from 'react-native-terra-ui';
 import { useUnistyles } from 'react-native-unistyles';
 import { Pager } from '../components/Pager';
@@ -68,13 +68,13 @@ function VariantCatalogPage(props: { width: number }) {
         paddingVertical: 32,
       }}
     >
-      <VStack gap="2" align="center">
+      <Box gap="2" align="center">
         {TEXT_VARIANTS.map((variant) => (
           <Text key={variant} variant={variant}>
             {variantLabel(variant)}
           </Text>
         ))}
-      </VStack>
+      </Box>
     </View>
   );
 }
@@ -90,23 +90,23 @@ function ArticleSamplePage(props: { width: number }) {
         paddingVertical: theme.layout.screen.margin.y,
       }}
     >
-      <VStack gap="4">
-        <VStack gap="1">
+      <Box gap="4">
+        <Box gap="1">
           <Text variant="label-sm" color="content.tertiary">
             MOBILE DESIGN
           </Text>
           <Text variant="h1">Reading on Small Screens</Text>
-          <VStack gap="1">
+          <Box gap="1">
             <Text variant="label-md" color="content.secondary">
               Mira Stone, Design Systems
             </Text>
             <Text variant="caption" color="content.tertiary">
               Published June 16, 2026 · 6 min read
             </Text>
-          </VStack>
-        </VStack>
+          </Box>
+        </Box>
 
-        <VStack gap="3">
+        <Box gap="3">
           <Text variant="h2">A page needs a visible outline</Text>
           <Text variant="body-md">
             Readers usually scan before they commit. A good article gives them a
@@ -118,7 +118,7 @@ function ArticleSamplePage(props: { width: number }) {
             few blocks at once, so each heading has to tell the reader what kind
             of content is coming next.
           </Text>
-        </VStack>
+        </Box>
 
         <View
           style={{
@@ -127,14 +127,14 @@ function ArticleSamplePage(props: { width: number }) {
             paddingLeft: 14,
           }}
         >
-          <VStack gap="2">
+          <Box gap="2">
             <Text variant="body-md">
               Structure is what lets the typography become quiet.
             </Text>
-          </VStack>
+          </Box>
         </View>
 
-        <VStack gap="3">
+        <Box gap="3">
           <Text variant="h2">What changes on mobile</Text>
           <Text variant="body-md">
             Desktop layouts can rely on columns, sidebars, and large visible
@@ -150,7 +150,7 @@ function ArticleSamplePage(props: { width: number }) {
               padding: 14,
             }}
           >
-            <VStack gap="2">
+            <Box gap="2">
               <Text variant="label-lg" color="content.secondary">
                 Editor's note
               </Text>
@@ -160,55 +160,55 @@ function ArticleSamplePage(props: { width: number }) {
                 featured number. Repeating it inside the body makes the article
                 feel fragmented.
               </Text>
-            </VStack>
+            </Box>
           </View>
 
-          <VStack gap="2">
+          <Box gap="2">
             <Text variant="h3">When hierarchy disappears</Text>
             <Text variant="body-md">
               If every heading has the same size and weight, readers have to
               infer structure from spacing alone. That slows scanning and makes
               long screens feel heavier than they are.
             </Text>
-          </VStack>
+          </Box>
 
-          <VStack gap="2">
+          <Box gap="2">
             <Text variant="h3">A better pattern</Text>
             <Text variant="body-md">
               Use headline styles for the article outline, title styles for
               local blocks, body styles for the argument, and labels for small
               signals like category, author, or status.
             </Text>
-          </VStack>
-        </VStack>
+          </Box>
+        </Box>
 
-        <VStack gap="3">
+        <Box gap="3">
           <Text variant="h2">Reading checklist</Text>
 
-          <VStack gap="1">
+          <Box gap="1">
             <Text variant="h3">1. Lead with meaning</Text>
             <Text variant="body-md">
               The title should name the subject plainly. Decorative language can
               come later, once the reader understands where they are.
             </Text>
-          </VStack>
+          </Box>
 
-          <VStack gap="2">
+          <Box gap="2">
             <Text variant="h3">2. Make sections obvious</Text>
             <Text variant="body-md">
               Each heading should announce a useful change: a new idea, a
               supporting example, a quote, a note, or a summary.
             </Text>
-          </VStack>
+          </Box>
 
-          <VStack gap="2">
+          <Box gap="2">
             <Text variant="h3">3. Keep support text supportive</Text>
             <Text variant="body-md">
               Metadata, notes, and captions should help the reader, not compete
               with the main paragraph.
             </Text>
-          </VStack>
-        </VStack>
+          </Box>
+        </Box>
 
         <View
           style={{
@@ -218,7 +218,7 @@ function ArticleSamplePage(props: { width: number }) {
             paddingVertical: 14,
           }}
         >
-          <VStack gap="3">
+          <Box gap="3">
             <Text variant="label-sm" color="content.tertiary">
               QUICK FACT
             </Text>
@@ -230,27 +230,27 @@ function ArticleSamplePage(props: { width: number }) {
               A primary heading, a local subheading, and paragraph text are
               usually enough for a readable mobile story.
             </Text>
-          </VStack>
+          </Box>
         </View>
 
-        <VStack gap="3">
+        <Box gap="3">
           <Text variant="headline-sm">Related reading</Text>
-          <VStack gap="1">
+          <Box gap="1">
             <Text variant="title-sm">Designing article previews</Text>
             <Text variant="body-sm" color="content.secondary">
               How summaries, labels, and thumbnails shape the first tap.
             </Text>
-          </VStack>
-          <VStack gap="1">
+          </Box>
+          <Box gap="1">
             <Text variant="title-sm">Choosing text styles for apps</Text>
             <Text variant="body-sm" color="content.secondary">
               A practical guide to display, headline, title, body, and label
               roles.
             </Text>
-          </VStack>
-        </VStack>
+          </Box>
+        </Box>
 
-        <VStack gap="2">
+        <Box gap="2">
           <Text variant="label-sm" color="content.tertiary">
             PHOTO CAPTION
           </Text>
@@ -260,8 +260,8 @@ function ArticleSamplePage(props: { width: number }) {
           <Text variant="caption" color="content.tertiary">
             Captions explain media without interrupting the article flow.
           </Text>
-        </VStack>
-      </VStack>
+        </Box>
+      </Box>
     </ScrollView>
   );
 }

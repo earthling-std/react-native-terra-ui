@@ -31,7 +31,7 @@ export interface PillIndicatorProps {
    * Index `0` is the first page; fractional values animate between pages.
    */
   current?: number | SharedValue<number>;
-  /** Duration for discrete `current` changes. Defaults to `420`. */
+  /** Duration for discrete `current` changes. Defaults to `600`. */
   duration?: number;
   /** Active page color token. */
   activeColor?: ColorToken;

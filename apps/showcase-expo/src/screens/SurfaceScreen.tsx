@@ -1,14 +1,21 @@
+import { router } from 'expo-router';
+import { useWindowDimensions, View } from 'react-native';
 import {
+  useAnimatedScrollHandler,
+  useSharedValue,
+} from 'react-native-reanimated';
+import {
+  Box,
   type ElevationKey,
+  Header,
+  Screen,
   Surface,
   type SurfaceVariant,
   Text,
-  VStack,
 } from 'react-native-terra-ui';
+import { useUnistyles } from 'react-native-unistyles';
 
-import { DemoSection } from '../components/DemoSection';
-import { PropDemo, PropDemoGroup } from '../components/PropDemo';
-import { ScreenShell } from '../components/ScreenShell';
+import { Pager } from '../components/Pager';
 
 const SURFACE_VARIANTS: SurfaceVariant[] = [
   'base',
@@ -19,107 +26,157 @@ const SURFACE_VARIANTS: SurfaceVariant[] = [
 
 const ELEVATIONS: ElevationKey[] = ['none', 'sm', 'md', 'lg', 'xl'];
 
-export function SurfaceScreen() {
+const RADII = ['sm', 'md', 'lg', 'xl', 'full'] as const;
+
+const PAGE_TITLES = ['Variants', 'Elevation', 'Radius', 'Stacked'];
+
+function pageStyle(width: number) {
+  return {
+    flex: 1,
+    width,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
+  };
+}
+
+function DemoCaption(props: { children: string }) {
   return (
-    <ScreenShell
-      title="Surface"
-      subtitle="Themed container — background level, shadow depth, and Box layout props."
-    >
-      <DemoSection
-        title="variant"
-        description='Background surface level. In light mode base and raised share the same fill — raised adds a hairline border and defaults to elevation "sm". In dark mode raised is a step lighter than base.'
-      >
-        <PropDemoGroup>
-          {SURFACE_VARIANTS.map((variant) => (
-            <PropDemo key={variant} code={`variant="${variant}"`}>
-              <Surface variant={variant} p="4" gap="1">
-                <Text variant="title-sm">{variant}</Text>
-                <Text variant="body-sm" color="content.secondary">
-                  bg maps to surface.{variant === 'transparent' ? '…' : variant}
-                </Text>
-              </Surface>
-            </PropDemo>
-          ))}
-        </PropDemoGroup>
-      </DemoSection>
+    <Text variant="caption" color="content.tertiary">
+      {props.children}
+    </Text>
+  );
+}
 
-      <DemoSection
-        title="elevation"
-        description="Drop-shadow depth. Needs a non-transparent background to render."
-      >
-        <PropDemoGroup>
-          {ELEVATIONS.map((elevation) => (
-            <PropDemo
-              key={elevation}
-              code={`variant="raised" elevation="${elevation}"`}
-            >
-              <Surface variant="raised" elevation={elevation} p="4">
-                <Text variant="label-md">elevation="{elevation}"</Text>
-              </Surface>
-            </PropDemo>
-          ))}
-        </PropDemoGroup>
-      </DemoSection>
+function VariantsPage(props: { width: number }) {
+  const { width } = props;
+  const { theme } = useUnistyles();
+  const contentWidth = width - theme.layout.screen.margin.x * 2;
 
-      <DemoSection
-        title="radius"
-        description="Override the configured surface default radius."
-      >
-        <PropDemoGroup>
-          {(['sm', 'md', 'lg', 'xl', 'full'] as const).map((radius) => (
-            <PropDemo key={radius} code={`radius="${radius}"`}>
-              <Surface variant="raised" elevation="sm" radius={radius} p="4">
-                <Text variant="label-md">radius="{radius}"</Text>
-              </Surface>
-            </PropDemo>
-          ))}
-        </PropDemoGroup>
-      </DemoSection>
-
-      <DemoSection
-        title="Layout props"
-        description="Surface extends Box — padding, gap, borders, etc."
-      >
-        <PropDemo code='p="4" gap="2" borderWidth="hairline" borderColor="border.default"'>
-          <Surface
-            variant="sunken"
-            p="4"
-            gap="2"
-            borderWidth="hairline"
-            borderColor="border.default"
-          >
-            <Text variant="title-sm">Card content</Text>
+  return (
+    <View style={pageStyle(width)}>
+      <Box gap="4" align="start" style={{ width: contentWidth }}>
+        {SURFACE_VARIANTS.map((variant) => (
+          <Surface key={variant} variant={variant} p="4" gap="1" style={{ width: '100%' }}>
+            <Text variant="title-sm">{variant}</Text>
             <Text variant="body-sm" color="content.secondary">
-              Nested layout with padding, gap, and a hairline border.
+              {variant === 'transparent'
+                ? 'No fill — shadow does not render'
+                : `Maps to surface.${variant}`}
             </Text>
+            <DemoCaption>{`variant="${variant}"`}</DemoCaption>
           </Surface>
-        </PropDemo>
-      </DemoSection>
+        ))}
+      </Box>
+    </View>
+  );
+}
 
-      <DemoSection title="Stacked surfaces">
-        <VStack gap="3">
-          <PropDemo code='variant="base"'>
-            <Surface variant="base" p="4">
-              <Text variant="label-md">Outer base</Text>
-            </Surface>
-          </PropDemo>
-          <PropDemo code='variant="raised"'>
-            <Surface variant="raised" p="4">
-              <Text variant="label-md">Raised (default sm elevation)</Text>
-            </Surface>
-          </PropDemo>
-          <PropDemo code='variant="raised" elevation="md"'>
-            <Surface variant="raised" elevation="md" p="4">
-              <Text variant="label-md">Raised with shadow</Text>
-            </Surface>
-          </PropDemo>
-          <PropDemo code='variant="sunken"'>
-            <Surface variant="sunken" p="4">
-              <Text variant="label-md">Sunken inset</Text>
-            </Surface>
-          </PropDemo>
-        </VStack>
-      </DemoSection>
-    </ScreenShell>
+function ElevationPage(props: { width: number }) {
+  const { width } = props;
+  const { theme } = useUnistyles();
+  const contentWidth = width - theme.layout.screen.margin.x * 2;
+
+  return (
+    <View style={pageStyle(width)}>
+      <Box gap="4" align="start" style={{ width: contentWidth }}>
+        {ELEVATIONS.map((elevation) => (
+          <Surface
+            key={elevation}
+            variant="raised"
+            elevation={elevation}
+            p="4"
+            style={{ width: '100%' }}
+          >
+            <Text variant="label-md">elevation="{elevation}"</Text>
+            <DemoCaption>{`variant="raised" elevation="${elevation}"`}</DemoCaption>
+          </Surface>
+        ))}
+      </Box>
+    </View>
+  );
+}
+
+function RadiusPage(props: { width: number }) {
+  const { width } = props;
+
+  return (
+    <View style={pageStyle(width)}>
+      <Box gap="4" align="center">
+        {RADII.map((radius) => (
+          <Surface
+            key={radius}
+            variant="raised"
+            elevation="sm"
+            radius={radius}
+            p="4"
+            style={{ minWidth: 160 }}
+          >
+            <Text variant="label-md">radius="{radius}"</Text>
+            <DemoCaption>{`radius="${radius}"`}</DemoCaption>
+          </Surface>
+        ))}
+      </Box>
+    </View>
+  );
+}
+
+function StackedPage(props: { width: number }) {
+  const { width } = props;
+  const { theme } = useUnistyles();
+  const contentWidth = width - theme.layout.screen.margin.x * 2;
+
+  return (
+    <View style={pageStyle(width)}>
+      <Box gap="4" align="start" style={{ width: contentWidth }}>
+        <Surface variant="transparent" p="4" gap="3" style={{ width: '100%' }}>
+          <Text variant="label-md">Transparent</Text>
+          <Surface variant="base" p="4">
+            <Text variant="label-md">Base</Text>
+          </Surface>
+          <Surface variant="raised" elevation="md" p="4">
+            <Text variant="label-md">Raised</Text>
+          </Surface>
+          <Surface variant="sunken" p="4">
+            <Text variant="label-md">Sunken</Text>
+          </Surface>
+        </Surface>
+      </Box>
+    </View>
+  );
+}
+
+export function SurfaceScreen() {
+  const { width } = useWindowDimensions();
+  const pageProgress = useSharedValue(0);
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      pageProgress.value =
+        width > 0 ? event.contentOffset.x / width : event.contentOffset.x;
+    },
+  });
+
+  return (
+    <Screen margins={false}>
+      <Screen.Header>
+        <Header.Title
+          dismissAction="back"
+          onDismiss={() => router.back()}
+          title="Surface"
+        />
+      </Screen.Header>
+
+      <Screen.ScrollView
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        scrollHandler={scrollHandler}
+      >
+        <VariantsPage width={width} />
+        <ElevationPage width={width} />
+        <RadiusPage width={width} />
+        <StackedPage width={width} />
+      </Screen.ScrollView>
+      <Pager titles={PAGE_TITLES} progress={pageProgress} />
+    </Screen>
   );
 }

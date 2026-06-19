@@ -60,6 +60,13 @@ const resolveElevation = (
  * surface `variant`, its corner radius from the configured `surface`
  * default (overridable via `radius`), and an optional drop shadow via
  * `elevation`. All other Box style-props are accepted.
+ *
+ * @example
+ * ```tsx
+ * <Surface variant="raised" elevation="md" p="4" radius="lg">
+ *   <Text variant="title-sm">Card title</Text>
+ * </Surface>
+ * ```
  */
 export const Surface = forwardRef<ComponentRef<typeof View>, SurfaceProps>(
   function Surface(
@@ -76,8 +83,11 @@ export const Surface = forwardRef<ComponentRef<typeof View>, SurfaceProps>(
   ) {
     const { theme } = useUnistyles();
     const resolvedElevation = resolveElevation(variant, elevation);
-    const shadow = theme.elevation[resolvedElevation] as ViewStyle;
     const variantBorder = VARIANT_BORDER[variant];
+    const shadowStyle =
+      variant !== 'transparent' && resolvedElevation !== 'none'
+        ? (theme.elevation[resolvedElevation] as ViewStyle)
+        : undefined;
 
     return (
       <Box
@@ -86,7 +96,7 @@ export const Surface = forwardRef<ComponentRef<typeof View>, SurfaceProps>(
         radius={radius ?? getDefaultRadius('surface')}
         borderWidth={borderWidth ?? variantBorder.borderWidth}
         borderColor={borderColor ?? variantBorder.borderColor}
-        style={[shadow, style]}
+        style={shadowStyle ? [shadowStyle, style] : style}
         {...rest}
       />
     );

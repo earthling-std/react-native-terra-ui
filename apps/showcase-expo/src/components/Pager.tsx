@@ -12,7 +12,7 @@ import Svg, {
   Stop,
 } from 'react-native-svg';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { HStack, PageIndicator, Text } from 'react-native-terra-ui';
+import { Box, PageIndicator, Text } from 'react-native-terra-ui';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 interface PagerProps {
@@ -82,7 +82,7 @@ export function Pager({ titles, progress }: PagerProps) {
           </Svg>
         </View>
 
-        <HStack justify="between" align="center" gap="1" px="5">
+        <Box row justify="between" align="center" gap="1" px="5">
           <PagerTitle titles={titles} progress={progress} />
           <PageIndicator
             style={styles.page}
@@ -90,7 +90,7 @@ export function Pager({ titles, progress }: PagerProps) {
             current={progress}
             variant="pill"
           />
-        </HStack>
+        </Box>
       </View>
     </View>
   );

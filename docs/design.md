@@ -329,13 +329,13 @@ interface UseThemeResult {
 ## 5. Component API conventions
 
 - **Customization**: typed **variant props** (`variant`/`size`/`radius`…) + `style` passthrough + **`asChild`/Slot** composition.
-- **Token style-props** (`p`, `px`, `gap`, `bg`, `radius`…) are confined to the **layout primitives** (`Box`/`Stack`) — not every component. (No Tamagui/Stitches-style style-props on everything.)
+- **Token style-props** (`p`, `px`, `gap`, `bg`, `radius`…) are confined to **`Box`** — not every component. (No Tamagui/Stitches-style style-props on everything.)
 - **Authoring**: every component is built through **one shared "recipe" helper** (a thin wrapper over Unistyles variants) so variants/defaults are declared uniformly.
 - **Accessibility**: every interactive component ships correct a11y from day one (`accessibilityRole`, `accessibilityState` for disabled/busy, focus order).
 
-### 5.1 Layout primitives (`Box` / `Stack`) and `asChild`
+### 5.1 Layout primitive (`Box`) and `asChild`
 
-**`Box`** — the base layout primitive: a `View` whose layout, spacing, and visuals are set through theme-token props. It is the **only** component family that exposes token style-props. **`Stack`** — a `Box` preset that lays children out along a direction with a `gap`; **`HStack`/`VStack`** are direction shorthands.
+**`Box`** — the layout primitive: a `View` whose layout, spacing, and visuals are set through theme-token props. It is the **only** component that exposes token style-props.
 
 **Props** (all optional; all `ViewProps` also pass through):
 
@@ -353,7 +353,7 @@ interface BoxProps extends ViewProps {
   gap?: SpacingKey
 
   // Layout
-  direction?: 'row' | 'column'   // default 'column'
+  row?: boolean                  // true → flexDirection: 'row'; default column
   align?: Align
   justify?: Justify
   wrap?: boolean
@@ -371,11 +371,6 @@ interface BoxProps extends ViewProps {
   style?: StyleProp<ViewStyle>   // escape hatch (merged last)
   children?: ReactNode
 }
-
-interface StackProps extends Omit<BoxProps, 'direction'> {
-  direction?: 'row' | 'column'   // Stack defaults gap-aware spacing
-}
-// HStack = <Stack direction="row">, VStack = <Stack direction="column">
 ```
 
 **Token resolution.** Friendly `align`/`justify` values map to flexbox (`start`→`flex-start`, `between`→`space-between`, …); spacing/radius keys map to numbers via the theme; color tokens resolve through the theme (`surface.raised`, `border.default`). Raw values still pass through (e.g. a hex string in `bg`, a number in `borderWidth`).
@@ -396,10 +391,10 @@ interface StackProps extends Omit<BoxProps, 'direction'> {
 </Box>
 
 // Row with centered items
-<HStack gap={2} align="center">
+<Box row gap={2} align="center">
   <Avatar />
   <Text>Jane</Text>
-</HStack>
+</Box>
 
 // asChild — give a Pressable the Box's padding/bg/radius; one node, native press
 <Box asChild p={3} radius="md" bg="surface.raised">
@@ -430,7 +425,7 @@ The library also exports the `Slot` primitive plus `mergeProps`/`composeRefs` so
 Foundation only — tight and well-tested:
 
 1. **Theme engine** — base theme, token shape, deep-merge, accent overrides, `configureTerraUI`, `TerraUIProvider`, `useTheme`.
-2. **Layout primitives** — `Box` / `Stack` (token style-props, align/justify/gap, `asChild`).
+2. **Layout primitive** — `Box` (token style-props, align/justify/gap, `row`, `asChild`).
 3. **Text** — variants driven by themeable typography, semantic color tokens.
 4. **Button** — variants/size/radius, loading/disabled, a11y, compound `Button.Icon` / `Button.Label` (icon slot accepts any node; no icon-set dependency yet).
 
@@ -495,9 +490,9 @@ The scaffold's placeholder `multiply.tsx` is removed during this milestone.
 | Token tiers | Two-tier (primitive → semantic), widened semantics |
 | Token names | `background`+`surface`, `content`, `action`, `status`, `border`, `elevation`, `opacity` (renamed from es/ui's surface/text/intent/field). Full `TerraTheme` type in §4.4 |
 | Typography | Themeable (families + scale in theme); apps load fonts |
-| Component API | Variants + `style` + `asChild`; token style-props on Box/Stack only; shared recipe helper |
+| Component API | Variants + `style` + `asChild`; token style-props on Box only; shared recipe helper |
 | Composition | `asChild` (Radix Slot), **not** a polymorphic `as` prop — chosen for TS type-safety across RN targets (see §5.1) |
-| v1 | Theme engine, Box/Stack, Text, Button |
+| v1 | Theme engine, Box, Text, Button |
 | Distribution | Publish + Changesets; bob build |
 | Quality | Jest + RNTL; a11y from day one; Biome/tsc/bob in CI; visual-regression deferred |
 | Runtime theming | Library switches (`useTheme`), app persists; no storage dep |

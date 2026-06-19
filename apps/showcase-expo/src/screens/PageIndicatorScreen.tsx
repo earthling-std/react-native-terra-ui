@@ -6,14 +6,13 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import {
+  Box,
   Button,
   Header,
-  HStack,
   PageIndicator,
   Screen,
   Surface,
   Text,
-  VStack,
 } from 'react-native-terra-ui';
 import { useUnistyles } from 'react-native-unistyles';
 
@@ -50,7 +49,7 @@ function PagePicker(props: {
   const { labels, activeIndex, onSelect, compact = false } = props;
 
   return (
-    <HStack gap="2" wrap justify="center">
+    <Box row gap="2" wrap justify="center">
       {labels.map((label, index) => (
         <Button
           key={label}
@@ -62,7 +61,7 @@ function PagePicker(props: {
           {compact ? label : `Page ${label}`}
         </Button>
       ))}
-    </HStack>
+    </Box>
   );
 }
 
@@ -72,8 +71,8 @@ function PillPage(props: { width: number }) {
 
   return (
     <View style={pageStyle(width)}>
-      <VStack gap="6" align="center">
-        <HStack gap="8" align="center">
+      <Box gap="6" align="center">
+        <Box row gap="8" align="center">
           <PageIndicator
             count={PAGE_COUNT}
             current={activeIndex}
@@ -85,13 +84,13 @@ function PillPage(props: { width: number }) {
             variant="pill"
             vertical
           />
-        </HStack>
+        </Box>
         <PagePicker
           labels={PAGE_LABELS}
           activeIndex={activeIndex}
           onSelect={setActiveIndex}
         />
-      </VStack>
+      </Box>
     </View>
   );
 }
@@ -103,8 +102,8 @@ function DotPage(props: { width: number }) {
 
   return (
     <View style={pageStyle(width)}>
-      <VStack gap="6" align="center">
-        <HStack gap="5" align="center">
+      <Box gap="6" align="center">
+        <Box row gap="5" align="center">
           <PageIndicator
             count={PAGE_COUNT}
             current={activeIndex}
@@ -118,7 +117,7 @@ function DotPage(props: { width: number }) {
             loading={loading}
             vertical
           />
-        </HStack>
+        </Box>
         <PagePicker
           labels={PAGE_LABELS}
           activeIndex={activeIndex}
@@ -131,7 +130,7 @@ function DotPage(props: { width: number }) {
         >
           {loading ? 'Stop loading' : 'Toggle loading'}
         </Button>
-      </VStack>
+      </Box>
     </View>
   );
 }
@@ -151,7 +150,7 @@ function ScrollLinkedPage(props: { width: number }) {
 
   return (
     <View style={pageStyle(width)}>
-      <VStack gap="5" align="center" style={{ width: contentWidth }}>
+      <Box gap="5" align="center" style={{ width: contentWidth }}>
       <Animated.ScrollView
           horizontal
           pagingEnabled
@@ -186,7 +185,7 @@ function ScrollLinkedPage(props: { width: number }) {
             );
           })}
         </Animated.ScrollView>
-        <HStack gap="8" align="center">
+        <Box row gap="8" align="center">
           <PageIndicator
             count={SCROLL_CARD_COUNT}
             current={progress}
@@ -197,8 +196,8 @@ function ScrollLinkedPage(props: { width: number }) {
             current={progress}
             variant="dot"
           />
-        </HStack>
-      </VStack>
+        </Box>
+      </Box>
     </View>
   );
 }
@@ -213,8 +212,8 @@ function ColorsPage(props: { width: number }) {
 
   return (
     <View style={pageStyle(width)}>
-      <VStack gap="6" align="center">
-        <VStack gap="5" align="center">
+      <Box gap="6" align="center">
+        <Box gap="5" align="center">
           <PageIndicator
             count={3}
             current={activeIndex}
@@ -227,13 +226,13 @@ function ColorsPage(props: { width: number }) {
             variant="dot"
             {...colorProps}
           />
-        </VStack>
+        </Box>
         <PagePicker
           labels={['1', '2', '3']}
           activeIndex={activeIndex}
           onSelect={setActiveIndex}
         />
-      </VStack>
+      </Box>
     </View>
   );
 }
@@ -244,8 +243,8 @@ function ManyPagesPage(props: { width: number }) {
 
   return (
     <View style={pageStyle(width)}>
-      <VStack gap="5" align="center">
-        <VStack gap="4" align="center">
+      <Box gap="5" align="center">
+        <Box gap="4" align="center">
           <PageIndicator
             count={MANY_PAGE_COUNT}
             current={activeIndex}
@@ -256,8 +255,8 @@ function ManyPagesPage(props: { width: number }) {
             current={activeIndex}
             variant="dot"
           />
-        </VStack>
-        <HStack gap="2" wrap justify="center">
+        </Box>
+        <Box row gap="2" wrap justify="center">
           <Button
             size="sm"
             fullWidth={false}
@@ -282,14 +281,14 @@ function ManyPagesPage(props: { width: number }) {
           >
             Jump to 5
           </Button>
-        </HStack>
+        </Box>
         <PagePicker
           compact
           labels={MANY_PAGE_LABELS}
           activeIndex={activeIndex}
           onSelect={setActiveIndex}
         />
-      </VStack>
+      </Box>
     </View>
   );
 }

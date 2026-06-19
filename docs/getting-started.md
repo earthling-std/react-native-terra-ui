@@ -127,7 +127,7 @@ Several components use a namespace pattern:
 
 ### Layout and styling
 
-Token style props (`p`, `gap`, `bg`, `radius`, etc.) are available on `Box`, `Stack`, `HStack`, `VStack`, and `Surface` only. Other components accept specific props documented in their types.
+Token style props (`p`, `gap`, `bg`, `radius`, `row`, etc.) are available on `Box` and `Surface` only. Other components accept specific props documented in their types.
 
 ## Runtime theme switching
 

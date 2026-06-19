@@ -1,6 +1,6 @@
 import { Link } from 'expo-router';
 
-import { Button, Header, Screen, Text, VStack } from 'react-native-terra-ui';
+import { Button, Box, Header, Screen, Text } from 'react-native-terra-ui';
 
 import { ThemeConfigSection } from '../components/ThemeConfigSection';
 
@@ -11,8 +11,6 @@ const COMPONENTS = [
   { href: '/icon', label: 'Icon' },
   { href: '/spinner', label: 'Spinner' },
   { href: '/page-indicator', label: 'Page Indicator' },
-  { href: '/portal', label: 'Portal' },
-  { href: '/screen', label: 'Screen' },
 ] as const;
 
 export function GalleryScreen() {
@@ -28,7 +26,7 @@ export function GalleryScreen() {
       <Screen.ScrollView>
         <ThemeConfigSection />
 
-        <VStack gap="2">
+        <Box gap="2">
           <Text variant="label-sm" color="content.tertiary">
             Components
           </Text>
@@ -39,7 +37,7 @@ export function GalleryScreen() {
               </Button>
             </Link>
           ))}
-        </VStack>
+        </Box>
       </Screen.ScrollView>
     </Screen>
   );

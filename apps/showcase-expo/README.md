@@ -1,6 +1,6 @@
 # Terra UI showcase
 
-A small gallery exercising the v1 components (Text, Button, Surface, Box/Stack) and the
+A small gallery exercising the v1 components (Text, Button, Surface, Box) and the
 theming engine, with a live light/dark + accent switcher. Navigation uses **expo-router**
 (file-based routes under `src/app/`).
 
@@ -44,8 +44,8 @@ On a device or CI, build a dev client with EAS instead (`eas build --profile dev
   demonstrating runtime accent + radius switching.
 - **Typography** — representative `Text` variants.
 - **Buttons** — variants, sizes, and loading/disabled/full-width states.
-- **Icon / Spinner / Page Indicator / Portal** — semantic icons, loading states, pager indicators, portal API.
-- **Layout** — `Box`/`Stack` surfaces and an `asChild` → `Pressable` example.
+- **Icon / Spinner / Page Indicator** — semantic icons, loading states, pager indicators.
+- **Layout** — `Box` surfaces and an `asChild` → `Pressable` example.
 
 ## Agent skills
 

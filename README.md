@@ -65,7 +65,7 @@ See [docs/getting-started.md](docs/getting-started.md) for the full setup guide 
 
 ## Components
 
-`Box`, `Stack`, `Text`, `Button`, `Surface`, `Icon`, `Spinner`, `Screen`, `Header`, `PageIndicator`, `Portal`, and more — see [packages/ui/README.md](packages/ui/README.md) for the full export list.
+`Box`, `Text`, `Button`, `Surface`, `Icon`, `Spinner`, `Screen`, `Header`, `PageIndicator`, `Portal`, and more — see [packages/ui/README.md](packages/ui/README.md) for the full export list.
 
 ## Showcase app
 

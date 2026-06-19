@@ -126,7 +126,7 @@ engine, with a live **accent + light/dark switcher** (the v1 preview harness).
   - Controls: scheme toggle + accent picker (`getAccentNames()`).
   - Typography: representative `Text` variants.
   - Buttons: variants, sizes, states (loading/disabled/fullWidth).
-  - Layout: `Box`/`Stack` surfaces, and an `asChild` `Pressable` demo.
+  - Layout: `Box` surfaces, and an `asChild` `Pressable` demo.
 
 ### Notes
 

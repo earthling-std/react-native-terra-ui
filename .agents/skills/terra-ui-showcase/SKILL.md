@@ -103,11 +103,11 @@ Pick layouts that match the prop being demonstrated:
 
 | Demo type | Layout |
 |-----------|--------|
-| **Size presets** | `HStack gap="6" align="center"` — 3 items centered horizontally |
-| **Color / token list** | `VStack gap="6" align="start"` — row of sample + caption |
-| **Variant catalog** | `VStack gap="3"` or `gap="4"` — one sample per row |
-| **Full-width blocks** | `contentWidth = width - theme.layout.screen.margin.x * 2` on `VStack` |
-| **Inline / toolbar** | `HStack gap="2"` with `fullWidth={false}` on `Button` |
+| **Size presets** | `Box row gap="6" align="center"` — 3 items centered horizontally |
+| **Color / token list** | `Box gap="6" align="start"` — row of sample + caption |
+| **Variant catalog** | `Box gap="3"` or `gap="4"` — one sample per row |
+| **Full-width blocks** | `contentWidth = width - theme.layout.screen.margin.x * 2` on `Box` |
+| **Inline / toolbar** | `Box row gap="2"` with `fullWidth={false}` on `Button` |
 | **Interactive** | Local `useState` + `PageIndicator page={index}` per page (don't share across swipe pages) |
 
 ## Gallery registration
@@ -132,7 +132,7 @@ Route file: `apps/showcase-expo/src/app/{kebab-name}.tsx` re-exports the screen.
 
 - Variant / size comparison pages → `fullWidth={false}`
 - States page: full-width loading/disabled; inline row for Cancel/Save pair
-- Wrap in `<View>` if centering shrink-wrap buttons in `VStack align="center"` (Button uses `alignSelf: 'flex-start'`)
+- Wrap in `<View>` if centering shrink-wrap buttons in `Box align="center"` (Button uses `alignSelf: 'flex-start'`)
 
 ## Migration checklist
 

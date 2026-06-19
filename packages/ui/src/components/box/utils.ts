@@ -20,7 +20,7 @@ export type BorderWidthInput = number | 'hairline';
 /** Strips `readonly` so the style object can be built by mutation. */
 type Mutable<T> = { -readonly [K in keyof T]: T[K] };
 
-/** Token-driven style props accepted by `Box` / `Stack`. */
+/** Token-driven style props accepted by `Box`. */
 export interface BoxStyleProps {
   // Spacing
   p?: SpacingKey;
@@ -39,7 +39,8 @@ export interface BoxStyleProps {
   ml?: SpacingKey;
   gap?: SpacingKey;
   // Layout
-  direction?: 'row' | 'column';
+  /** Horizontal layout (`flexDirection: 'row'`). Defaults to column. */
+  row?: boolean;
   align?: Align;
   justify?: Justify;
   wrap?: boolean;
@@ -118,7 +119,7 @@ export function resolveBoxStyle(
   if (gap !== undefined) style.gap = gap;
 
   // Layout
-  if (props.direction !== undefined) style.flexDirection = props.direction;
+  if (props.row !== undefined) style.flexDirection = props.row ? 'row' : 'column';
   if (props.align !== undefined) style.alignItems = ALIGN_MAP[props.align];
   if (props.justify !== undefined) {
     style.justifyContent = JUSTIFY_MAP[props.justify];
@@ -166,7 +167,7 @@ export const BOX_STYLE_PROP_KEYS: readonly (keyof BoxStyleProps)[] = [
   'mb',
   'ml',
   'gap',
-  'direction',
+  'row',
   'align',
   'justify',
   'wrap',

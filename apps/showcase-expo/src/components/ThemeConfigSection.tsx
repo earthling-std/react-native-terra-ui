@@ -1,10 +1,9 @@
 import {
+  Box,
   Button,
   getAccentNames,
-  HStack,
   Text,
   useTheme,
-  VStack,
 } from 'react-native-terra-ui';
 
 export function ThemeConfigSection() {
@@ -12,11 +11,11 @@ export function ThemeConfigSection() {
   const accents = getAccentNames();
 
   return (
-    <VStack gap="2">
+    <Box gap="2">
       <Text variant="label-sm" color="content.tertiary">
         Theme
       </Text>
-      <HStack gap="2" wrap>
+      <Box row gap="2" wrap>
         <Button
           size="sm"
           variant="outline"
@@ -36,7 +35,7 @@ export function ThemeConfigSection() {
             {name}
           </Button>
         ))}
-      </HStack>
-    </VStack>
+      </Box>
+    </Box>
   );
 }

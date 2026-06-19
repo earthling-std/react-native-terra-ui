@@ -38,7 +38,7 @@ a single entry point.
   `50` (bar height), `16` (bar padding), and the missing `theme.screen.insets`
   token all become tokens or props with sane defaults.
 - **Library-consistent surface.** `bg`/`forwardRef`/`#`-aliases/JSDoc match
-  `Box`, `Surface`, `Stack`, so `Screen` feels native to terra-ui.
+  `Box`, `Surface`, so `Screen` feels native to terra-ui.
 
 ## Module layout
 

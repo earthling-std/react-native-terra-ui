@@ -8,7 +8,7 @@ Dot and pill pager indicators with smooth motion. Both variants share the same c
 |------|------|---------|-------------|
 | `count` | `number` | — | Number of pages |
 | `current` | `number \| SharedValue<number>` | `0` | Active index or scroll-linked progress |
-| `duration` | `number` | `420` | Animation duration for discrete index changes |
+| `duration` | `number` | `600` | Animation duration for discrete index changes |
 | `activeColor` | `ColorToken` | `content.primary` | Active page color |
 | `inactiveColor` | `ColorToken` | `content.disabled` | Inactive page color |
 | `vertical` | `boolean` | `false` | Stack dots vertically |

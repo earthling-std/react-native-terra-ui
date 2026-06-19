@@ -15,4 +15,18 @@ describe('Box', () => {
       ])
     );
   });
+
+  it('applies row layout', () => {
+    render(<Box testID="box" row gap="2" />);
+    const box = screen.getByTestId('box');
+
+    expect(box.props.style).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          flexDirection: 'row',
+          gap: defaultLightTheme.spacing[2],
+        }),
+      ])
+    );
+  });
 });

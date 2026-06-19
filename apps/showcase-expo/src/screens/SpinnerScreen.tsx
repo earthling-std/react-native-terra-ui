@@ -5,13 +5,12 @@ import {
   useSharedValue,
 } from 'react-native-reanimated';
 import {
+  Box,
   Header,
-  HStack,
   Screen,
   Spinner,
   type SpinnerSize,
   Text,
-  VStack,
 } from 'react-native-terra-ui';
 
 import { Pager } from '../components/Pager';
@@ -39,16 +38,16 @@ function SizesPage(props: { width: number }) {
         justifyContent: 'center',
       }}
     >
-      <HStack gap="6" align="center">
+      <Box row gap="6" align="center">
         {SIZES.map((size) => (
-          <VStack key={size} gap="1" align="center">
+          <Box key={size} gap="1" align="center">
             <Spinner size={size} />
             <Text variant="caption" color="content.tertiary">
               {size}
             </Text>
-          </VStack>
+          </Box>
         ))}
-      </HStack>
+      </Box>
     </View>
   );
 }
@@ -65,16 +64,16 @@ function ColorsPage(props: { width: number }) {
         justifyContent: 'center',
       }}
     >
-      <VStack gap="6" align="start">
+      <Box gap="6" align="start">
         {COLORS.map(({ code, color }) => (
-          <HStack key={code} gap="3" align="center">
+          <Box row key={code} gap="3" align="center">
             <Spinner color={color} />
             <Text variant="caption" color="content.tertiary">
               {code}
             </Text>
-          </HStack>
+          </Box>
         ))}
-      </VStack>
+      </Box>
     </View>
   );
 }

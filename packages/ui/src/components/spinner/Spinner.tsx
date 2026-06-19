@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo, useRef } from 'react';
+import { memo, useEffect, useId } from 'react';
 
 import Animated, {
   cancelAnimation,
@@ -8,7 +8,7 @@ import Animated, {
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
-import Svg, { Circle, Defs, LinearGradient, Stop } from 'react-native-svg';
+import Svg, { Defs, G, LinearGradient, Path, Stop } from 'react-native-svg';
 
 import { useUnistyles } from 'react-native-unistyles';
 
@@ -25,68 +25,65 @@ export interface SpinnerProps {
 }
 
 const DIMENSION: Record<SpinnerSize, number> = { sm: 16, md: 24, lg: 32 };
-const STROKE: Record<SpinnerSize, number> = { sm: 2.5, md: 3.5, lg: 4.5 };
-
-// ~324° visible arc — short gap at the trailing end.
-const ARC_FRACTION = 0.7;
 
 const ROTATION_DURATION = 900;
 
-let spinnerInstance = 0;
+// HeroUI spinner arcs — two gradient-filled segments in a 24×24 viewBox.
+const LEFT_ARC =
+  'M8.749.021a1.5 1.5 0 0 1 .497 2.958A7.5 7.5 0 0 0 3 10.375a7.5 7.5 0 0 0 7.5 7.5v3c-5.799 0-10.5-4.7-10.5-10.5C0 5.23 3.726.865 8.749.021';
+const RIGHT_ARC =
+  'M15.392 2.673a1.5 1.5 0 0 1 2.119-.115A10.48 10.48 0 0 1 21 10.375c0 5.8-4.701 10.5-10.5 10.5v-3a7.5 7.5 0 0 0 5.007-13.084a1.5 1.5 0 0 1-.115-2.118';
+const ARC_TRANSFORM = 'translate(1.5 1.625)';
 
-interface SpinnerArcProps {
-  dim: number;
-  stroke: number;
-  radius: number;
-  dashLength: number;
-  circumference: number;
-  tailX: number;
-  tailY: number;
-  headX: number;
-  headY: number;
+interface SpinnerIconProps {
+  size: number;
   color: string;
-  gradientId: string;
+  gradientId1: string;
+  gradientId2: string;
 }
 
-const SpinnerArc = memo(function SpinnerArc({
-  dim,
-  stroke,
-  radius,
-  dashLength,
-  circumference,
-  tailX,
-  tailY,
-  headX,
-  headY,
+const SpinnerIcon = memo(function SpinnerIcon({
+  size,
   color,
-  gradientId,
-}: SpinnerArcProps) {
+  gradientId1,
+  gradientId2,
+}: SpinnerIconProps) {
   return (
-    <Svg width={dim} height={dim}>
+    <Svg width={size} height={size} viewBox="0 0 24 24">
       <Defs>
         <LinearGradient
-          id={gradientId}
-          x1={tailX}
-          y1={tailY}
-          x2={headX}
-          y2={headY}
-          gradientUnits="userSpaceOnUse"
+          id={gradientId1}
+          x1="50%"
+          x2="50%"
+          y1="5.271%"
+          y2="91.793%"
         >
-          {/* <Stop offset="0" stopColor={color} stopOpacity="0.2" /> */}
-          <Stop offset="0.1" stopColor={color} stopOpacity="0.2" />
-          <Stop offset="1" stopColor={color} stopOpacity="1" />
+          <Stop offset="0%" stopColor={color} />
+          <Stop offset="100%" stopColor={color} stopOpacity={0.55} />
+        </LinearGradient>
+        <LinearGradient
+          id={gradientId2}
+          x1="50%"
+          x2="50%"
+          y1="15.24%"
+          y2="87.15%"
+        >
+          <Stop offset="0%" stopColor={color} stopOpacity={0} />
+          <Stop offset="100%" stopColor={color} stopOpacity={0.55} />
         </LinearGradient>
       </Defs>
-      <Circle
-        cx={dim / 2}
-        cy={dim / 2}
-        r={radius}
-        stroke={`url(#${gradientId})`}
-        strokeWidth={stroke}
-        strokeLinecap="round"
-        fill="none"
-        strokeDasharray={[dashLength, circumference]}
-      />
+      <G fill="none">
+        <Path
+          d={LEFT_ARC}
+          fill={`url(#${gradientId1})`}
+          transform={ARC_TRANSFORM}
+        />
+        <Path
+          d={RIGHT_ARC}
+          fill={`url(#${gradientId2})`}
+          transform={ARC_TRANSFORM}
+        />
+      </G>
     </Svg>
   );
 });
@@ -104,22 +101,13 @@ export function Spinner({
   color = 'content.accent',
 }: SpinnerProps) {
   const { theme } = useUnistyles();
-  const gradientId = useRef(`spinner-${++spinnerInstance}`).current;
+  const id = useId();
+  const gradientId1 = `spinner-def-1-${id}`;
+  const gradientId2 = `spinner-def-2-${id}`;
   const resolvedColor =
     resolveThemeColor(color, theme) ?? theme.color.content.accent;
 
   const dim = DIMENSION[size];
-  const stroke = STROKE[size];
-  const radius = (dim - stroke) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const dashLength = circumference * ARC_FRACTION;
-
-  // SVG strokes start at 3 o'clock; the arc tail/head sit on the circle edge.
-  const tailX = dim / 2 + radius;
-  const tailY = dim / 2;
-  const headX = dim / 2;
-  const headY = dim / 2 - radius;
-
   const rotation = useSharedValue(0);
 
   useEffect(() => {
@@ -145,37 +133,6 @@ export function Spinner({
     transform: [{ rotate: `${rotation.value}deg` }],
   }));
 
-  const arc = useMemo(
-    () => (
-      <SpinnerArc
-        dim={dim}
-        stroke={stroke}
-        radius={radius}
-        dashLength={dashLength}
-        circumference={circumference}
-        tailX={tailX}
-        tailY={tailY}
-        headX={headX}
-        headY={headY}
-        color={resolvedColor}
-        gradientId={gradientId}
-      />
-    ),
-    [
-      circumference,
-      dashLength,
-      dim,
-      gradientId,
-      headX,
-      headY,
-      radius,
-      resolvedColor,
-      stroke,
-      tailX,
-      tailY,
-    ]
-  );
-
   return (
     <Animated.View
       accessible
@@ -184,7 +141,12 @@ export function Spinner({
       collapsable={false}
       style={[{ width: dim, height: dim }, animStyle]}
     >
-      {arc}
+      <SpinnerIcon
+        size={dim}
+        color={resolvedColor}
+        gradientId1={gradientId1}
+        gradientId2={gradientId2}
+      />
     </Animated.View>
   );
 }

@@ -5,12 +5,11 @@ import {
   useSharedValue,
 } from 'react-native-reanimated';
 import {
+  Box,
   Header,
-  HStack,
   Icon,
   Screen,
   Text,
-  VStack,
 } from 'react-native-terra-ui';
 import type { TerraSemanticIconName } from 'react-native-terra-ui/theme';
 
@@ -51,16 +50,16 @@ function DefaultIconsPage(props: { width: number }) {
         justifyContent: 'center',
       }}
     >
-      <VStack gap="6" align="start">
+      <Box gap="6" align="start">
         {DEFAULT_ICONS.map((name) => (
-          <HStack key={name} gap="3" align="center">
+          <Box row key={name} gap="3" align="center">
             <Icon name={name} size={24} />
             <Text variant="caption" color="content.tertiary">
               {name}
             </Text>
-          </HStack>
+          </Box>
         ))}
-      </VStack>
+      </Box>
     </View>
   );
 }
@@ -77,16 +76,16 @@ function CustomIconsPage(props: { width: number }) {
         justifyContent: 'center',
       }}
     >
-      <VStack gap="6" align="start">
+      <Box gap="6" align="start">
         {CUSTOM_ICONS.map((name) => (
-          <HStack key={name} gap="3" align="center">
+          <Box row key={name} gap="3" align="center">
             <Icon name={name} size={24} />
             <Text variant="caption" color="content.tertiary">
               {name}
             </Text>
-          </HStack>
+          </Box>
         ))}
-      </VStack>
+      </Box>
     </View>
   );
 }
@@ -103,16 +102,16 @@ function SizesPage(props: { width: number }) {
         justifyContent: 'center',
       }}
     >
-      <HStack gap="6" align="center">
+      <Box row gap="6" align="center">
         {SIZES.map((size) => (
-          <VStack key={size} gap="1" align="center">
+          <Box key={size} gap="1" align="center">
             <Icon name="status.info" size={size} />
             <Text variant="caption" color="content.tertiary">
               {size}
             </Text>
-          </VStack>
+          </Box>
         ))}
-      </HStack>
+      </Box>
     </View>
   );
 }
@@ -129,16 +128,16 @@ function ColorsPage(props: { width: number }) {
         justifyContent: 'center',
       }}
     >
-      <VStack gap="6" align="start">
+      <Box gap="6" align="start">
         {COLORS.map(({ code, color }) => (
-          <HStack key={code} gap="3" align="center">
+          <Box row key={code} gap="3" align="center">
             <Icon name="status.info" size={24} color={color} />
             <Text variant="caption" color="content.tertiary">
               {code}
             </Text>
-          </HStack>
+          </Box>
         ))}
-      </VStack>
+      </Box>
     </View>
   );
 }

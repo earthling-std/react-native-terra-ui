@@ -15,7 +15,7 @@ Use the `/theme` entry for `configureTerraUI()` in your app entry file. See [doc
 
 | Export | Description |
 |--------|-------------|
-| `Box`, `HStack`, `VStack`, `Stack` | Layout primitives with token style props |
+| `Box` | Layout primitive with token style props |
 | `Text` | Typography variants |
 | `Button` | Action button with `Button.Icon` / `Button.Label` |
 | `Surface` | Elevated surface levels |

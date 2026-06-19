@@ -5,14 +5,13 @@ import {
   useSharedValue,
 } from 'react-native-reanimated';
 import {
+  Box,
   Button,
   type ButtonSize,
   type ButtonVariant,
   Header,
-  HStack,
   Screen,
   Text,
-  VStack,
 } from 'react-native-terra-ui';
 import { useUnistyles } from 'react-native-unistyles';
 
@@ -47,7 +46,7 @@ function VariantsPage(props: { width: number }) {
 
   return (
     <View style={pageStyle(width)}>
-      <VStack gap="4" align="center">
+      <Box gap="4" align="center">
         {VARIANTS.map((variant) => (
           <View key={variant}>
             <Button variant={variant} size="sm" fullWidth={false} onPress={noop}>
@@ -55,7 +54,7 @@ function VariantsPage(props: { width: number }) {
             </Button>
           </View>
         ))}
-      </VStack>
+      </Box>
     </View>
   );
 }
@@ -65,18 +64,18 @@ function SizesPage(props: { width: number }) {
 
   return (
     <View style={pageStyle(width)}>
-      <HStack gap="4" align="center">
+      <Box row gap="4" align="center">
         {SIZES.map((size) => (
-          <VStack key={size} gap="1" align="center">
+          <Box key={size} gap="1" align="center">
             <Button size={size} fullWidth={false} onPress={noop}>
               {size}
             </Button>
             <Text variant="caption" color="content.tertiary">
               {size}
             </Text>
-          </VStack>
+          </Box>
         ))}
-      </HStack>
+      </Box>
     </View>
   );
 }
@@ -88,25 +87,25 @@ function StatesPage(props: { width: number }) {
 
   return (
     <View style={pageStyle(width)}>
-      <VStack gap="4" align="start" style={{ width: contentWidth }}>
+      <Box gap="4" align="start" style={{ width: contentWidth }}>
         <Button isLoading onPress={noop}>
           Saving…
         </Button>
         <Button isDisabled onPress={noop}>
           Disabled
         </Button>
-        <HStack gap="2" wrap>
+        <Box row gap="2" wrap>
           <Button fullWidth={false} variant="outline" onPress={noop}>
             Cancel
           </Button>
           <Button fullWidth={false} onPress={noop}>
             Save
           </Button>
-        </HStack>
+        </Box>
         <Button isIconOnly size="md" onPress={noop} accessibilityLabel="Add">
           <Button.Icon name="add" />
         </Button>
-      </VStack>
+      </Box>
     </View>
   );
 }
@@ -118,7 +117,7 @@ function IconsPage(props: { width: number }) {
 
   return (
     <View style={pageStyle(width)}>
-      <VStack gap="3" align="start" style={{ width: contentWidth }}>
+      <Box gap="3" align="start" style={{ width: contentWidth }}>
         <Button onPress={noop}>
           <Button.Icon name="add" />
           Add new contact
@@ -135,7 +134,7 @@ function IconsPage(props: { width: number }) {
           <Button.Icon name="navigation.back" />
           Back
         </Button>
-      </VStack>
+      </Box>
     </View>
   );
 }

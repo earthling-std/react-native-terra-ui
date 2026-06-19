@@ -3,13 +3,13 @@ import type { ViewStyle } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
 
 /** Duration for a single-page `current` transition. */
-export const PAGE_INDICATOR_SINGLE_PAGE_DURATION = 420;
+export const PAGE_INDICATOR_SINGLE_PAGE_DURATION = 600;
 
 /** Extra duration per additional page when jumping more than one step. */
-export const PAGE_INDICATOR_MULTI_PAGE_DURATION_STEP = 90;
+export const PAGE_INDICATOR_MULTI_PAGE_DURATION_STEP = 100;
 
 /** Upper bound for multi-page `current` transitions. */
-export const PAGE_INDICATOR_MULTI_PAGE_DURATION_MAX = 650;
+export const PAGE_INDICATOR_MULTI_PAGE_DURATION_MAX = 600;
 
 /** Default max dots visible before scrolling and edge scaling kick in. */
 export const DEFAULT_PAGE_INDICATOR_MAX_VISIBLE = 5;

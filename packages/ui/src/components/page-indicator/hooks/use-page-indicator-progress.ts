@@ -101,10 +101,7 @@ export function usePageIndicatorProgress(
         variant === 'dot'
           ? duration
           : pageIndicatorPageJumpDuration(from, target),
-      easing:
-        distance <= 1
-          ? Easing.out(Easing.cubic)
-          : Easing.bezier(0.33, 0, 0.15, 1),
+      easing: Easing.bezier(0.33, 0, 0.15, 1),
     });
   }, [
     count,
