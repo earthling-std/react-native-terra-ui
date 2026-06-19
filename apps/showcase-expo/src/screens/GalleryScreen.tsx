@@ -34,7 +34,7 @@ export function GalleryScreen() {
           </Text>
           {COMPONENTS.map(({ href, label }) => (
             <Link key={label} href={href} asChild>
-              <Button variant="outline" fullWidth>
+              <Button variant="outline">
                 {label}
               </Button>
             </Link>

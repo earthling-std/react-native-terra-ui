@@ -43,6 +43,10 @@ export interface ButtonProps
   isLoading?: boolean;
   /** Square (1:1) button — pass a single icon as children. */
   isIconOnly?: boolean;
+  /**
+   * Stretch to the parent width in column layouts. Defaults to `true`.
+   * Icon-only buttons always stay square regardless of this prop.
+   */
   fullWidth?: boolean;
   children?: ReactNode;
 }
@@ -205,7 +209,7 @@ const ButtonRoot = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
       isDisabled = false,
       isLoading = false,
       isIconOnly = false,
-      fullWidth = false,
+      fullWidth = true,
       children,
       onPress,
       ...rest
@@ -213,7 +217,12 @@ const ButtonRoot = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
     ref
   ) {
     const { theme } = useUnistyles();
-    styles.useVariants({ size, radius, fullWidth, iconOnly: isIconOnly });
+    styles.useVariants({
+      size,
+      radius,
+      fullWidth: fullWidth && !isIconOnly,
+      iconOnly: isIconOnly,
+    });
 
     const { bg, border, borderWidth, fg } = getColors(variant, theme);
     const blocked = isDisabled || isLoading;

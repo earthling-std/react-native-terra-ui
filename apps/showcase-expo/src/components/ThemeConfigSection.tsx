@@ -20,6 +20,7 @@ export function ThemeConfigSection() {
         <Button
           size="sm"
           variant="outline"
+          fullWidth={false}
           onPress={() => setScheme(scheme === 'light' ? 'dark' : 'light')}
         >
           {scheme}
@@ -29,6 +30,7 @@ export function ThemeConfigSection() {
             key={name}
             size="sm"
             variant={accent === name ? 'primary' : 'outline'}
+            fullWidth={false}
             onPress={() => setAccent(name)}
           >
             {name}
