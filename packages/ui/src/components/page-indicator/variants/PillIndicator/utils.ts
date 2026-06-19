@@ -1,3 +1,5 @@
+import type { PillJumpState } from '../../hooks/use-page-indicator-progress';
+
 const DOT_SIZE = 8;
 const GAP = 8;
 
@@ -12,6 +14,16 @@ export const PILL_INDICATOR_GEOMETRY = {
 } as const;
 
 export type PillIndicatorGeometry = typeof PILL_INDICATOR_GEOMETRY;
+
+export function readPillJumpState(jump: PillJumpState) {
+  'worklet';
+  return {
+    active: jump.active.value,
+    from: jump.from.value,
+    to: jump.to.value,
+    t: jump.t.value,
+  };
+}
 
 export function pillIndicatorDotDistance(
   index: number,

@@ -17,17 +17,6 @@ export const DOT_INDICATOR_GEOMETRY = {
   inactiveOpacity: 0.42,
 } as const;
 
-export type DotIndicatorGeometry = typeof DOT_INDICATOR_GEOMETRY;
-
-/** Full extent of a dot track along its main axis. */
-export function pageIndicatorTrackSize(
-  count: number,
-  slot: number,
-  dotSize: number
-): number {
-  return Math.max(dotSize, (count - 1) * slot + dotSize);
-}
-
 /** Main-axis center of dot `index` within the track. */
 export function pageIndicatorDotCenter(
   index: number,

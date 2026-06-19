@@ -7,12 +7,13 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import type { PillJumpState } from '../../hooks/use-page-indicator-progress';
-import { pageIndicatorWindowScale } from '../../window';
+import { pageIndicatorWindowScale } from '../../utils';
 
 import {
   pillIndicatorDotDistance,
   pillIndicatorJumpDisplayProgress,
-  type PillIndicatorGeometry,
+  PILL_INDICATOR_GEOMETRY,
+  readPillJumpState,
 } from './utils';
 
 interface PillIndicatorDotProps {
@@ -20,12 +21,11 @@ interface PillIndicatorDotProps {
   inactiveColor: string;
   count: number;
   index: number;
-  isWindowed: boolean;
+  maxVisible: number;
+  overflows: boolean;
   pillJump: PillJumpState;
   progress: SharedValue<number>;
   vertical: boolean;
-  windowSize: number;
-  geometry: PillIndicatorGeometry;
 }
 
 export function PillIndicatorDot({
@@ -33,29 +33,31 @@ export function PillIndicatorDot({
   inactiveColor,
   count,
   index,
-  isWindowed,
+  maxVisible,
+  overflows,
   pillJump,
   progress,
   vertical,
-  windowSize,
-  geometry,
 }: PillIndicatorDotProps) {
-  const {
-    dotSize,
-    activeWidth,
-    inactiveOpacity,
-    inactiveScale,
-    slot,
-  } = geometry;
+  const { dotSize, activeWidth, inactiveOpacity, inactiveScale, slot } =
+    PILL_INDICATOR_GEOMETRY;
 
   const animatedStyle = useAnimatedStyle(() => {
+    const jump = readPillJumpState(pillJump);
+    const displayProgress = pillIndicatorJumpDisplayProgress(
+      progress.value,
+      jump.active,
+      jump.from,
+      jump.to,
+      jump.t
+    );
     const distance = pillIndicatorDotDistance(
       index,
       progress.value,
-      pillJump.active.value,
-      pillJump.from.value,
-      pillJump.to.value,
-      pillJump.t.value
+      jump.active,
+      jump.from,
+      jump.to,
+      jump.t
     );
 
     const mainSize = interpolate(
@@ -64,27 +66,20 @@ export function PillIndicatorDot({
       [activeWidth, dotSize],
       Extrapolation.CLAMP
     );
-
     const activeScale = interpolate(
       distance,
       [0, 1],
       [1, inactiveScale],
       Extrapolation.CLAMP
     );
-    const edgeScale = isWindowed
+    const edgeScale = overflows
       ? pageIndicatorWindowScale(
           index,
-          pillIndicatorJumpDisplayProgress(
-            progress.value,
-            pillJump.active.value,
-            pillJump.from.value,
-            pillJump.to.value,
-            pillJump.t.value
-          ),
+          displayProgress,
           count,
           slot,
           dotSize,
-          windowSize,
+          maxVisible,
           activeWidth
         )
       : 1;

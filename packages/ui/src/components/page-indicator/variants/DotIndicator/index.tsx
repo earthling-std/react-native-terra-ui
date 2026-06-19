@@ -1,23 +1,21 @@
 import { useMemo } from 'react';
-import { View, type StyleProp, type ViewStyle } from 'react-native';
+import { type StyleProp, type ViewStyle } from 'react-native';
 
 import type { SharedValue } from 'react-native-reanimated';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import type { ColorToken } from '#theme/types';
 
-import { usePageIndicatorColors } from '../../hooks/use-page-indicator-colors';
-import { usePageIndicatorProgress } from '../../hooks/use-page-indicator-progress';
-import {
-  isPageIndicatorSharedValue,
-  PAGE_INDICATOR_SINGLE_PAGE_DURATION,
-} from '../../utils';
+import { usePageIndicatorCore } from '../../hooks/use-page-indicator-core';
+import { PageIndicatorRoot } from '../../PageIndicatorRoot';
 import {
   computePageIndicatorWindowTranslate,
-  DEFAULT_PAGE_INDICATOR_WINDOW_SIZE,
+  DEFAULT_PAGE_INDICATOR_MAX_VISIBLE,
+  pageIndicatorAxisTranslateStyle,
   pageIndicatorTrackMainSize,
   pageIndicatorViewportMainSize,
-} from '../../window';
+  PAGE_INDICATOR_SINGLE_PAGE_DURATION,
+} from '../../utils';
 
 import { InactiveDot } from './InactiveDot';
 import { LoadingOrbit } from './LoadingOrbit';
@@ -46,9 +44,9 @@ export interface DotIndicatorProps {
   vertical?: boolean;
   /**
    * Maximum dots visible before the track scrolls and edge-scales.
-   * Defaults to `5`. Windowing is off when `count <= windowSize`.
+   * Defaults to `5`. Overflow scrolling is off when `count <= maxVisible`.
    */
-  windowSize?: number;
+  maxVisible?: number;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -61,40 +59,29 @@ export function DotIndicator({
   loadingColor,
   loading = false,
   vertical = false,
-  windowSize = DEFAULT_PAGE_INDICATOR_WINDOW_SIZE,
+  maxVisible = DEFAULT_PAGE_INDICATOR_MAX_VISIBLE,
   style,
 }: DotIndicatorProps) {
-  const scrollLinked = isPageIndicatorSharedValue(current);
-  const colors = usePageIndicatorColors({
-    activeColor,
-    inactiveColor,
-    loadingColor,
-  });
-  const { progress } = usePageIndicatorProgress(
+  const { colors, progress } = usePageIndicatorCore(
     count,
-    scrollLinked ? current : undefined,
-    scrollLinked ? undefined : current,
+    current,
     'dot',
-    duration
+    duration,
+    { activeColor, inactiveColor, loadingColor }
   );
 
-  const geometry = DOT_INDICATOR_GEOMETRY;
-  const { dotSize, slot, crossSize, inactiveOpacity } = geometry;
-  const viewportSize = pageIndicatorViewportMainSize(
+  const { dotSize, slot, crossSize, inactiveOpacity } = DOT_INDICATOR_GEOMETRY;
+  const viewportMainSize = pageIndicatorViewportMainSize(
     count,
     slot,
     dotSize,
-    windowSize
+    maxVisible
   );
-  const fullTrackSize = pageIndicatorTrackMainSize(count, slot, dotSize);
-  const isWindowed = count > windowSize;
+  const fullTrackMainSize = pageIndicatorTrackMainSize(count, slot, dotSize);
+  const overflows = count > maxVisible;
 
-  const dots = useMemo(
-    () =>
-      Array.from({ length: count }, (_, index) => ({
-        id: `dot-${index}`,
-        index,
-      })),
+  const indices = useMemo(
+    () => Array.from({ length: count }, (_, index) => index),
     [count]
   );
 
@@ -104,70 +91,55 @@ export function DotIndicator({
       progress.value,
       slot,
       dotSize,
-      windowSize
+      maxVisible
     );
 
-    return {
-      transform: vertical ? [{ translateY: translate }] : [{ translateX: translate }],
-    };
+    return pageIndicatorAxisTranslateStyle(vertical, translate);
   });
 
-  const track = (
-    <Animated.View
-      style={[
-        vertical
-          ? { width: crossSize, height: fullTrackSize }
-          : { width: fullTrackSize, height: crossSize },
-        isWindowed ? trackStyle : null,
-      ]}
+  return (
+    <PageIndicatorRoot
+      crossSize={crossSize}
+      overflows={overflows}
+      style={style}
+      vertical={vertical}
+      viewportMainSize={viewportMainSize}
     >
-      {dots.map(({ id, index }) => (
-        <InactiveDot
-          key={id}
-          color={colors.inactiveColor}
+      <Animated.View
+        style={[
+          vertical
+            ? { width: crossSize, height: fullTrackMainSize }
+            : { width: fullTrackMainSize, height: crossSize },
+          overflows ? trackStyle : null,
+        ]}
+      >
+        {indices.map((index) => (
+          <InactiveDot
+            key={index}
+            color={colors.inactiveColor}
+            count={count}
+            index={index}
+            maxVisible={maxVisible}
+            opacity={inactiveOpacity}
+            overflows={overflows}
+            progress={progress}
+            vertical={vertical}
+          />
+        ))}
+        <TravelingPill
+          activeColor={colors.activeColor}
           count={count}
-          index={index}
-          isWindowed={isWindowed}
-          opacity={inactiveOpacity}
           progress={progress}
           vertical={vertical}
-          windowSize={windowSize}
-          geometry={geometry}
         />
-      ))}
-      <TravelingPill
-        activeColor={colors.activeColor}
-        count={count}
-        progress={progress}
-        vertical={vertical}
-        geometry={geometry}
-      />
-      <LoadingOrbit
-        color={colors.loadingColor}
-        count={count}
-        loading={loading}
-        progress={progress}
-        vertical={vertical}
-        geometry={geometry}
-      />
-    </Animated.View>
-  );
-
-  return (
-    <View pointerEvents="none" style={style}>
-      {isWindowed ? (
-        <View
-          style={
-            vertical
-              ? { height: viewportSize, width: crossSize, overflow: 'hidden' }
-              : { width: viewportSize, height: crossSize, overflow: 'hidden' }
-          }
-        >
-          {track}
-        </View>
-      ) : (
-        track
-      )}
-    </View>
+        <LoadingOrbit
+          color={colors.loadingColor}
+          count={count}
+          loading={loading}
+          progress={progress}
+          vertical={vertical}
+        />
+      </Animated.View>
+    </PageIndicatorRoot>
   );
 }

@@ -5,17 +5,13 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 
-import {
-  pageIndicatorDotCenter,
-  type DotIndicatorGeometry,
-} from './utils';
+import { DOT_INDICATOR_GEOMETRY, pageIndicatorDotCenter } from './utils';
 
 interface TravelingPillProps {
   activeColor: string;
   count: number;
   progress: SharedValue<number>;
   vertical: boolean;
-  geometry: DotIndicatorGeometry;
 }
 
 /**
@@ -28,9 +24,8 @@ export function TravelingPill({
   count,
   progress,
   vertical,
-  geometry,
 }: TravelingPillProps) {
-  const { dotSize, slot, crossSize } = geometry;
+  const { dotSize, slot, crossSize } = DOT_INDICATOR_GEOMETRY;
   const crossOffset = (crossSize - dotSize) / 2;
 
   const animatedStyle = useAnimatedStyle(() => {

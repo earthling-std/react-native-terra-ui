@@ -1,23 +1,21 @@
 import { useMemo } from 'react';
-import { View, type StyleProp, type ViewStyle } from 'react-native';
+import { type StyleProp, type ViewStyle } from 'react-native';
 
 import type { SharedValue } from 'react-native-reanimated';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import type { ColorToken } from '#theme/types';
 
-import { usePageIndicatorColors } from '../../hooks/use-page-indicator-colors';
-import { usePageIndicatorProgress } from '../../hooks/use-page-indicator-progress';
-import {
-  isPageIndicatorSharedValue,
-  PAGE_INDICATOR_SINGLE_PAGE_DURATION,
-} from '../../utils';
+import { usePageIndicatorCore } from '../../hooks/use-page-indicator-core';
+import { PageIndicatorRoot } from '../../PageIndicatorRoot';
 import {
   computePageIndicatorWindowTranslate,
-  DEFAULT_PAGE_INDICATOR_WINDOW_SIZE,
+  DEFAULT_PAGE_INDICATOR_MAX_VISIBLE,
+  pageIndicatorAxisTranslateStyle,
   pageIndicatorTrackMainSize,
   pageIndicatorViewportMainSize,
-} from '../../window';
+  PAGE_INDICATOR_SINGLE_PAGE_DURATION,
+} from '../../utils';
 
 import { PillIndicatorDot } from './PillIndicatorDot';
 import {
@@ -43,9 +41,9 @@ export interface PillIndicatorProps {
   vertical?: boolean;
   /**
    * Maximum dots visible before the track scrolls and edge-scales.
-   * Defaults to `5`. Windowing is off when `count <= windowSize`.
+   * Defaults to `5`. Overflow scrolling is off when `count <= maxVisible`.
    */
-  windowSize?: number;
+  maxVisible?: number;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -56,42 +54,35 @@ export function PillIndicator({
   activeColor,
   inactiveColor,
   vertical = false,
-  windowSize = DEFAULT_PAGE_INDICATOR_WINDOW_SIZE,
+  maxVisible = DEFAULT_PAGE_INDICATOR_MAX_VISIBLE,
   style,
 }: PillIndicatorProps) {
-  const scrollLinked = isPageIndicatorSharedValue(current);
-  const colors = usePageIndicatorColors({ activeColor, inactiveColor });
-  const { progress, pillJump } = usePageIndicatorProgress(
+  const { colors, pillJump, progress } = usePageIndicatorCore(
     count,
-    scrollLinked ? current : undefined,
-    scrollLinked ? undefined : current,
+    current,
     'pill',
-    duration
+    duration,
+    { activeColor, inactiveColor }
   );
 
-  const geometry = PILL_INDICATOR_GEOMETRY;
-  const { dotSize, gap, slot, activeWidth } = geometry;
-  const viewportSize = pageIndicatorViewportMainSize(
+  const { dotSize, gap, slot, activeWidth } = PILL_INDICATOR_GEOMETRY;
+  const viewportMainSize = pageIndicatorViewportMainSize(
     count,
     slot,
     dotSize,
-    windowSize,
+    maxVisible,
     activeWidth
   );
-  const fullTrackSize = pageIndicatorTrackMainSize(
+  const fullTrackMainSize = pageIndicatorTrackMainSize(
     count,
     slot,
     dotSize,
     activeWidth
   );
-  const isWindowed = count > windowSize;
+  const overflows = count > maxVisible;
 
-  const items = useMemo(
-    () =>
-      Array.from({ length: count }, (_, index) => ({
-        id: `page-${index}`,
-        index,
-      })),
+  const indices = useMemo(
+    () => Array.from({ length: count }, (_, index) => index),
     [count]
   );
 
@@ -109,64 +100,50 @@ export function PillIndicator({
       displayProgress,
       slot,
       dotSize,
-      windowSize,
+      maxVisible,
       activeWidth
     );
 
-    return {
-      transform: vertical ? [{ translateY: translate }] : [{ translateX: translate }],
-    };
+    return pageIndicatorAxisTranslateStyle(vertical, translate);
   });
 
-  const track = (
-    <Animated.View
-      style={[
-        {
-          flexDirection: vertical ? 'column' : 'row',
-          alignItems: 'center',
-          gap,
-          ...(isWindowed
-            ? vertical
-              ? { height: fullTrackSize }
-              : { width: fullTrackSize }
-            : undefined),
-        },
-        isWindowed ? trackStyle : null,
-      ]}
-    >
-      {items.map((item) => (
-        <PillIndicatorDot
-          key={item.id}
-          activeColor={colors.activeColor}
-          inactiveColor={colors.inactiveColor}
-          count={count}
-          index={item.index}
-          isWindowed={isWindowed}
-          pillJump={pillJump}
-          progress={progress}
-          vertical={vertical}
-          windowSize={windowSize}
-          geometry={geometry}
-        />
-      ))}
-    </Animated.View>
-  );
-
   return (
-    <View pointerEvents="none" style={style}>
-      {isWindowed ? (
-        <View
-          style={
-            vertical
-              ? { height: viewportSize, overflow: 'hidden' }
-              : { width: viewportSize, overflow: 'hidden' }
-          }
-        >
-          {track}
-        </View>
-      ) : (
-        track
-      )}
-    </View>
+    <PageIndicatorRoot
+      style={style}
+      vertical={vertical}
+      viewportMainSize={viewportMainSize}
+      overflows={overflows}
+    >
+      <Animated.View
+        style={[
+          {
+            flexDirection: vertical ? 'column' : 'row',
+            alignItems: 'center',
+            gap,
+            ...(overflows
+              ? vertical
+                ? { height: fullTrackMainSize }
+                : { width: fullTrackMainSize }
+              : undefined),
+          },
+          overflows ? trackStyle : null,
+        ]}
+      >
+        {indices.map((index) => (
+          <PillIndicatorDot
+            key={index}
+            activeColor={colors.activeColor}
+            inactiveColor={colors.inactiveColor}
+            count={count}
+            index={index}
+            pillJump={pillJump}
+            progress={progress}
+            vertical={vertical}
+            overflows={overflows}
+            maxVisible={maxVisible}
+          />
+        ))}
+      </Animated.View>
+    </PageIndicatorRoot>
   );
 }

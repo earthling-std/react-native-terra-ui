@@ -11,10 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import Svg, { Circle } from 'react-native-svg';
 
-import {
-  pageIndicatorDotCenter,
-  type DotIndicatorGeometry,
-} from './utils';
+import { DOT_INDICATOR_GEOMETRY, pageIndicatorDotCenter } from './utils';
 
 const ORBIT_ARCS = [
   { id: 'arc-1', arcDegrees: 120, duration: 800, delay: 0 },
@@ -53,7 +50,6 @@ interface SweepArcProps {
   arcDegrees: number;
   duration: number;
   delay: number;
-  geometry: DotIndicatorGeometry;
   clock: SharedValue<number>;
 }
 
@@ -62,10 +58,10 @@ function SweepArc({
   arcDegrees,
   duration,
   delay,
-  geometry,
   clock,
 }: SweepArcProps) {
-  const { ringSize, ringStroke, ringRadius, ringCircumference } = geometry;
+  const { ringSize, ringStroke, ringRadius, ringCircumference } =
+    DOT_INDICATOR_GEOMETRY;
 
   const containerStyle = useAnimatedStyle(() => {
     const { tailVisible, visibleDegrees } = computeSweepArcState(
@@ -123,7 +119,6 @@ interface LoadingOrbitProps {
   loading: boolean;
   progress: SharedValue<number>;
   vertical: boolean;
-  geometry: DotIndicatorGeometry;
 }
 
 export function LoadingOrbit({
@@ -132,9 +127,8 @@ export function LoadingOrbit({
   loading,
   progress,
   vertical,
-  geometry,
 }: LoadingOrbitProps) {
-  const { dotSize, slot, crossSize, ringSize } = geometry;
+  const { dotSize, slot, crossSize, ringSize } = DOT_INDICATOR_GEOMETRY;
   const crossOffset = (crossSize - ringSize) / 2;
   const clock = useSharedValue(0);
   const loadingActive = useSharedValue(loading);
@@ -143,18 +137,24 @@ export function LoadingOrbit({
     loadingActive.value = loading;
   }, [loading, loadingActive]);
 
-  useFrameCallback((frame) => {
+  const frameCallback = useFrameCallback((frame) => {
+    if (!loadingActive.value) return;
+
     const activeIndex = Math.min(
       Math.max(Math.round(progress.value), 0),
       count - 1
     );
     const settleDistance = Math.abs(progress.value - activeIndex);
 
-    if (loadingActive.value && settleDistance < ORBIT_SETTLE_THRESHOLD) {
-      const dt = frame.timeSincePreviousFrame ?? 0;
-      clock.value = (clock.value + dt / ORBIT_LOOP_DURATION) % 1;
-    }
+    if (settleDistance >= ORBIT_SETTLE_THRESHOLD) return;
+
+    const dt = frame.timeSincePreviousFrame ?? 0;
+    clock.value = (clock.value + dt / ORBIT_LOOP_DURATION) % 1;
   });
+
+  useEffect(() => {
+    frameCallback.setActive(loading);
+  }, [frameCallback, loading]);
 
   const containerStyle = useAnimatedStyle(() => {
     const activeIndex = Math.min(
@@ -167,7 +167,7 @@ export function LoadingOrbit({
 
     return {
       ...(vertical ? { top: mainOffset } : { left: mainOffset }),
-      opacity: loading
+      opacity: loadingActive.value
         ? interpolate(settleDistance, [0, 0.12], [1, 0], Extrapolation.CLAMP)
         : 0,
     };
@@ -193,7 +193,6 @@ export function LoadingOrbit({
           arcDegrees={arc.arcDegrees}
           duration={arc.duration}
           delay={arc.delay}
-          geometry={geometry}
           clock={clock}
         />
       ))}

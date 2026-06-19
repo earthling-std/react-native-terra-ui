@@ -6,7 +6,7 @@ import type { ColorToken } from '#theme/types';
 
 import { DotIndicator } from './variants/DotIndicator';
 import { PillIndicator } from './variants/PillIndicator';
-import { DEFAULT_PAGE_INDICATOR_WINDOW_SIZE } from './window';
+import { DEFAULT_PAGE_INDICATOR_MAX_VISIBLE } from './utils';
 
 export type PageIndicatorVariant = 'pill' | 'dot';
 
@@ -28,9 +28,9 @@ type PageIndicatorCoreProps = {
   vertical?: boolean;
   /**
    * Maximum dots visible before the track scrolls and edge-scales.
-   * Defaults to `5`. Windowing is off when `count <= windowSize`.
+   * Defaults to `5`. Overflow scrolling is off when `count <= maxVisible`.
    */
-  windowSize?: number;
+  maxVisible?: number;
   style?: StyleProp<ViewStyle>;
 };
 
@@ -62,13 +62,11 @@ export function PageIndicator(props: PageIndicatorProps) {
     activeColor,
     inactiveColor,
     vertical,
-    windowSize = DEFAULT_PAGE_INDICATOR_WINDOW_SIZE,
+    maxVisible = DEFAULT_PAGE_INDICATOR_MAX_VISIBLE,
     style,
   } = props;
 
   if (props.variant === 'dot') {
-    const { loadingColor, loading } = props;
-
     return (
       <DotIndicator
         count={count}
@@ -76,10 +74,10 @@ export function PageIndicator(props: PageIndicatorProps) {
         duration={duration}
         activeColor={activeColor}
         inactiveColor={inactiveColor}
-        loadingColor={loadingColor}
-        loading={loading}
+        loading={props.loading}
+        loadingColor={props.loadingColor}
         vertical={vertical}
-        windowSize={windowSize}
+        maxVisible={maxVisible}
         style={style}
       />
     );
@@ -93,7 +91,7 @@ export function PageIndicator(props: PageIndicatorProps) {
       activeColor={activeColor}
       inactiveColor={inactiveColor}
       vertical={vertical}
-      windowSize={windowSize}
+      maxVisible={maxVisible}
       style={style}
     />
   );
