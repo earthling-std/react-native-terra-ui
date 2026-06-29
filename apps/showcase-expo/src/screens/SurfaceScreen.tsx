@@ -1,9 +1,9 @@
-import { router } from 'expo-router';
-import { useWindowDimensions, View } from 'react-native';
+import { router } from "expo-router";
+import { useWindowDimensions, View } from "react-native";
 import {
   useAnimatedScrollHandler,
   useSharedValue,
-} from 'react-native-reanimated';
+} from "react-native-reanimated";
 import {
   Box,
   type ElevationKey,
@@ -12,30 +12,30 @@ import {
   Surface,
   type SurfaceVariant,
   Text,
-} from 'react-native-terra-ui';
-import { useUnistyles } from 'react-native-unistyles';
+} from "react-native-terra-ui";
+import { useUnistyles } from "react-native-unistyles";
 
-import { Pager } from '../components/Pager';
+import { Pager } from "../components/Pager";
 
 const SURFACE_VARIANTS: SurfaceVariant[] = [
-  'base',
-  'raised',
-  'sunken',
-  'transparent',
+  "base",
+  "raised",
+  "sunken",
+  "transparent",
 ];
 
-const ELEVATIONS: ElevationKey[] = ['none', 'sm', 'md', 'lg', 'xl'];
+const ELEVATIONS: ElevationKey[] = ["none", "sm", "md", "lg", "xl"];
 
-const RADII = ['sm', 'md', 'lg', 'xl', 'full'] as const;
+const RADII = ["sm", "md", "lg", "xl", "full"] as const;
 
-const PAGE_TITLES = ['Variants', 'Elevation', 'Radius', 'Stacked'];
+const PAGE_TITLES = ["Variants", "Elevation", "Radius", "Stacked"];
 
 function pageStyle(width: number) {
   return {
     flex: 1,
     width,
-    alignItems: 'center' as const,
-    justifyContent: 'center' as const,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
   };
 }
 
@@ -56,11 +56,17 @@ function VariantsPage(props: { width: number }) {
     <View style={pageStyle(width)}>
       <Box gap="4" align="start" style={{ width: contentWidth }}>
         {SURFACE_VARIANTS.map((variant) => (
-          <Surface key={variant} variant={variant} p="4" gap="1" style={{ width: '100%' }}>
+          <Surface
+            key={variant}
+            variant={variant}
+            p="4"
+            gap="1"
+            style={{ width: "100%" }}
+          >
             <Text variant="title-sm">{variant}</Text>
             <Text variant="body-sm" color="content.secondary">
-              {variant === 'transparent'
-                ? 'No fill — shadow does not render'
+              {variant === "transparent"
+                ? "No fill — shadow does not render"
                 : `Maps to surface.${variant}`}
             </Text>
             <DemoCaption>{`variant="${variant}"`}</DemoCaption>
@@ -85,7 +91,7 @@ function ElevationPage(props: { width: number }) {
             variant="raised"
             elevation={elevation}
             p="4"
-            style={{ width: '100%' }}
+            style={{ width: "100%" }}
           >
             <Text variant="label-md">elevation="{elevation}"</Text>
             <DemoCaption>{`variant="raised" elevation="${elevation}"`}</DemoCaption>
@@ -128,7 +134,7 @@ function StackedPage(props: { width: number }) {
   return (
     <View style={pageStyle(width)}>
       <Box gap="4" align="start" style={{ width: contentWidth }}>
-        <Surface variant="transparent" p="4" gap="3" style={{ width: '100%' }}>
+        <Surface variant="transparent" p="4" gap="3" style={{ width: "100%" }}>
           <Text variant="label-md">Transparent</Text>
           <Surface variant="base" p="4">
             <Text variant="label-md">Base</Text>

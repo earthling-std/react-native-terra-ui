@@ -1,10 +1,10 @@
-import { router } from 'expo-router';
-import { useState } from 'react';
-import { useWindowDimensions, View } from 'react-native';
+import { router } from "expo-router";
+import { useState } from "react";
+import { useWindowDimensions, View } from "react-native";
 import Animated, {
   useAnimatedScrollHandler,
   useSharedValue,
-} from 'react-native-reanimated';
+} from "react-native-reanimated";
 import {
   Box,
   Button,
@@ -13,30 +13,39 @@ import {
   Screen,
   Surface,
   Text,
-} from 'react-native-terra-ui';
-import { useUnistyles } from 'react-native-unistyles';
+} from "react-native-terra-ui";
+import { useUnistyles } from "react-native-unistyles";
 
-import { Pager } from '../components/Pager';
+import { Pager } from "../components/Pager";
 
 const PAGE_COUNT = 4;
-const PAGE_LABELS = Array.from({ length: PAGE_COUNT }, (_, index) => `${index + 1}`);
+const PAGE_LABELS = Array.from(
+  { length: PAGE_COUNT },
+  (_, index) => `${index + 1}`,
+);
 
 const MANY_PAGE_COUNT = 10;
 const MANY_PAGE_LABELS = Array.from(
   { length: MANY_PAGE_COUNT },
-  (_, index) => `${index + 1}`
+  (_, index) => `${index + 1}`,
 );
 
 const SCROLL_CARD_COUNT = 5;
 
-const PAGE_TITLES = ['Pill variant', 'Dot variant', 'Scroll linked', 'Color override', 'Many pages'];
+const PAGE_TITLES = [
+  "Pill variant",
+  "Dot variant",
+  "Scroll linked",
+  "Color override",
+  "Many pages",
+];
 
 function pageStyle(width: number) {
   return {
     flex: 1,
     width,
-    alignItems: 'center' as const,
-    justifyContent: 'center' as const,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
   };
 }
 
@@ -55,7 +64,7 @@ function PagePicker(props: {
           key={label}
           size="sm"
           fullWidth={false}
-          variant={index === activeIndex ? 'primary' : 'outline'}
+          variant={index === activeIndex ? "primary" : "outline"}
           onPress={() => onSelect(index)}
         >
           {compact ? label : `Page ${label}`}
@@ -128,7 +137,7 @@ function DotPage(props: { width: number }) {
           variant="ghost"
           onPress={() => setLoading((value) => !value)}
         >
-          {loading ? 'Stop loading' : 'Toggle loading'}
+          {loading ? "Stop loading" : "Toggle loading"}
         </Button>
       </Box>
     </View>
@@ -151,7 +160,7 @@ function ScrollLinkedPage(props: { width: number }) {
   return (
     <View style={pageStyle(width)}>
       <Box gap="5" align="center" style={{ width: contentWidth }}>
-      <Animated.ScrollView
+        <Animated.ScrollView
           horizontal
           pagingEnabled
           showsHorizontalScrollIndicator={false}
@@ -167,19 +176,19 @@ function ScrollLinkedPage(props: { width: number }) {
                 key={`scroll-card-${cardNumber}`}
                 variant="raised"
                 elevation="none"
-                borderColor='border.default'
+                borderColor="border.default"
                 borderWidth={1}
                 radius="lg"
                 p="5"
                 style={{
                   width: contentWidth,
                   minHeight: 128,
-                  justifyContent: 'center',
+                  justifyContent: "center",
                 }}
               >
                 <Text variant="title-sm">Card {cardNumber}</Text>
                 <Text variant="body-sm" color="content.secondary">
-                Swipe the cards
+                  Swipe the cards
                 </Text>
               </Surface>
             );
@@ -206,8 +215,8 @@ function ColorsPage(props: { width: number }) {
   const { width } = props;
   const [activeIndex, setActiveIndex] = useState(0);
   const colorProps = {
-    activeColor: 'content.accent' as const,
-    inactiveColor: 'content.tertiary' as const,
+    activeColor: "content.accent" as const,
+    inactiveColor: "content.tertiary" as const,
   };
 
   return (
@@ -228,7 +237,7 @@ function ColorsPage(props: { width: number }) {
           />
         </Box>
         <PagePicker
-          labels={['1', '2', '3']}
+          labels={["1", "2", "3"]}
           activeIndex={activeIndex}
           onSelect={setActiveIndex}
         />
