@@ -5,6 +5,7 @@ import { Box, Button, Header, Screen, Text } from 'react-native-terra-ui';
 import { ThemeConfigSection } from '../components/ThemeConfigSection';
 
 const COMPONENTS = [
+  { href: '/avatar', label: 'Avatar' },
   { href: '/typography', label: 'Typography' },
   { href: '/surface', label: 'Surface' },
   { href: '/button', label: 'Button' },

@@ -1,3 +1,5 @@
+import { createElement } from 'react';
+import { Image } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
 import { defaultIcons } from '#components/icon/utils';
@@ -14,10 +16,37 @@ import type {
   Scheme,
   TerraConfig,
   TerraIconComponent,
+  TerraImageComponent,
+  TerraImageContentFit,
   TerraSemanticIconName,
   TerraTheme,
   TerraThemeOverride,
 } from './types';
+
+// ─── Default image component ──────────────────────────────────────────────────
+
+const CONTENT_FIT_MAP = {
+  cover: 'cover',
+  contain: 'contain',
+  fill: 'stretch',
+} as const satisfies Record<TerraImageContentFit, 'cover' | 'contain' | 'stretch'>;
+
+const DefaultImage: TerraImageComponent = ({
+  contentFit = 'cover',
+  source,
+  style,
+  accessibilityLabel,
+  onError,
+}) =>
+  createElement(Image, {
+    source,
+    style,
+    accessibilityLabel,
+    resizeMode: CONTENT_FIT_MAP[contentFit],
+    onError: onError ? () => onError() : undefined,
+  });
+
+// ─── Radius / elevation defaults ─────────────────────────────────────────────
 
 /** Fallback when a component's radius is not configured. */
 const DEFAULT_RADIUS: DefaultRadiusToken = 'md';
@@ -50,6 +79,7 @@ interface Registry {
   defaultRadius: ResolvedRadius;
   surfaceElevation: ElevationKey;
   icons: Record<string, TerraIconComponent>;
+  imageComponent: TerraImageComponent;
   configured: boolean;
 }
 
@@ -61,6 +91,7 @@ const registry: Registry = {
   defaultRadius: resolveDefaultRadius(),
   surfaceElevation: DEFAULT_ELEVATION,
   icons: {},
+  imageComponent: DefaultImage,
   configured: false,
 };
 
@@ -70,6 +101,8 @@ export const getRegistry = (): Registry => registry;
 export const getIsConfigured = (): boolean => registry.configured;
 
 export const getAccentNames = (): string[] => Object.keys(registry.accents);
+
+export const getImageComponent = (): TerraImageComponent => registry.imageComponent;
 
 export const getIcon = (name: string): TerraIconComponent | undefined =>
   registry.icons[name] ?? defaultIcons[name as TerraSemanticIconName];
@@ -150,6 +183,7 @@ export function configureTerraUI(config: TerraConfig = {}): void {
   registry.surfaceElevation =
     config.components?.surface?.elevation ?? DEFAULT_ELEVATION;
   registry.icons = config.icons ?? {};
+  registry.imageComponent = config.image ?? DefaultImage;
 
   registry.accents = {};
   for (const [name, accent] of Object.entries(config.accents ?? {})) {

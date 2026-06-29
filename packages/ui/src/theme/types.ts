@@ -5,6 +5,7 @@
  * data is unflattened into, plus the public configuration surface.
  */
 import type { ComponentType } from 'react';
+import type { ImageStyle, StyleProp } from 'react-native';
 
 import type { DeepPartial } from '#utils/deep-merge';
 
@@ -267,6 +268,20 @@ export interface TerraIconProps {
 
 export type TerraIconComponent = ComponentType<TerraIconProps>;
 
+// ─── Image ───────────────────────────────────────────────────────────────────
+
+export type TerraImageContentFit = 'cover' | 'contain' | 'fill';
+
+export interface TerraImageProps {
+  source: { uri: string } | number;
+  style?: StyleProp<ImageStyle>;
+  accessibilityLabel?: string;
+  contentFit?: TerraImageContentFit;
+  onError?: () => void;
+}
+
+export type TerraImageComponent = ComponentType<TerraImageProps>;
+
 declare global {
   namespace TerraUI {
     interface IconRegistry {}
@@ -336,6 +351,12 @@ export interface TerraConfig {
    * must be registered here.
    */
   icons?: Partial<Record<TerraIconName, TerraIconComponent>>;
+  /**
+   * Custom image renderer (e.g. `expo-image`, `react-native-fast-image`).
+   * Defaults to React Native's built-in `Image` with `contentFit` mapped to
+   * `resizeMode`. Wrap third-party components to match `TerraImageProps`.
+   */
+  image?: TerraImageComponent;
   /** Name of the accent (from `accents`) to apply by default. */
   defaultAccent?: string;
   /** Per-component default props (e.g. `{ button: { radius: 'full' } }`). */
