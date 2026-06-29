@@ -6,29 +6,29 @@ import {
   useContext,
   useId,
   useMemo,
-} from 'react';
-import type { GestureResponderEvent, PressableProps, View } from 'react-native';
-import { Pressable, StyleSheet } from 'react-native';
+} from "react";
+import type { GestureResponderEvent, PressableProps, View } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 
-import { useUnistyles } from 'react-native-unistyles';
+import { useUnistyles } from "react-native-unistyles";
 
-import type { ColorToken, TerraIconName, TerraTheme } from '#theme/types';
+import type { ColorToken, TerraIconName, TerraTheme } from "#theme/types";
 
-import { Box } from '../box';
-import { Button, type ButtonProps } from '../button';
-import { Icon, type IconProps } from '../icon';
-import { Surface, type SurfaceProps } from '../surface';
-import { Text, type TextProps } from '../text';
-import { hideToast, showToast } from './utils/controller';
-import type { ToastId as StackToastId, ToastShowOptions } from './types';
+import { Box } from "../box";
+import { Button, type ButtonProps } from "../button";
+import { Icon, type IconProps } from "../icon";
+import { Surface, type SurfaceProps } from "../surface";
+import { Text, type TextProps } from "../text";
+import type { ToastId as StackToastId, ToastShowOptions } from "./types";
+import { hideToast, showToast } from "./utils/controller";
 
 export type ToastVariant =
-  | 'default'
-  | 'accent'
-  | 'info'
-  | 'success'
-  | 'warning'
-  | 'danger';
+  | "default"
+  | "accent"
+  | "info"
+  | "success"
+  | "warning"
+  | "danger";
 
 type ToastInstanceId = string | number;
 
@@ -49,7 +49,7 @@ function useToastContext(): ToastContextValue {
   const context = useContext(ToastContext);
   if (!context) {
     throw new Error(
-      'Toast compound components must be rendered inside <Toast>.'
+      "Toast compound components must be rendered inside <Toast>.",
     );
   }
   return context;
@@ -73,7 +73,7 @@ function getToastColors(variant: ToastVariant, theme: TerraTheme): ToastColors {
   };
 
   switch (variant) {
-    case 'accent':
+    case "accent":
       return {
         ...base,
         title: theme.color.action.secondary.fg,
@@ -81,9 +81,9 @@ function getToastColors(variant: ToastVariant, theme: TerraTheme): ToastColors {
         actionBg: theme.color.action.primary.bg,
         actionFg: theme.color.action.primary.fg,
       };
-    case 'info':
-    case 'success':
-    case 'warning': {
+    case "info":
+    case "success":
+    case "warning": {
       const status = theme.color.status[variant];
       return {
         ...base,
@@ -93,7 +93,7 @@ function getToastColors(variant: ToastVariant, theme: TerraTheme): ToastColors {
         actionFg: status.onSolid,
       };
     }
-    case 'danger': {
+    case "danger": {
       const status = theme.color.status.danger;
       return {
         ...base,
@@ -103,7 +103,7 @@ function getToastColors(variant: ToastVariant, theme: TerraTheme): ToastColors {
         actionFg: status.onSolid,
       };
     }
-    case 'default':
+    case "default":
       return {
         ...base,
         title: theme.color.content.primary,
@@ -114,7 +114,7 @@ function getToastColors(variant: ToastVariant, theme: TerraTheme): ToastColors {
   }
 }
 
-export interface ToastProps extends Omit<SurfaceProps, 'id' | 'variant'> {
+export interface ToastProps extends Omit<SurfaceProps, "id" | "variant"> {
   /** Visual tone for the toast. Defaults to `default`. */
   variant?: ToastVariant;
   /** Optional identifier passed back to `hide` when `Toast.Close` is pressed. */
@@ -128,17 +128,17 @@ export interface ToastProps extends Omit<SurfaceProps, 'id' | 'variant'> {
 const ToastRoot = forwardRef<ComponentRef<typeof View>, ToastProps>(
   function Toast(
     {
-      variant = 'default',
+      variant = "default",
       id,
       hide,
       onClose,
       children,
       nativeID: nativeIDProp,
       style,
-      accessibilityRole = 'alert',
+      accessibilityRole = "alert",
       ...rest
     },
-    ref
+    ref,
   ) {
     const { theme } = useUnistyles();
     const generatedNativeID = useId();
@@ -146,7 +146,7 @@ const ToastRoot = forwardRef<ComponentRef<typeof View>, ToastProps>(
     const colors = getToastColors(variant, theme);
     const contextValue = useMemo<ToastContextValue>(
       () => ({ nativeID, variant, id, hide, onClose }),
-      [nativeID, variant, id, hide, onClose]
+      [nativeID, variant, id, hide, onClose],
     );
 
     return (
@@ -178,7 +178,7 @@ const ToastRoot = forwardRef<ComponentRef<typeof View>, ToastProps>(
         </Surface>
       </ToastContext.Provider>
     );
-  }
+  },
 );
 
 export interface ToastTitleProps extends TextProps {}
@@ -186,14 +186,14 @@ export interface ToastTitleProps extends TextProps {}
 const ToastTitle = forwardRef<ComponentRef<typeof Text>, ToastTitleProps>(
   function ToastTitle(
     {
-      accessibilityRole = 'header',
+      accessibilityRole = "header",
       color,
       nativeID,
-      variant = 'label-lg',
+      variant = "label-lg",
       weight,
       ...rest
     },
-    ref
+    ref,
   ) {
     const { theme } = useUnistyles();
     const { nativeID: rootNativeID, variant: toastVariant } = useToastContext();
@@ -206,11 +206,11 @@ const ToastTitle = forwardRef<ComponentRef<typeof Text>, ToastTitleProps>(
         color={color ?? colors.title}
         nativeID={nativeID ?? `${rootNativeID}_label`}
         variant={variant}
-        weight={weight ?? 'semibold'}
+        weight={weight ?? "semibold"}
         {...rest}
       />
     );
-  }
+  },
 );
 
 export interface ToastDescriptionProps extends TextProps {}
@@ -219,8 +219,8 @@ const ToastDescription = forwardRef<
   ComponentRef<typeof Text>,
   ToastDescriptionProps
 >(function ToastDescription(
-  { color, nativeID, variant = 'body-sm', ...rest },
-  ref
+  { color, nativeID, variant = "body-sm", ...rest },
+  ref,
 ) {
   const { theme } = useUnistyles();
   const { nativeID: rootNativeID, variant: toastVariant } = useToastContext();
@@ -237,17 +237,21 @@ const ToastDescription = forwardRef<
   );
 });
 
-export interface ToastActionProps
-  extends Omit<PressableProps, 'children' | 'disabled' | 'style'> {
+export interface ToastActionProps extends Omit<
+  PressableProps,
+  "children" | "disabled" | "style"
+> {
   children?: ReactNode;
+  /** Override the action button colour. Defaults to the parent Toast variant. */
+  variant?: ToastVariant;
   fullWidth?: boolean;
   isDisabled?: boolean;
-  size?: 'sm' | 'md' | 'lg';
-  style?: PressableProps['style'];
+  size?: "sm" | "md" | "lg";
+  style?: PressableProps["style"];
 }
 
 function renderActionChildren(children: ReactNode, color: string): ReactNode {
-  if (typeof children === 'string' || typeof children === 'number') {
+  if (typeof children === "string" || typeof children === "number") {
     return (
       <Text variant="label-lg" weight="semibold" style={{ color }}>
         {children}
@@ -263,18 +267,19 @@ const ToastAction = forwardRef<
 >(function ToastAction(
   {
     children,
+    variant,
     fullWidth = false,
     isDisabled = false,
-    size = 'sm',
+    size = "sm",
     style,
     onPress,
     ...rest
   },
-  ref
+  ref,
 ) {
   const { theme } = useUnistyles();
   const { variant: toastVariant } = useToastContext();
-  const colors = getToastColors(toastVariant, theme);
+  const colors = getToastColors(variant ?? toastVariant, theme);
 
   return (
     <Pressable
@@ -297,7 +302,7 @@ const ToastAction = forwardRef<
                 ? theme.opacity.disabled
                 : 1,
         },
-        typeof style === 'function' ? style(state) : style,
+        typeof style === "function" ? style(state) : style,
       ]}
     >
       {renderActionChildren(children, colors.actionFg)}
@@ -305,9 +310,9 @@ const ToastAction = forwardRef<
   );
 });
 
-export interface ToastCloseProps extends Omit<ButtonProps, 'children'> {
+export interface ToastCloseProps extends Omit<ButtonProps, "children"> {
   children?: ReactNode;
-  iconProps?: Omit<IconProps, 'name'>;
+  iconProps?: Omit<IconProps, "name">;
 }
 
 const ToastClose = forwardRef<ComponentRef<typeof Button>, ToastCloseProps>(
@@ -315,15 +320,15 @@ const ToastClose = forwardRef<ComponentRef<typeof Button>, ToastCloseProps>(
     {
       children,
       iconProps,
-      size = 'sm',
+      size = "sm",
       fullWidth = false,
       isIconOnly = true,
-      variant = 'ghost',
-      accessibilityLabel = 'Close',
+      variant = "ghost",
+      accessibilityLabel = "Close",
       onPress,
       ...rest
     },
-    ref
+    ref,
   ) {
     const { theme } = useUnistyles();
     const { id, hide, onClose, variant: toastVariant } = useToastContext();
@@ -357,18 +362,18 @@ const ToastClose = forwardRef<ComponentRef<typeof Button>, ToastCloseProps>(
         )}
       </Button>
     );
-  }
+  },
 );
 
-export interface ToastIconProps extends Omit<IconProps, 'name'> {
+export interface ToastIconProps extends Omit<IconProps, "name"> {
   name?: TerraIconName;
 }
 
 const VARIANT_ICON: Partial<Record<ToastVariant, TerraIconName>> = {
-  info: 'status.info',
-  success: 'status.success',
-  warning: 'status.warning',
-  danger: 'status.danger',
+  info: "status.info",
+  success: "status.success",
+  warning: "status.warning",
+  danger: "status.danger",
 };
 
 const ToastIcon = forwardRef<ComponentRef<typeof View>, ToastIconProps>(
@@ -376,7 +381,7 @@ const ToastIcon = forwardRef<ComponentRef<typeof View>, ToastIconProps>(
     const { theme } = useUnistyles();
     const { variant } = useToastContext();
     const colors = getToastColors(variant, theme);
-    const iconName = name ?? VARIANT_ICON[variant] ?? 'status.info';
+    const iconName = name ?? VARIANT_ICON[variant] ?? "status.info";
 
     return (
       <Icon
@@ -387,10 +392,10 @@ const ToastIcon = forwardRef<ComponentRef<typeof View>, ToastIconProps>(
         {...rest}
       />
     );
-  }
+  },
 );
 
-export interface DefaultToastProps extends Omit<ToastProps, 'children'> {
+export interface DefaultToastProps extends Omit<ToastProps, "children"> {
   label?: ReactNode;
   description?: ReactNode;
   actionLabel?: ReactNode;
@@ -408,10 +413,10 @@ export function DefaultToast({
   showCloseButton,
   id,
   hide,
-  variant = 'default',
+  variant = "default",
   ...rest
 }: DefaultToastProps) {
-  const shouldRenderIcon = icon !== false && (icon || variant !== 'default');
+  const shouldRenderIcon = icon !== false && (icon || variant !== "default");
   const handleActionPress = () => {
     onActionPress?.({ id, hide });
   };
@@ -442,7 +447,7 @@ type ToastComponent = typeof ToastRoot & {
   Close: typeof ToastClose;
   Icon: typeof ToastIcon;
   show: (options: ToastShowOptions) => StackToastId;
-  hide: (id?: StackToastId | StackToastId[] | 'all') => void;
+  hide: (id?: StackToastId | StackToastId[] | "all") => void;
 };
 
 export const Toast = ToastRoot as ToastComponent;
@@ -456,14 +461,14 @@ Toast.hide = hideToast;
 
 const styles = StyleSheet.create({
   root: {
-    alignSelf: 'stretch',
+    alignSelf: "stretch",
     minHeight: 64,
   },
   action: {
-    alignItems: 'center',
-    alignSelf: 'flex-start',
+    alignItems: "center",
+    alignSelf: "flex-start",
     borderRadius: 9999,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   action_sm: {
     minHeight: 36,
@@ -478,6 +483,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   actionFullWidth: {
-    alignSelf: 'stretch',
+    alignSelf: "stretch",
   },
 });

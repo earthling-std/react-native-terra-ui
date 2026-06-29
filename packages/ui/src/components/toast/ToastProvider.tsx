@@ -7,9 +7,13 @@ import {
   useReducer,
   useRef,
 } from 'react';
-import { Platform, View } from 'react-native';
+import { Keyboard, Platform } from 'react-native';
 
-import { useSharedValue } from 'react-native-reanimated';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { setToastManager } from './utils/controller';
@@ -31,7 +35,8 @@ import type {
 type ToastAction =
   | { type: 'show'; item: ToastItem }
   | { type: 'hide'; ids: ToastId[] }
-  | { type: 'hideAll' };
+  | { type: 'hideAll' }
+  | { type: 'hidePlacement'; placement: ToastPlacement };
 
 const DEFAULT_DURATION = 4000;
 const DEFAULT_MAX_VISIBLE_TOASTS = 3;
@@ -49,6 +54,8 @@ function toastReducer(state: ToastItem[], action: ToastAction): ToastItem[] {
       return state.filter((toast) => !action.ids.some((id) => id === toast.id));
     case 'hideAll':
       return [];
+    case 'hidePlacement':
+      return state.filter((toast) => toast.placement !== action.placement);
   }
 }
 
@@ -204,6 +211,21 @@ export function ToastProvider({
                 onHide: options.onHide,
               };
 
+      const oppositePlacement = item.placement === 'top' ? 'bottom' : 'top';
+      const oppositeToasts = toastsRef.current.filter(
+        (t) => t.placement === oppositePlacement
+      );
+      if (oppositeToasts.length > 0) {
+        for (const t of oppositeToasts) {
+          clearToastTimeout(t.id);
+          t.onHide?.();
+        }
+        toastsRef.current = toastsRef.current.filter(
+          (t) => t.placement !== oppositePlacement
+        );
+        dispatch({ type: 'hidePlacement', placement: oppositePlacement });
+      }
+
       clearToastTimeout(item.id);
       toastsRef.current = [
         ...toastsRef.current.filter((toast) => toast.id !== item.id),
@@ -288,18 +310,40 @@ function ToastViewport({
   const safeAreaInsets = useSafeAreaInsets();
   const heights = useSharedValue<Record<ToastId, number>>({});
   const total = useSharedValue(0);
-  const edgeStyle =
-    placement === 'top'
-      ? {
-          top:
-            offset?.top ??
-            safeAreaInsets.top + (Platform.OS === 'ios' ? 0 : 12),
-        }
-      : {
-          bottom:
-            offset?.bottom ??
-            safeAreaInsets.bottom + (Platform.OS === 'ios' ? 6 : 12),
-        };
+  const keyboardHeight = useSharedValue(0);
+
+  const baseBottom =
+    offset?.bottom ?? safeAreaInsets.bottom + (Platform.OS === 'ios' ? 6 : 12);
+  const baseTop =
+    offset?.top ?? safeAreaInsets.top + (Platform.OS === 'ios' ? 0 : 12);
+
+  useEffect(() => {
+    if (placement !== 'bottom') return;
+    const showEvent =
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent =
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+    const showSub = Keyboard.addListener(showEvent, (e) => {
+      keyboardHeight.value = withTiming(e.endCoordinates.height);
+    });
+    const hideSub = Keyboard.addListener(hideEvent, () => {
+      keyboardHeight.value = withTiming(0);
+    });
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, [keyboardHeight, placement]);
+
+  const gap = Platform.OS === 'ios' ? 6 : 12;
+
+  const keyboardStyle = useAnimatedStyle(() => {
+    if (placement === 'top') return { top: baseTop };
+    if (keyboardHeight.value > 0) {
+      return { bottom: keyboardHeight.value + gap };
+    }
+    return { bottom: baseBottom };
+  });
 
   useEffect(() => {
     total.value = toasts.length;
@@ -316,15 +360,17 @@ function ToastViewport({
   if (toasts.length === 0) return null;
 
   return (
-    <View
+    <Animated.View
       pointerEvents="box-none"
       style={[
         {
           position: 'absolute',
+          zIndex: 9999,
+          elevation: 9999,
           left: offset?.left ?? safeAreaInsets.left + 12,
           right: offset?.right ?? safeAreaInsets.right + 12,
         },
-        edgeStyle,
+        keyboardStyle,
       ]}
     >
       {toasts.map((toast, index) => (
@@ -345,7 +391,7 @@ function ToastViewport({
           })}
         </ToastAnimatedItem>
       ))}
-    </View>
+    </Animated.View>
   );
 }
 
