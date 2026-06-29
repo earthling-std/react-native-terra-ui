@@ -89,7 +89,7 @@ function StatesPage(props: { width: number }) {
     <View style={pageStyle(width)}>
       <Box gap="4" align="start" style={{ width: contentWidth }}>
         <Button isLoading onPress={noop}>
-          Saving…
+          Loading...
         </Button>
         <Button isDisabled onPress={noop}>
           Disabled

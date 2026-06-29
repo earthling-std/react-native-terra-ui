@@ -255,11 +255,8 @@ const ButtonRoot = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
               : externalStyle,
           ]}
         >
-          {isLoading ? (
-            <Spinner size="sm" color={fg} />
-          ) : (
-            renderChildren(children)
-          )}
+          {isLoading && <Spinner size="sm" color={fg} />}
+          {renderChildren(children)}
         </Pressable>
       </ButtonContext.Provider>
     );
