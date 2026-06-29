@@ -1,4 +1,4 @@
-import type { ToastId, ToastManager, ToastShowOptions } from './types';
+import type { ToastId, ToastManager, ToastShowOptions } from '../types';
 
 let activeManager: ToastManager | null = null;
 

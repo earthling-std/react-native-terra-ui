@@ -12,9 +12,9 @@ import { Platform, View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { setToastManager } from './controller';
+import { setToastManager } from './utils/controller';
+import { ToastAnimatedItem } from './parts/ToastAnimatedItem';
 import { DefaultToast } from './Toast';
-import { ToastAnimatedItem } from './ToastAnimatedItem';
 import type {
   ToastComponentProps,
   ToastDuration,

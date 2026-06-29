@@ -12,7 +12,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import type { ToastId, ToastPlacement } from './types';
+import type { ToastId, ToastPlacement } from '../types';
 
 export interface ToastAnimatedItemProps {
   children: ReactElement;

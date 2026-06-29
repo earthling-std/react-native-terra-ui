@@ -19,7 +19,7 @@ import { Button, type ButtonProps } from '../button';
 import { Icon, type IconProps } from '../icon';
 import { Surface, type SurfaceProps } from '../surface';
 import { Text, type TextProps } from '../text';
-import { hideToast, showToast } from './controller';
+import { hideToast, showToast } from './utils/controller';
 import type { ToastId as StackToastId, ToastShowOptions } from './types';
 
 export type ToastVariant =
