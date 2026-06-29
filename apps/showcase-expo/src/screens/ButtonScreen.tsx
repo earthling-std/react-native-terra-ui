@@ -49,7 +49,7 @@ function VariantsPage(props: { width: number }) {
       <Box gap="4" align="center">
         {VARIANTS.map((variant) => (
           <View key={variant}>
-            <Button variant={variant} size="sm" fullWidth={false} onPress={noop}>
+            <Button variant={variant} fullWidth={false} onPress={noop}>
               {variant}
             </Button>
           </View>

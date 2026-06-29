@@ -1,6 +1,6 @@
 import { Link } from 'expo-router';
 
-import { Button, Box, Header, Screen, Text } from 'react-native-terra-ui';
+import { Box, Button, Header, Screen, Text } from 'react-native-terra-ui';
 
 import { ThemeConfigSection } from '../components/ThemeConfigSection';
 
@@ -8,6 +8,7 @@ const COMPONENTS = [
   { href: '/typography', label: 'Typography' },
   { href: '/surface', label: 'Surface' },
   { href: '/button', label: 'Button' },
+  { href: '/toast', label: 'Toast' },
   { href: '/icon', label: 'Icon' },
   { href: '/spinner', label: 'Spinner' },
   { href: '/page-indicator', label: 'Page Indicator' },
@@ -32,9 +33,7 @@ export function GalleryScreen() {
           </Text>
           {COMPONENTS.map(({ href, label }) => (
             <Link key={label} href={href} asChild>
-              <Button variant="outline">
-                {label}
-              </Button>
+              <Button variant="outline">{label}</Button>
             </Link>
           ))}
         </Box>

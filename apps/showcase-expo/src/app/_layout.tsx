@@ -8,7 +8,7 @@ import {
 import { Stack } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { TerraUIProvider } from 'react-native-terra-ui';
+import { TerraUIProvider, ToastProvider } from 'react-native-terra-ui';
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -25,7 +25,9 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <TerraUIProvider>
-        <Stack screenOptions={{ headerShown: false }} />
+        <ToastProvider>
+          <Stack screenOptions={{ headerShown: false }} />
+        </ToastProvider>
       </TerraUIProvider>
     </SafeAreaProvider>
   );

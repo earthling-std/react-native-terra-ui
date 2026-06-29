@@ -9,3 +9,4 @@ export * from './slot';
 export * from './spinner';
 export * from './surface';
 export * from './text';
+export * from './toast';

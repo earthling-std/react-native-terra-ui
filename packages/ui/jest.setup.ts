@@ -25,6 +25,13 @@ jest.mock('react-native-unistyles', () => {
 
 jest.mock('react-native-reanimated', () => {
   const { View } = require('react-native');
+  const animationBuilder = {
+    duration: () => animationBuilder,
+    easing: () => animationBuilder,
+    mass: () => animationBuilder,
+    springify: () => animationBuilder,
+  };
+
   return {
     __esModule: true,
     default: {
@@ -42,7 +49,15 @@ jest.mock('react-native-reanimated', () => {
     interpolateColor: () => '#000000',
     Extrapolation: { CLAMP: 'clamp', EXTEND: 'extend', IDENTITY: 'identity' },
     withRepeat: (value: unknown) => value,
+    withSpring: (value: unknown) => value,
     withTiming: (value: unknown) => value,
+    Keyframe: function Keyframe() {
+      return animationBuilder;
+    },
+    FadeInDown: animationBuilder,
+    FadeInUp: animationBuilder,
+    FadeOutDown: animationBuilder,
+    FadeOutUp: animationBuilder,
     Easing: {
       linear: (v: unknown) => v,
       out: (fn: unknown) => fn,

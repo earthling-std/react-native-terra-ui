@@ -48,6 +48,8 @@ export interface ButtonProps
    * Icon-only buttons always stay square regardless of this prop.
    */
   fullWidth?: boolean;
+  /** Remove the button's built-in horizontal padding. */
+  compact?: boolean;
   children?: ReactNode;
 }
 
@@ -132,9 +134,9 @@ const LABEL_TYPOGRAPHY: Record<
     weight?: FontWeightToken;
   }
 > = {
-  sm: { variant: 'label-md' },
-  md: { variant: 'label-lg' },
-  lg: { variant: 'label-lg', weight: 'semibold' },
+  sm: { variant: 'label-md', weight: 'semibold' },
+  md: { variant: 'label-lg', weight: 'semibold' },
+  lg: { variant: 'label-lg', weight: 'bold' },
 };
 
 const ButtonLabel = ({ children }: { children: ReactNode }) => {
@@ -210,6 +212,7 @@ const ButtonRoot = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
       isLoading = false,
       isIconOnly = false,
       fullWidth = true,
+      compact = false,
       children,
       onPress,
       ...rest
@@ -242,6 +245,7 @@ const ButtonRoot = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
           style={(state) => [
             styles.base,
             { backgroundColor: bg, borderColor: border, borderWidth },
+            compact ? styles.compact : null,
             state.pressed && !blocked
               ? { opacity: theme.opacity.pressed }
               : null,
@@ -281,9 +285,9 @@ const styles = StyleSheet.create((theme) => ({
     alignSelf: 'flex-start',
     variants: {
       size: {
-        sm: { height: 36, paddingHorizontal: 14, gap: 6 },
-        md: { height: 44, paddingHorizontal: 16, gap: 8 },
-        lg: { height: 52, paddingHorizontal: 20, gap: 8 },
+        sm: { minHeight: 36, paddingHorizontal: 14, gap: 6 },
+        md: { minHeight: 44, paddingHorizontal: 16, gap: 8 },
+        lg: { minHeight: 52, paddingHorizontal: 20, gap: 8 },
       },
       radius: {
         none: { borderRadius: theme.radius.none },
@@ -302,5 +306,10 @@ const styles = StyleSheet.create((theme) => ({
         false: {},
       },
     },
+  },
+  compact: {
+    paddingHorizontal: 2,
+    paddingVertical: 2,
+    minHeight: 0
   },
 }));
