@@ -119,7 +119,8 @@ export function resolveBoxStyle(
   if (gap !== undefined) style.gap = gap;
 
   // Layout
-  if (props.row !== undefined) style.flexDirection = props.row ? 'row' : 'column';
+  if (props.row !== undefined)
+    style.flexDirection = props.row ? 'row' : 'column';
   if (props.align !== undefined) style.alignItems = ALIGN_MAP[props.align];
   if (props.justify !== undefined) {
     style.justifyContent = JUSTIFY_MAP[props.justify];

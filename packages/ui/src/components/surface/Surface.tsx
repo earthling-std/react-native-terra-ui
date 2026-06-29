@@ -6,11 +6,7 @@ import { useUnistyles } from 'react-native-unistyles';
 import { getDefaultRadius, getSurfaceElevation } from '#theme/configure';
 import type { ColorToken, ElevationKey } from '#theme/types';
 
-import {
-  type BorderWidthInput,
-  Box,
-  type BoxProps,
-} from '../box';
+import { type BorderWidthInput, Box, type BoxProps } from '../box';
 
 /** Background level of a {@link Surface}. */
 export type SurfaceVariant = 'base' | 'raised' | 'sunken' | 'transparent';

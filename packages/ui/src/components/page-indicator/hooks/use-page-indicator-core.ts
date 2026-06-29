@@ -1,11 +1,10 @@
 import type { SharedValue } from 'react-native-reanimated';
-
+import { isPageIndicatorSharedValue } from '../utils';
 import {
-  usePageIndicatorColors,
   type PageIndicatorColorInput,
+  usePageIndicatorColors,
 } from './use-page-indicator-colors';
 import { usePageIndicatorProgress } from './use-page-indicator-progress';
-import { isPageIndicatorSharedValue } from '../utils';
 
 type PageIndicatorVariant = 'pill' | 'dot';
 

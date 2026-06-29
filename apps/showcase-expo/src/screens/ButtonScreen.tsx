@@ -1,9 +1,9 @@
-import { router } from "expo-router";
-import { useWindowDimensions, View } from "react-native";
+import { router } from 'expo-router';
+import { useWindowDimensions, View } from 'react-native';
 import {
   useAnimatedScrollHandler,
   useSharedValue,
-} from "react-native-reanimated";
+} from 'react-native-reanimated';
 import {
   Box,
   Button,
@@ -12,32 +12,32 @@ import {
   Header,
   Screen,
   Text,
-} from "react-native-terra-ui";
-import { useUnistyles } from "react-native-unistyles";
+} from 'react-native-terra-ui';
+import { useUnistyles } from 'react-native-unistyles';
 
-import { Pager } from "../components/Pager";
+import { Pager } from '../components/Pager';
 
 const noop = () => undefined;
 
 const VARIANTS: ButtonVariant[] = [
-  "primary",
-  "secondary",
-  "neutral",
-  "outline",
-  "ghost",
-  "danger",
+  'primary',
+  'secondary',
+  'neutral',
+  'outline',
+  'ghost',
+  'danger',
 ];
 
-const SIZES: ButtonSize[] = ["sm", "md", "lg"];
+const SIZES: ButtonSize[] = ['sm', 'md', 'lg'];
 
-const PAGE_TITLES = ["Variants", "Sizes", "States", "Icons"];
+const PAGE_TITLES = ['Variants', 'Sizes', 'States', 'Icons'];
 
 function pageStyle(width: number) {
   return {
     flex: 1,
     width,
-    alignItems: "center" as const,
-    justifyContent: "center" as const,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
   };
 }
 

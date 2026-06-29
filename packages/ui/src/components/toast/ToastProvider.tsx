@@ -15,8 +15,6 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-import { setToastManager } from './utils/controller';
 import { ToastAnimatedItem } from './parts/ToastAnimatedItem';
 import { DefaultToast } from './Toast';
 import type {
@@ -31,6 +29,7 @@ import type {
   ToastShowOptions,
   ToastShowOptionsWithComponent,
 } from './types';
+import { setToastManager } from './utils/controller';
 
 type ToastAction =
   | { type: 'show'; item: ToastItem }

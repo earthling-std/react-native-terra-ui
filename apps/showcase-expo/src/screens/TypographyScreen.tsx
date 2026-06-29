@@ -1,57 +1,57 @@
-import { router } from "expo-router";
-import { ScrollView, useWindowDimensions, View } from "react-native";
+import { router } from 'expo-router';
+import { ScrollView, useWindowDimensions, View } from 'react-native';
 import {
   useAnimatedScrollHandler,
   useSharedValue,
-} from "react-native-reanimated";
+} from 'react-native-reanimated';
 import {
   Box,
   Header,
   Screen,
   Text,
   type TextVariant,
-} from "react-native-terra-ui";
-import { useUnistyles } from "react-native-unistyles";
-import { Pager } from "../components/Pager";
+} from 'react-native-terra-ui';
+import { useUnistyles } from 'react-native-unistyles';
+import { Pager } from '../components/Pager';
 
 const TEXT_VARIANTS: TextVariant[] = [
-  "display-lg",
-  "display-md",
-  "display-sm",
-  "headline-lg",
-  "headline-md",
-  "headline-sm",
-  "title-lg",
-  "title-md",
-  "title-sm",
-  "body-lg",
-  "body-md",
-  "body-sm",
-  "label-lg",
-  "label-md",
-  "label-sm",
-  "caption",
+  'display-lg',
+  'display-md',
+  'display-sm',
+  'headline-lg',
+  'headline-md',
+  'headline-sm',
+  'title-lg',
+  'title-md',
+  'title-sm',
+  'body-lg',
+  'body-md',
+  'body-sm',
+  'label-lg',
+  'label-md',
+  'label-sm',
+  'caption',
 ];
 
-const PAGE_TITLES = ["Variants", "Article"];
+const PAGE_TITLES = ['Variants', 'Article'];
 const _isArticleLoading = true;
 
 const SIZE_LABELS: Record<string, string> = {
-  lg: "Large",
-  md: "Medium",
-  sm: "Small",
+  lg: 'Large',
+  md: 'Medium',
+  sm: 'Small',
 };
 
 function variantLabel(variant: TextVariant): string {
-  const [word = variant, ...rest] = variant.split("-");
+  const [word = variant, ...rest] = variant.split('-');
   if (rest.length === 0) {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
 
-  const size = rest[rest.length - 1] ?? "";
+  const size = rest[rest.length - 1] ?? '';
   const role = [word, ...rest.slice(0, -1)]
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
+    .join(' ');
 
   return `${role} ${SIZE_LABELS[size] ?? size}`;
 }
@@ -64,7 +64,7 @@ function VariantCatalogPage(props: { width: number }) {
       style={{
         flex: 1,
         width,
-        alignItems: "center",
+        alignItems: 'center',
         paddingVertical: 32,
       }}
     >
@@ -123,7 +123,7 @@ function ArticleSamplePage(props: { width: number }) {
         <View
           style={{
             borderLeftWidth: 3,
-            borderLeftColor: "#94a3b8",
+            borderLeftColor: '#94a3b8',
             paddingLeft: 14,
           }}
         >
@@ -145,7 +145,7 @@ function ArticleSamplePage(props: { width: number }) {
           <View
             style={{
               borderWidth: 1,
-              borderColor: "#cbd5e1",
+              borderColor: '#cbd5e1',
               borderRadius: 8,
               padding: 14,
             }}
@@ -214,7 +214,7 @@ function ArticleSamplePage(props: { width: number }) {
           style={{
             borderTopWidth: 1,
             borderBottomWidth: 1,
-            borderColor: "#cbd5e1",
+            borderColor: '#cbd5e1',
             paddingVertical: 14,
           }}
         >

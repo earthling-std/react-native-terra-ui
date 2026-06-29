@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { type StyleProp, type ViewStyle } from 'react-native';
+import type { StyleProp, ViewStyle } from 'react-native';
 
 import type { SharedValue } from 'react-native-reanimated';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
@@ -11,10 +11,10 @@ import { PageIndicatorRoot } from '../../PageIndicatorRoot';
 import {
   computePageIndicatorWindowTranslate,
   DEFAULT_PAGE_INDICATOR_MAX_VISIBLE,
+  PAGE_INDICATOR_SINGLE_PAGE_DURATION,
   pageIndicatorAxisTranslateStyle,
   pageIndicatorTrackMainSize,
   pageIndicatorViewportMainSize,
-  PAGE_INDICATOR_SINGLE_PAGE_DURATION,
 } from '../../utils';
 
 import { InactiveDot } from './InactiveDot';

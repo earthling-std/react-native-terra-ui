@@ -47,7 +47,10 @@ function visibleWindowIndices(activeIdx: number): number[] {
   );
   const visibleStart = Math.round(-translate / slot);
 
-  return Array.from({ length: MAX_VISIBLE }, (_, position) => visibleStart + position);
+  return Array.from(
+    { length: MAX_VISIBLE },
+    (_, position) => visibleStart + position
+  );
 }
 
 function windowScale(index: number, activeIdx: number): number {
@@ -99,7 +102,13 @@ describe('page indicator maxVisible', () => {
     const full = pageIndicatorTrackMainSize(COUNT, slot, dotSize, activeWidth);
 
     expect(viewport).toBe(
-      pageIndicatorViewportMainSize(MAX_VISIBLE, slot, dotSize, MAX_VISIBLE, activeWidth)
+      pageIndicatorViewportMainSize(
+        MAX_VISIBLE,
+        slot,
+        dotSize,
+        MAX_VISIBLE,
+        activeWidth
+      )
     );
     expect(full).toBeGreaterThan(viewport);
   });
@@ -125,6 +134,8 @@ describe('page indicator maxVisible', () => {
       dotSize
     );
 
-    expect(viewport).toBe(Math.max(dotSize, (MAX_VISIBLE - 1) * slot + dotSize));
+    expect(viewport).toBe(
+      Math.max(dotSize, (MAX_VISIBLE - 1) * slot + dotSize)
+    );
   });
 });

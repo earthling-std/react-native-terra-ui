@@ -1,10 +1,10 @@
-import { router } from "expo-router";
-import { type ComponentRef, useRef } from "react";
-import { TextInput, useWindowDimensions, View } from "react-native";
+import { router } from 'expo-router';
+import { type ComponentRef, useRef } from 'react';
+import { TextInput, useWindowDimensions, View } from 'react-native';
 import {
   useAnimatedScrollHandler,
   useSharedValue,
-} from "react-native-reanimated";
+} from 'react-native-reanimated';
 import {
   Box,
   Button,
@@ -13,25 +13,25 @@ import {
   Toast,
   type ToastVariant,
   useToast,
-} from "react-native-terra-ui";
-import { StyleSheet, useUnistyles } from "react-native-unistyles";
+} from 'react-native-terra-ui';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
-import { Pager } from "../components/Pager";
+import { Pager } from '../components/Pager';
 
 const TOAST_VARIANTS: ToastVariant[] = [
-  "default",
-  "accent",
-  "info",
-  "success",
-  "warning",
-  "danger",
+  'default',
+  'accent',
+  'info',
+  'success',
+  'warning',
+  'danger',
 ];
 
 const PAGE_TITLES = [
-  "Color Variants",
-  "Placement",
-  "Keyboard Avoiding",
-  "Custom",
+  'Color Variants',
+  'Placement',
+  'Keyboard Avoiding',
+  'Custom',
 ];
 
 // ─── Color Variants ───────────────────────────────────────────────────────────
@@ -49,14 +49,14 @@ function ColorVariantsPage({ width }: { width: number }) {
                 variant,
                 label: `${variant.charAt(0).toUpperCase()}${variant.slice(1)} toast`,
                 description: `variant="${variant}"`,
-                actionLabel: "Close",
+                actionLabel: 'Close',
               })
             }
           >
             {`${variant.charAt(0).toUpperCase()}${variant.slice(1)}`}
           </Button>
         ))}
-        <Button variant="ghost" onPress={() => Toast.hide("all")}>
+        <Button variant="ghost" onPress={() => Toast.hide('all')}>
           Hide All
         </Button>
       </Box>
@@ -75,10 +75,10 @@ function PlacementPage({ width }: { width: number }) {
         <Button
           onPress={() =>
             toast.show({
-              variant: "info",
-              label: "Top placement",
-              description: "Stacks from the top safe area downward.",
-              placement: "top",
+              variant: 'info',
+              label: 'Top placement',
+              description: 'Stacks from the top safe area downward.',
+              placement: 'top',
               showCloseButton: true,
             })
           }
@@ -89,17 +89,17 @@ function PlacementPage({ width }: { width: number }) {
           variant="outline"
           onPress={() =>
             toast.show({
-              variant: "success",
-              label: "Bottom placement",
-              description: "Stacks from the bottom safe area upward.",
-              placement: "bottom",
+              variant: 'success',
+              label: 'Bottom placement',
+              description: 'Stacks from the bottom safe area upward.',
+              placement: 'bottom',
               showCloseButton: true,
             })
           }
         >
           Show bottom toast
         </Button>
-        <Button variant="ghost" onPress={() => toast.hide("all")}>
+        <Button variant="ghost" onPress={() => toast.hide('all')}>
           Hide all
         </Button>
       </Box>
@@ -134,11 +134,11 @@ function KeyboardAvoidingPage({ width }: { width: number }) {
         <Button
           onPress={() => {
             toast.show({
-              variant: "accent",
-              label: "Toast avoids the keyboard",
-              description: "It slides up as the keyboard appears.",
-              duration: "persistent",
-              placement: "bottom",
+              variant: 'accent',
+              label: 'Toast avoids the keyboard',
+              description: 'It slides up as the keyboard appears.',
+              duration: 'persistent',
+              placement: 'bottom',
               showCloseButton: true,
             });
             inputRef.current?.focus();
@@ -151,7 +151,7 @@ function KeyboardAvoidingPage({ width }: { width: number }) {
           variant="ghost"
           onPress={() => {
             inputRef.current?.blur();
-            toast.hide("all");
+            toast.hide('all');
           }}
         >
           Dismiss
@@ -173,8 +173,8 @@ function CustomPage({ width }: { width: number }) {
           variant="outline"
           onPress={() =>
             toast.show({
-              duration: "persistent",
-              placement: "bottom",
+              duration: 'persistent',
+              placement: 'bottom',
               component: ({ id, hide }) => (
                 <Toast
                   id={id}
@@ -253,7 +253,7 @@ export function ToastScreen() {
 const styles = StyleSheet.create((theme, runtime) => ({
   page: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     paddingHorizontal: theme.layout.screen.margin.x,
   },
   content: {
@@ -263,7 +263,7 @@ const styles = StyleSheet.create((theme, runtime) => ({
     height: 44,
     borderWidth: 1,
     borderRadius: theme.radius.md,
-    paddingHorizontal: theme.spacing["4"],
-    fontSize: theme.typography.variants["body-md"].fontSize,
+    paddingHorizontal: theme.spacing['4'],
+    fontSize: theme.typography.variants['body-md'].fontSize,
   },
 }));

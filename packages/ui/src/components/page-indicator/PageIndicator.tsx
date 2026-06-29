@@ -1,12 +1,11 @@
-import { type StyleProp, type ViewStyle } from 'react-native';
+import type { StyleProp, ViewStyle } from 'react-native';
 
 import type { SharedValue } from 'react-native-reanimated';
 
 import type { ColorToken } from '#theme/types';
-
+import { DEFAULT_PAGE_INDICATOR_MAX_VISIBLE } from './utils';
 import { DotIndicator } from './variants/DotIndicator';
 import { PillIndicator } from './variants/PillIndicator';
-import { DEFAULT_PAGE_INDICATOR_MAX_VISIBLE } from './utils';
 
 export type PageIndicatorVariant = 'pill' | 'dot';
 
@@ -50,9 +49,7 @@ export type PageIndicatorDotProps = PageIndicatorCoreProps & {
   loading?: boolean;
 };
 
-export type PageIndicatorProps =
-  | PageIndicatorPillProps
-  | PageIndicatorDotProps;
+export type PageIndicatorProps = PageIndicatorPillProps | PageIndicatorDotProps;
 
 export function PageIndicator(props: PageIndicatorProps) {
   const {

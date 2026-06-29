@@ -94,5 +94,3 @@ describe('PillIndicator', () => {
     expect(screen.root).toBeTruthy();
   });
 });
-
-export {};

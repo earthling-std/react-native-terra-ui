@@ -116,7 +116,13 @@ export function ScreenScrollView({
       <View>
         <PortalHost />
       </View>
-      <View style={[contentContainerStyle, { flexDirection: horizontal ? 'row' : 'column' }]}>{/* content spacing */}
+      <View
+        style={[
+          contentContainerStyle,
+          { flexDirection: horizontal ? 'row' : 'column' },
+        ]}
+      >
+        {/* content spacing */}
         {children}
       </View>
     </Animated.ScrollView>

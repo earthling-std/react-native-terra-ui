@@ -164,10 +164,7 @@ export function computePageIndicatorWindowTranslate(
     dotSize,
     (maxVisible - 1) * slot + activeMainSize
   );
-  const trackMainSize = Math.max(
-    dotSize,
-    (count - 1) * slot + activeMainSize
-  );
+  const trackMainSize = Math.max(dotSize, (count - 1) * slot + activeMainSize);
   const activeCenter = progress * slot + activeMainSize / 2;
   const offset = Math.min(
     Math.max(activeCenter - viewportMainSize / 2, 0),
@@ -207,9 +204,5 @@ export function pageIndicatorWindowScale(
     maxVisible - 1
   );
 
-  return pageIndicatorWindowSlotScale(
-    positionInWindow,
-    activeSlot,
-    maxVisible
-  );
+  return pageIndicatorWindowSlotScale(positionInWindow, activeSlot, maxVisible);
 }

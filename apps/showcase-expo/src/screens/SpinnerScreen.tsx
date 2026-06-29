@@ -1,9 +1,9 @@
-import { router } from "expo-router";
-import { useWindowDimensions, View } from "react-native";
+import { router } from 'expo-router';
+import { useWindowDimensions, View } from 'react-native';
 import {
   useAnimatedScrollHandler,
   useSharedValue,
-} from "react-native-reanimated";
+} from 'react-native-reanimated';
 import {
   Box,
   Header,
@@ -11,20 +11,20 @@ import {
   Spinner,
   type SpinnerSize,
   Text,
-} from "react-native-terra-ui";
+} from 'react-native-terra-ui';
 
-import { Pager } from "../components/Pager";
+import { Pager } from '../components/Pager';
 
-const SIZES: SpinnerSize[] = ["sm", "md", "lg"];
+const SIZES: SpinnerSize[] = ['sm', 'md', 'lg'];
 
 const COLORS = [
-  { code: "content.primary", color: "content.primary" as const },
-  { code: "content.accent", color: "content.accent" as const },
-  { code: "status.danger", color: "status.danger" as const },
-  { code: "#4f46e5", color: "#4f46e5" as const },
+  { code: 'content.primary', color: 'content.primary' as const },
+  { code: 'content.accent', color: 'content.accent' as const },
+  { code: 'status.danger', color: 'status.danger' as const },
+  { code: '#4f46e5', color: '#4f46e5' as const },
 ];
 
-const PAGE_TITLES = ["Sizes", "Colors"];
+const PAGE_TITLES = ['Sizes', 'Colors'];
 
 function SizesPage(props: { width: number }) {
   const { width } = props;
@@ -34,8 +34,8 @@ function SizesPage(props: { width: number }) {
       style={{
         flex: 1,
         width,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       <Box row gap="6" align="center">
@@ -60,8 +60,8 @@ function ColorsPage(props: { width: number }) {
       style={{
         flex: 1,
         width,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       <Box gap="6" align="start">

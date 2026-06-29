@@ -1,36 +1,36 @@
-import { router } from "expo-router";
-import { useWindowDimensions, View } from "react-native";
+import { router } from 'expo-router';
+import { useWindowDimensions, View } from 'react-native';
 import {
   useAnimatedScrollHandler,
   useSharedValue,
-} from "react-native-reanimated";
-import { Box, Header, Icon, Screen, Text } from "react-native-terra-ui";
-import type { TerraSemanticIconName } from "react-native-terra-ui/theme";
+} from 'react-native-reanimated';
+import { Box, Header, Icon, Screen, Text } from 'react-native-terra-ui';
+import type { TerraSemanticIconName } from 'react-native-terra-ui/theme';
 
-import { Pager } from "../components/Pager";
+import { Pager } from '../components/Pager';
 
 const DEFAULT_ICONS: TerraSemanticIconName[] = [
-  "navigation.back",
-  "navigation.forward",
-  "navigation.close",
-  "status.info",
-  "status.success",
-  "status.warning",
-  "status.danger",
+  'navigation.back',
+  'navigation.forward',
+  'navigation.close',
+  'status.info',
+  'status.success',
+  'status.warning',
+  'status.danger',
 ];
 
-const CUSTOM_ICONS = ["add", "trash"] as const;
+const CUSTOM_ICONS = ['add', 'trash'] as const;
 
 const SIZES = [16, 24, 32] as const;
 
 const COLORS = [
-  { code: "content.primary", color: "content.primary" as const },
-  { code: "content.accent", color: "content.accent" as const },
-  { code: "status.danger", color: "status.danger" as const },
-  { code: "#e11d48", color: "#e11d48" as const },
+  { code: 'content.primary', color: 'content.primary' as const },
+  { code: 'content.accent', color: 'content.accent' as const },
+  { code: 'status.danger', color: 'status.danger' as const },
+  { code: '#e11d48', color: '#e11d48' as const },
 ];
 
-const PAGE_TITLES = ["Default", "Custom", "Sizes", "Colors"];
+const PAGE_TITLES = ['Default', 'Custom', 'Sizes', 'Colors'];
 
 function DefaultIconsPage(props: { width: number }) {
   const { width } = props;
@@ -40,8 +40,8 @@ function DefaultIconsPage(props: { width: number }) {
       style={{
         flex: 1,
         width,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       <Box gap="6" align="start">
@@ -66,8 +66,8 @@ function CustomIconsPage(props: { width: number }) {
       style={{
         flex: 1,
         width,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       <Box gap="6" align="start">
@@ -92,8 +92,8 @@ function SizesPage(props: { width: number }) {
       style={{
         flex: 1,
         width,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       <Box row gap="6" align="center">
@@ -118,8 +118,8 @@ function ColorsPage(props: { width: number }) {
       style={{
         flex: 1,
         width,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       <Box gap="6" align="start">

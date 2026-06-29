@@ -19,7 +19,10 @@ import { resolveThemeColor } from '#utils/resolve-theme-color';
 import { FONT_WEIGHT_VALUE } from '#utils/typography';
 
 import { usePortal } from '../../../portal';
-import { ScreenHeaderSlotContext, useScreen } from '../../../screen/ScreenContext';
+import {
+  ScreenHeaderSlotContext,
+  useScreen,
+} from '../../../screen/ScreenContext';
 import { HeaderDismissButton } from '../../header-buttons';
 import type { TitleHeaderProps } from '../TitleHeader';
 

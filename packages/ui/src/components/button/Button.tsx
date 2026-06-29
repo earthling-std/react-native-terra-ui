@@ -307,6 +307,6 @@ const styles = StyleSheet.create((theme) => ({
   compact: {
     paddingHorizontal: 2,
     paddingVertical: 2,
-    minHeight: 0
+    minHeight: 0,
   },
 }));

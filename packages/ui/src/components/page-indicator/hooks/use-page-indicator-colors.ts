@@ -48,11 +48,6 @@ export function usePageIndicatorColors(
           theme
         ) ?? theme.color.content.disabled,
     }),
-    [
-      colors.activeColor,
-      colors.inactiveColor,
-      colors.loadingColor,
-      theme,
-    ]
+    [colors.activeColor, colors.inactiveColor, colors.loadingColor, theme]
   );
 }

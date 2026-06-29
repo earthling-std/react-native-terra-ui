@@ -120,7 +120,11 @@ const ScreenBase = forwardRef<ComponentRef<typeof SafeAreaView>, ScreenProps>(
     }, [edges, hasHeader]);
 
     return (
-      <ScreenScrollProvider isInTabView={inTabView} margins={margins} hasHeader={hasHeader}>
+      <ScreenScrollProvider
+        isInTabView={inTabView}
+        margins={margins}
+        hasHeader={hasHeader}
+      >
         <PortalProvider>
           <SafeAreaView
             ref={ref}

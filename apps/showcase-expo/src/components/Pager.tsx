@@ -1,17 +1,14 @@
 import { useRef, useState } from 'react';
 import { View } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
-import {
-  runOnJS,
-  useAnimatedReaction,
-} from 'react-native-reanimated';
+import { runOnJS, useAnimatedReaction } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, {
   Defs,
-  LinearGradient as SvgLinearGradient,
   Rect,
   Stop,
+  LinearGradient as SvgLinearGradient,
 } from 'react-native-svg';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Box, PageIndicator, Text } from 'react-native-terra-ui';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
@@ -50,7 +47,9 @@ function PagerTitle(props: {
 export function Pager({ titles, progress }: PagerProps) {
   const { bottom } = useSafeAreaInsets();
   const { theme } = useUnistyles();
-  const gradientId = useRef(`pager-gradient-${++pagerGradientInstance}`).current;
+  const gradientId = useRef(
+    `pager-gradient-${++pagerGradientInstance}`
+  ).current;
   const gradientColor = theme.color.background;
 
   return (
@@ -74,7 +73,11 @@ export function Pager({ titles, progress }: PagerProps) {
             <Defs>
               <SvgLinearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
                 <Stop offset="0" stopColor={gradientColor} stopOpacity="0" />
-                <Stop offset="0.55" stopColor={gradientColor} stopOpacity="0.85" />
+                <Stop
+                  offset="0.55"
+                  stopColor={gradientColor}
+                  stopOpacity="0.85"
+                />
                 <Stop offset="1" stopColor={gradientColor} stopOpacity="1" />
               </SvgLinearGradient>
             </Defs>

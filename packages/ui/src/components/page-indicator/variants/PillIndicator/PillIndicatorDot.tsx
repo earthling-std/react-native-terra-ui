@@ -10,9 +10,9 @@ import type { PillJumpState } from '../../hooks/use-page-indicator-progress';
 import { pageIndicatorWindowScale } from '../../utils';
 
 import {
+  PILL_INDICATOR_GEOMETRY,
   pillIndicatorDotDistance,
   pillIndicatorJumpDisplayProgress,
-  PILL_INDICATOR_GEOMETRY,
   readPillJumpState,
 } from './utils';
 
