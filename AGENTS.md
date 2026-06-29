@@ -91,6 +91,23 @@ page-indicator/
 4. Add a showcase screen in `apps/showcase-expo/src/screens/[Component]Screen.tsx`.
 5. Add a route file at `apps/showcase-expo/src/app/[component].tsx` and link it in `GalleryScreen.tsx`.
 
+## Git commit convention
+
+All commits use **Conventional Commits** validated by Husky + commitlint. Full rules and scope list: [docs/git-conventions.md](docs/git-conventions.md).
+
+```
+<type>(<scope>): <message>
+```
+
+Allowed types: `feat`, `fix`, `refactor`, `docs`, `test`, `build`, `ci`, `chore`
+
+```
+feat(toast): add persistent duration option
+fix(button): render children alongside spinner when isLoading
+refactor(ui): enforce component folder convention
+docs: update installation guide
+```
+
 ## Styling
 
 Components use **react-native-unistyles v3** (`StyleSheet.create` from `react-native-unistyles`). Access theme tokens via the `theme` argument in the stylesheet factory — never hard-code colours or spacing values.
