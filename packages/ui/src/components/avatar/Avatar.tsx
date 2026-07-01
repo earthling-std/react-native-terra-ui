@@ -7,7 +7,13 @@ import { getImageComponent } from '#theme/configure';
 import type { TerraTheme } from '#theme/types';
 
 import { PersonIcon } from './parts/PersonIcon';
-import type { AvatarColor, AvatarProps, AvatarShape, AvatarSize, AvatarVariant } from './types';
+import type {
+  AvatarColor,
+  AvatarProps,
+  AvatarShape,
+  AvatarSize,
+  AvatarVariant,
+} from './types';
 
 const SIZE_PX: Record<AvatarSize, number> = {
   xs: 24,
@@ -32,7 +38,11 @@ function getInitials(name: string): string {
   return (first + last).toUpperCase();
 }
 
-function getBorderRadius(shape: AvatarShape, sizePx: number, radiusMd: number): number {
+function getBorderRadius(
+  shape: AvatarShape,
+  sizePx: number,
+  radiusMd: number
+): number {
   if (shape === 'circle') return sizePx / 2;
   if (shape === 'rounded') return radiusMd;
   return 0;
@@ -43,18 +53,22 @@ function resolveAvatarColors(
   variant: AvatarVariant,
   theme: TerraTheme
 ): { bg: string; fg: string } {
-  const c = theme.color as unknown as Record<string, string | undefined>;
-  const get = (key: string): string => c[key] ?? '';
+  const c = theme.color;
+  const get = (key: string): string =>
+    (c as unknown as Record<string, string | undefined>)[key] ?? '';
   if (color === 'default') {
-    return { bg: get('surface.sunken'), fg: get('text.muted') };
+    return { bg: c['surface.sunken'], fg: c['text.muted'] };
   }
   if (color === 'accent') {
     return variant === 'soft'
-      ? { bg: get('action.bg.neutral'), fg: get('text.accent') }
-      : { bg: get('action.bg.primary'), fg: get('action.fg.primary') };
+      ? { bg: c['action.bg.subtle'], fg: c['action.fg.subtle'] }
+      : { bg: c['action.bg.primary'], fg: c['action.fg.primary'] };
   }
   return variant === 'soft'
-    ? { bg: get(`status.bg.${color}.subtle`), fg: get(`status.fg.${color}.subtle`) }
+    ? {
+        bg: get(`status.bg.${color}.subtle`),
+        fg: get(`status.fg.${color}.subtle`),
+      }
     : { bg: get(`status.bg.${color}`), fg: get(`status.fg.${color}`) };
 }
 

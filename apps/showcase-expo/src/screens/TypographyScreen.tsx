@@ -281,7 +281,7 @@ export function TypographyScreen() {
       <Screen.Header>
         <Header.Title
           dismissAction="back"
-          onDismiss={() => router.back()}
+          onDismiss={router.back}
           title="Typography"
         />
       </Screen.Header>
