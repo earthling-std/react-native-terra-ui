@@ -1,72 +1,93 @@
 /**
- * Light-scheme tokens — flat, dotted-key data (no imports, no types).
+ * Light-scheme color tokens — flat, dotted-key data (no imports, no types).
  *
- * GENERATED-STYLE SOURCE: replaced by the Figma export. Semantic colors are
- * already resolved to hex (palette references inlined). Rebuilt into the nested
- * runtime theme via `unflatten()` in `theme.ts`. Scalar leaves only.
+ * Convention: [category].[context].[property?].[variant].[state]
+ *   - property is omitted when the context implies it (surface → bg, text → fg, border → border-color)
+ *   - property is required when a context carries multiple attributes (action, status)
+ *
+ * Values use {palette.key} reference notation, resolved against primitives at
+ * build time via resolveRefs() in theme.ts. Raw hex is used only where no
+ * palette step matches exactly.
+ *
+ * GENERATED-STYLE SOURCE: intended to be replaced by the Figma / design-sync export.
  */
 export const light = {
-  // ── color: layout surfaces ────────────────────────────────────────────────
+  // ── color: page background ────────────────────────────────────────────────
   'color.background': '#f9f9fb',
-  'color.surface.base': '#ffffff',
-  'color.surface.raised': '#ffffff',
+
+  // ── color: surfaces  (bg implied — no property segment) ──────────────────
+  'color.surface.default': '{palette.white}',
+  'color.surface.raised': '{palette.white}',
   'color.surface.sunken': '#ececee',
   'color.surface.overlay': 'rgba(9, 9, 11, 0.48)',
+  'color.surface.accent': '{palette.emerald.600}',
+  'color.surface.accent.subtle': '{palette.emerald.100}',
 
-  // ── color: content (text/icons) ───────────────────────────────────────────
-  'color.content.primary': '#09090b',
-  'color.content.secondary': '#4b5060',
-  'color.content.tertiary': '#6b7280',
-  'color.content.disabled': '#9ca3af',
-  'color.content.inverse': '#ffffff',
-  'color.content.link': '#155dfc',
-  'color.content.accent': '#009966',
-  'color.content.onAccent': '#ffffff',
+  // ── color: text / icons  (fg implied — no property segment) ──────────────
+  'color.text.default': '{palette.neutral.950}',
+  'color.text.muted': '#4b5060',
+  'color.text.subtle': '#6b7280',
+  'color.text.disabled': '#9ca3af',
+  'color.text.inverse': '{palette.white}',
+  'color.text.link': '{palette.blue.600}',
+  'color.text.accent': '{palette.emerald.600}',
+  'color.text.on-accent': '{palette.white}',
+  'color.text.on-accent-subtle': '{palette.emerald.700}',
 
-  // ── color: borders ────────────────────────────────────────────────────────
-  'color.border.default': '#e4e4e7',
+  // ── color: borders  (border-color implied — no property segment) ──────────
   'color.border.subtle': '#ebebed',
+  'color.border.default': '{palette.neutral.200}',
   'color.border.strong': '#d1d5db',
-  'color.border.focus': '#2b7fff',
+  'color.border.focus': '{palette.blue.500}',
+  'color.border.accent': '{palette.emerald.600}',
 
-  // ── color: interactive actions ────────────────────────────────────────────
-  'color.action.primary.bg': '#009966',
-  'color.action.primary.fg': '#ffffff',
-  'color.action.primary.hover': '#007a55',
-  'color.action.primary.active': '#006045',
-  'color.action.primary.disabled': '#e2e8f0',
-  'color.action.secondary.bg': '#ecfdf5',
-  'color.action.secondary.fg': '#007a55',
-  'color.action.secondary.hover': '#d0fae5',
-  'color.action.secondary.active': '#a4f4cf',
-  'color.action.secondary.disabled': '#f1f5f9',
-  'color.action.neutral.bg': 'transparent',
-  'color.action.neutral.fg': '#314158',
-  'color.action.neutral.hover': '#f1f5f9',
-  'color.action.neutral.active': '#e2e8f0',
-  'color.action.neutral.disabled': 'transparent',
+  // ── color: interactive actions  (bg + fg → property required) ────────────
+  'color.action.bg.primary': '{palette.emerald.600}',
+  'color.action.bg.primary.hover': '{palette.emerald.700}',
+  'color.action.bg.primary.active': '{palette.emerald.800}',
+  'color.action.bg.primary.disabled': '{palette.slate.200}',
+  'color.action.fg.primary': '{palette.white}',
 
-  // ── color: feedback status ────────────────────────────────────────────────
-  'color.status.success.solid': '#00a63e',
-  'color.status.success.onSolid': '#ffffff',
-  'color.status.success.surface': '#f0fdf4',
-  'color.status.success.onSurface': '#016630',
-  'color.status.success.border': '#b9f8cf',
-  'color.status.warning.solid': '#fe9a00',
-  'color.status.warning.onSolid': '#020618',
-  'color.status.warning.surface': '#fffbeb',
-  'color.status.warning.onSurface': '#973c00',
-  'color.status.warning.border': '#fee685',
-  'color.status.danger.solid': '#e7000b',
-  'color.status.danger.onSolid': '#ffffff',
-  'color.status.danger.surface': '#fef2f2',
-  'color.status.danger.onSurface': '#9f0712',
-  'color.status.danger.border': '#ffc9c9',
-  'color.status.info.solid': '#0084d1',
-  'color.status.info.onSolid': '#ffffff',
-  'color.status.info.surface': '#f0f9ff',
-  'color.status.info.onSurface': '#00598a',
-  'color.status.info.border': '#b8e6fe',
+  'color.action.bg.subtle': '{palette.emerald.100}',
+  'color.action.bg.subtle.hover': '{palette.emerald.200}',
+  'color.action.bg.subtle.active': '{palette.emerald.300}',
+  'color.action.bg.subtle.disabled': '{palette.slate.100}',
+  'color.action.fg.subtle': '{palette.emerald.700}',
+
+  'color.action.bg.neutral': 'transparent',
+  'color.action.bg.neutral.hover': '{palette.slate.100}',
+  'color.action.bg.neutral.active': '{palette.slate.200}',
+  'color.action.bg.neutral.disabled': 'transparent',
+  'color.action.fg.neutral': '{palette.slate.700}',
+
+  // ── color: status  (bg + fg + border → property required) ────────────────
+  'color.status.bg.success': '{palette.green.600}',
+  'color.status.bg.success.subtle': '{palette.green.100}',
+  'color.status.border.success': '{palette.green.300}',
+  'color.status.border.success.subtle': '{palette.green.200}',
+  'color.status.fg.success': '{palette.white}',
+  'color.status.fg.success.subtle': '{palette.green.800}',
+
+  'color.status.bg.warning': '{palette.amber.500}',
+  'color.status.bg.warning.subtle': '{palette.amber.100}',
+  'color.status.border.warning': '{palette.amber.300}',
+  'color.status.border.warning.subtle': '{palette.amber.200}',
+  'color.status.fg.warning': '{palette.slate.950}',
+  'color.status.fg.warning.subtle': '{palette.amber.800}',
+
+  'color.status.bg.danger': '{palette.red.600}',
+  'color.status.bg.danger.subtle': '{palette.red.100}',
+  'color.status.border.danger': '{palette.red.300}',
+  'color.status.border.danger.subtle': '{palette.red.200}',
+  'color.status.fg.danger': '{palette.white}',
+  'color.status.fg.danger.subtle': '{palette.red.800}',
+
+  'color.status.bg.info': '{palette.sky.600}',
+  'color.status.bg.info.subtle': '{palette.sky.100}',
+  'color.status.border.info': '{palette.sky.300}',
+  'color.status.border.info.subtle': '{palette.sky.200}',
+  'color.status.fg.info': '{palette.white}',
+  'color.status.fg.info.subtle': '{palette.sky.800}',
 
   // ── elevation: platform-aware shadow + Android elevation ──────────────────
   'elevation.none.shadowColor': '#000000',
