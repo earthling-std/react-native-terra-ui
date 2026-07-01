@@ -29,15 +29,15 @@ describe('Toast', () => {
 
     expect(StyleSheet.flatten(screen.getByTestId('toast').props.style)).toEqual(
       expect.objectContaining({
-        backgroundColor: defaultLightTheme.color.surface.raised,
-        borderColor: defaultLightTheme.color.border.subtle,
+        backgroundColor: defaultLightTheme.color['surface.raised'],
+        borderColor: defaultLightTheme.color['border.subtle'],
       })
     );
     expect(
       StyleSheet.flatten(screen.getByText('Published').props.style)
     ).toEqual(
       expect.objectContaining({
-        color: defaultLightTheme.color.status.success.solid,
+        color: defaultLightTheme.color['status.bg.success'],
       })
     );
   });

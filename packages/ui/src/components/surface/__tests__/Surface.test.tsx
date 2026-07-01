@@ -13,7 +13,7 @@ describe('Surface', () => {
     expect(styles).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          backgroundColor: defaultLightTheme.color.surface.raised,
+          backgroundColor: defaultLightTheme.color['surface.raised'],
         }),
       ])
     );
@@ -46,7 +46,7 @@ describe('Surface', () => {
       expect.arrayContaining([
         expect.objectContaining({
           borderWidth: expect.any(Number),
-          borderColor: defaultLightTheme.color.border.subtle,
+          borderColor: defaultLightTheme.color['border.subtle'],
         }),
       ])
     );

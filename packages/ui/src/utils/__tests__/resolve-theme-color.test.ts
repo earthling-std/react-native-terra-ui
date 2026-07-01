@@ -4,9 +4,9 @@ import { defaultLightTheme } from '../../theme/theme';
 import { resolveThemeColor } from '../resolve-theme-color';
 
 describe('resolveThemeColor', () => {
-  it('resolves nested color tokens from the theme', () => {
-    expect(resolveThemeColor('content.primary', defaultLightTheme)).toBe(
-      defaultLightTheme.color.content.primary
+  it('resolves flat color tokens from the theme', () => {
+    expect(resolveThemeColor('text.default', defaultLightTheme)).toBe(
+      defaultLightTheme.color['text.default']
     );
   });
 
@@ -17,14 +17,14 @@ describe('resolveThemeColor', () => {
     );
   });
 
-  it('resolves status group shorthand to solid', () => {
-    expect(resolveThemeColor('status.danger', defaultLightTheme)).toBe(
-      defaultLightTheme.color.status.danger.solid
+  it('resolves status tokens', () => {
+    expect(resolveThemeColor('status.bg.danger', defaultLightTheme)).toBe(
+      defaultLightTheme.color['status.bg.danger']
     );
   });
 
   it('returns undefined for unknown tokens', () => {
-    expect(resolveThemeColor('content.missing', defaultLightTheme)).toBe(
+    expect(resolveThemeColor('text.missing', defaultLightTheme)).toBe(
       undefined
     );
   });

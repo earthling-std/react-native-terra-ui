@@ -116,60 +116,80 @@ export interface Typography {
 
 // ─── Semantic color tier ─────────────────────────────────────────────────────
 
-/** Interactive emphasis role (buttons, pressables). */
-export interface InteractiveRole {
-  bg: string;
-  fg: string;
-  hover: string;
-  active: string;
-  disabled: string;
-}
-
-/** Feedback status role (alerts, badges) — soft + solid variants. */
-export interface StatusRole {
-  solid: string;
-  onSolid: string;
-  surface: string;
-  onSurface: string;
-  border: string;
-}
-
-/** Semantic color group — the layer components consume. */
+/**
+ * Flat color token map — keys are dotted paths matching the token schema
+ * (category prefix `color.` stripped). Accessed as `theme.color['text.default']`.
+ */
 export interface ThemeColor {
+  // page background
   background: string;
-  surface: {
-    base: string;
-    raised: string;
-    sunken: string;
-    overlay: string;
-  };
-  content: {
-    primary: string;
-    secondary: string;
-    tertiary: string;
-    disabled: string;
-    inverse: string;
-    link: string;
-    accent: string;
-    onAccent: string;
-  };
-  border: {
-    default: string;
-    subtle: string;
-    strong: string;
-    focus: string;
-  };
-  action: {
-    primary: InteractiveRole;
-    secondary: InteractiveRole;
-    neutral: InteractiveRole;
-  };
-  status: {
-    success: StatusRole;
-    warning: StatusRole;
-    danger: StatusRole;
-    info: StatusRole;
-  };
+  // surfaces
+  'surface.default': string;
+  'surface.raised': string;
+  'surface.sunken': string;
+  'surface.overlay': string;
+  'surface.accent': string;
+  'surface.accent.subtle': string;
+  // text / icons
+  'text.default': string;
+  'text.muted': string;
+  'text.subtle': string;
+  'text.disabled': string;
+  'text.inverse': string;
+  'text.link': string;
+  'text.accent': string;
+  'text.on-accent': string;
+  'text.on-accent-subtle': string;
+  // borders
+  'border.subtle': string;
+  'border.default': string;
+  'border.strong': string;
+  'border.focus': string;
+  'border.accent': string;
+  // interactive actions
+  'action.bg.primary': string;
+  'action.bg.primary.hover': string;
+  'action.bg.primary.active': string;
+  'action.bg.primary.disabled': string;
+  'action.fg.primary': string;
+  'action.bg.subtle': string;
+  'action.bg.subtle.hover': string;
+  'action.bg.subtle.active': string;
+  'action.bg.subtle.disabled': string;
+  'action.fg.subtle': string;
+  'action.bg.neutral': string;
+  'action.bg.neutral.hover': string;
+  'action.bg.neutral.active': string;
+  'action.bg.neutral.disabled': string;
+  'action.fg.neutral': string;
+  // status — success
+  'status.bg.success': string;
+  'status.bg.success.subtle': string;
+  'status.border.success': string;
+  'status.border.success.subtle': string;
+  'status.fg.success': string;
+  'status.fg.success.subtle': string;
+  // status — warning
+  'status.bg.warning': string;
+  'status.bg.warning.subtle': string;
+  'status.border.warning': string;
+  'status.border.warning.subtle': string;
+  'status.fg.warning': string;
+  'status.fg.warning.subtle': string;
+  // status — danger
+  'status.bg.danger': string;
+  'status.bg.danger.subtle': string;
+  'status.border.danger': string;
+  'status.border.danger.subtle': string;
+  'status.fg.danger': string;
+  'status.fg.danger.subtle': string;
+  // status — info
+  'status.bg.info': string;
+  'status.bg.info.subtle': string;
+  'status.border.info': string;
+  'status.border.info.subtle': string;
+  'status.fg.info': string;
+  'status.fg.info.subtle': string;
 }
 
 // ─── Full theme ──────────────────────────────────────────────────────────────
@@ -205,30 +225,25 @@ export interface TerraTheme {
 
 // ─── Color token paths (component prop surface) ──────────────────────────────
 
-type C = ThemeColor;
-
 export type BackgroundColorToken = 'background';
-export type SurfaceColorToken = `surface.${keyof C['surface'] & string}`;
-export type ContentColorToken = `content.${keyof C['content'] & string}`;
-export type BorderColorToken = `border.${keyof C['border'] & string}`;
+export type SurfaceColorToken = Extract<keyof ThemeColor, `surface.${string}`>;
+export type TextColorToken = Extract<keyof ThemeColor, `text.${string}`>;
+export type BorderColorToken = Extract<keyof ThemeColor, `border.${string}`>;
+export type ActionColorToken = Extract<keyof ThemeColor, `action.${string}`>;
+export type StatusColorToken = Extract<keyof ThemeColor, `status.${string}`>;
 
-export type ActionColorToken = {
-  [K in keyof C['action']]: `action.${K & string}.${keyof C['action'][K] & string}`;
-}[keyof C['action']];
-
-export type StatusColorToken = {
-  [K in keyof C['status']]: `status.${K & string}.${keyof C['status'][K] & string}`;
-}[keyof C['status']];
+/** @deprecated Use {@link TextColorToken} — renamed to reflect the `text.*` token namespace. */
+export type ContentColorToken = TextColorToken;
 
 /**
  * Any color value a component accepts:
- * semantic token (`content.primary`, `surface.raised`, `action.primary.bg`),
+ * semantic token (`text.default`, `surface.raised`, `action.bg.primary`),
  * or a raw CSS color literal (`#fff`, `rgb(...)`, `transparent`).
  */
 export type ColorToken =
   | BackgroundColorToken
   | SurfaceColorToken
-  | ContentColorToken
+  | TextColorToken
   | BorderColorToken
   | ActionColorToken
   | StatusColorToken

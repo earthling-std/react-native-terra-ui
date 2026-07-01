@@ -58,8 +58,9 @@ export function TitleHeader({
   const gradientId = useId();
   const bgColor = resolveThemeColor(bg, theme) as string;
   const isTransparent = bgColor === 'transparent';
-  const gradientColor = isTransparent ? theme.color.background : bgColor;
-
+  const gradientColor = isTransparent
+    ? theme.color['surface.default']
+    : bgColor;
   styles.useVariants({ titleAlignment });
 
   const leading =
@@ -103,7 +104,11 @@ export function TitleHeader({
             <Defs>
               <SvgLinearGradient id={gradientId} x1="0" y1="0.4" x2="0" y2="1">
                 <Stop offset="0" stopColor={gradientColor} stopOpacity="0.9" />
-                <Stop offset="1" stopColor={gradientColor} stopOpacity="0.2" />
+                <Stop
+                  offset="0.9"
+                  stopColor={gradientColor}
+                  stopOpacity="0.1"
+                />
               </SvgLinearGradient>
             </Defs>
             <Rect width="100%" height="100%" fill={`url(#${gradientId})`} />
@@ -175,7 +180,10 @@ const styles = StyleSheet.create((theme) => ({
     letterSpacing: theme.typography.variants['title-md'].letterSpacing,
     fontWeight:
       FONT_WEIGHT_VALUE[theme.typography.variants['title-md'].fontWeight],
-    color: (theme.color as unknown as Record<string, string | undefined>)['text.default'] ?? '',
+    color:
+      (theme.color as unknown as Record<string, string | undefined>)[
+        'text.default'
+      ] ?? '',
     variants: {
       titleAlignment: {
         center: { textAlign: 'center' },
