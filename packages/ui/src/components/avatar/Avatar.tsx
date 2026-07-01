@@ -6,7 +6,7 @@ import { useUnistyles } from 'react-native-unistyles';
 import { getImageComponent } from '#theme/configure';
 import type { TerraTheme } from '#theme/types';
 
-import { PersonIcon } from './parts/PersonIcon';
+import { Icon } from '../icon';
 import type {
   AvatarColor,
   AvatarProps,
@@ -109,7 +109,7 @@ export function Avatar({
         {getInitials(name)}
       </Text>
     ) : (
-      <PersonIcon size={sizePx} color={fg} />
+      <Icon name="person" size={sizePx} color={fg} />
     );
 
   const ImageComponent = getImageComponent();

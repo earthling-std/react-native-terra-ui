@@ -312,7 +312,8 @@ export type TerraSemanticIconName =
   | 'status.info'
   | 'status.success'
   | 'status.warning'
-  | 'status.danger';
+  | 'status.danger'
+  | 'person';
 
 export type TerraConfiguredIconName = keyof TerraIconRegistry & string;
 

@@ -122,6 +122,19 @@ const DangerIcon: TerraIconComponent = (props) => {
   );
 };
 
+export const PersonIcon: TerraIconComponent = (props) => {
+  const { color, size, strokeWidth } = resolveIconProps(props);
+  const stroke = strokeProps(color, strokeWidth);
+  const iconSize = size * 0.55;
+
+  return (
+    <Svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none">
+      <Circle cx={12} cy={8} r={4} {...stroke} />
+      <Path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" {...stroke} />
+    </Svg>
+  );
+};
+
 export const defaultIcons: Record<TerraSemanticIconName, TerraIconComponent> = {
   'navigation.back': BackIcon,
   'navigation.forward': ForwardIcon,
@@ -130,4 +143,5 @@ export const defaultIcons: Record<TerraSemanticIconName, TerraIconComponent> = {
   'status.success': SuccessIcon,
   'status.warning': WarningIcon,
   'status.danger': DangerIcon,
+  person: PersonIcon,
 };
