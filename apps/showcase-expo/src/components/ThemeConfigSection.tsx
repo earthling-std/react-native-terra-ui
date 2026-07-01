@@ -12,7 +12,7 @@ export function ThemeConfigSection() {
 
   return (
     <Box gap="2">
-      <Text variant="label-sm" color="content.tertiary">
+      <Text variant="label-sm" color="text.subtle">
         Theme
       </Text>
       <Box row gap="2" wrap>

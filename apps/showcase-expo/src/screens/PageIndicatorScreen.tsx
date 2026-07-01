@@ -187,7 +187,7 @@ function ScrollLinkedPage(props: { width: number }) {
                 }}
               >
                 <Text variant="title-sm">Card {cardNumber}</Text>
-                <Text variant="body-sm" color="content.secondary">
+                <Text variant="body-sm" color="text.muted">
                   Swipe the cards
                 </Text>
               </Surface>
@@ -215,8 +215,8 @@ function ColorsPage(props: { width: number }) {
   const { width } = props;
   const [activeIndex, setActiveIndex] = useState(0);
   const colorProps = {
-    activeColor: 'content.accent' as const,
-    inactiveColor: 'content.tertiary' as const,
+    activeColor: 'text.accent' as const,
+    inactiveColor: 'text.subtle' as const,
   };
 
   return (

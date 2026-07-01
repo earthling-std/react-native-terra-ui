@@ -18,9 +18,9 @@ import { Pager } from '../components/Pager';
 const SIZES: SpinnerSize[] = ['sm', 'md', 'lg'];
 
 const COLORS = [
-  { code: 'content.primary', color: 'content.primary' as const },
-  { code: 'content.accent', color: 'content.accent' as const },
-  { code: 'status.danger', color: 'status.danger' as const },
+  { code: 'text.default', color: 'text.default' as const },
+  { code: 'text.accent', color: 'text.accent' as const },
+  { code: 'status.bg.danger', color: 'status.bg.danger' as const },
   { code: '#4f46e5', color: '#4f46e5' as const },
 ];
 
@@ -42,7 +42,7 @@ function SizesPage(props: { width: number }) {
         {SIZES.map((size) => (
           <Box key={size} gap="1" align="center">
             <Spinner size={size} />
-            <Text variant="caption" color="content.tertiary">
+            <Text variant="caption" color="text.subtle">
               {size}
             </Text>
           </Box>
@@ -68,7 +68,7 @@ function ColorsPage(props: { width: number }) {
         {COLORS.map(({ code, color }) => (
           <Box row key={code} gap="3" align="center">
             <Spinner color={color} />
-            <Text variant="caption" color="content.tertiary">
+            <Text variant="caption" color="text.subtle">
               {code}
             </Text>
           </Box>

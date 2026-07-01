@@ -24,9 +24,9 @@ const CUSTOM_ICONS = ['add', 'trash'] as const;
 const SIZES = [16, 24, 32] as const;
 
 const COLORS = [
-  { code: 'content.primary', color: 'content.primary' as const },
-  { code: 'content.accent', color: 'content.accent' as const },
-  { code: 'status.danger', color: 'status.danger' as const },
+  { code: 'text.default', color: 'text.default' as const },
+  { code: 'text.accent', color: 'text.accent' as const },
+  { code: 'status.bg.danger', color: 'status.bg.danger' as const },
   { code: '#e11d48', color: '#e11d48' as const },
 ];
 
@@ -48,7 +48,7 @@ function DefaultIconsPage(props: { width: number }) {
         {DEFAULT_ICONS.map((name) => (
           <Box row key={name} gap="3" align="center">
             <Icon name={name} size={24} />
-            <Text variant="caption" color="content.tertiary">
+            <Text variant="caption" color="text.subtle">
               {name}
             </Text>
           </Box>
@@ -74,7 +74,7 @@ function CustomIconsPage(props: { width: number }) {
         {CUSTOM_ICONS.map((name) => (
           <Box row key={name} gap="3" align="center">
             <Icon name={name} size={24} />
-            <Text variant="caption" color="content.tertiary">
+            <Text variant="caption" color="text.subtle">
               {name}
             </Text>
           </Box>
@@ -100,7 +100,7 @@ function SizesPage(props: { width: number }) {
         {SIZES.map((size) => (
           <Box key={size} gap="1" align="center">
             <Icon name="status.info" size={size} />
-            <Text variant="caption" color="content.tertiary">
+            <Text variant="caption" color="text.subtle">
               {size}
             </Text>
           </Box>
@@ -126,7 +126,7 @@ function ColorsPage(props: { width: number }) {
         {COLORS.map(({ code, color }) => (
           <Box row key={code} gap="3" align="center">
             <Icon name="status.info" size={24} color={color} />
-            <Text variant="caption" color="content.tertiary">
+            <Text variant="caption" color="text.subtle">
               {code}
             </Text>
           </Box>

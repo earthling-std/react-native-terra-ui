@@ -120,13 +120,13 @@ function KeyboardAvoidingPage({ width }: { width: number }) {
         <TextInput
           ref={inputRef}
           placeholder="Tap to open keyboard…"
-          placeholderTextColor={theme.color.content.tertiary}
+          placeholderTextColor={(theme.color as unknown as Record<string, string | undefined>)['text.subtle']}
           style={[
             styles.input,
             {
-              color: theme.color.content.primary,
-              borderColor: theme.color.border.default,
-              backgroundColor: theme.color.surface.base,
+              color: (theme.color as unknown as Record<string, string | undefined>)['text.default'],
+              borderColor: (theme.color as unknown as Record<string, string | undefined>)['border.default'],
+              backgroundColor: (theme.color as unknown as Record<string, string | undefined>)['surface.default'],
             },
           ]}
         />

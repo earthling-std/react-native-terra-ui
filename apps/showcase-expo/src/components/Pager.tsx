@@ -38,7 +38,7 @@ function PagerTitle(props: {
   );
 
   return (
-    <Text variant="body-md" weight="bold" color="content.primary">
+    <Text variant="body-md" weight="bold" color="text.default">
       {titles[index]}
     </Text>
   );
@@ -108,7 +108,7 @@ const styles = StyleSheet.create((theme) => ({
     bottom: 0,
   },
   page: {
-    backgroundColor: theme.color.surface.base,
+    backgroundColor: (theme.color as unknown as Record<string, string | undefined>)['surface.default'],
     padding: theme.spacing[2],
     borderRadius: theme.radius.full,
   },

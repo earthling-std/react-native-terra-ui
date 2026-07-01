@@ -29,7 +29,7 @@ export function GalleryScreen() {
         <ThemeConfigSection />
 
         <Box gap="2">
-          <Text variant="label-sm" color="content.tertiary">
+          <Text variant="label-sm" color="text.subtle">
             Components
           </Text>
           {COMPONENTS.map(({ href, label }) => (
