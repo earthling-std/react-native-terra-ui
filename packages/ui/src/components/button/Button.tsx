@@ -78,49 +78,50 @@ interface ButtonColors {
 }
 
 function getColors(variant: ButtonVariant, theme: TerraTheme): ButtonColors {
-  const { action, status, border, content } = theme.color;
+  const c = theme.color as unknown as Record<string, string | undefined>;
+  const get = (key: string): string => c[key] ?? '';
   switch (variant) {
     case 'primary':
       return {
-        bg: action.primary.bg,
-        border: action.primary.bg,
+        bg: get('action.bg.primary'),
+        border: get('action.bg.primary'),
         borderWidth: 0,
-        fg: action.primary.fg,
+        fg: get('action.fg.primary'),
       };
     case 'secondary':
       return {
-        bg: action.secondary.bg,
-        border: action.secondary.bg,
+        bg: get('action.bg.subtle'),
+        border: get('action.bg.subtle'),
         borderWidth: 0,
-        fg: action.secondary.fg,
+        fg: get('action.fg.subtle'),
       };
     case 'neutral':
       return {
-        bg: action.neutral.hover,
-        border: action.neutral.hover,
+        bg: get('action.bg.neutral.hover'),
+        border: get('action.bg.neutral.hover'),
         borderWidth: 0,
-        fg: action.neutral.fg,
+        fg: get('action.fg.neutral'),
       };
     case 'outline':
       return {
         bg: 'transparent',
-        border: border.default,
+        border: get('border.default'),
         borderWidth: 1,
-        fg: content.primary,
+        fg: get('text.default'),
       };
     case 'ghost':
       return {
         bg: 'transparent',
         border: 'transparent',
         borderWidth: 0,
-        fg: content.primary,
+        fg: get('text.default'),
       };
     case 'danger':
       return {
-        bg: status.danger.solid,
-        border: status.danger.solid,
+        bg: get('status.bg.danger'),
+        border: get('status.bg.danger'),
         borderWidth: 0,
-        fg: status.danger.onSolid,
+        fg: get('status.fg.danger'),
       };
   }
 }

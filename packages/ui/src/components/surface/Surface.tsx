@@ -25,7 +25,7 @@ export interface SurfaceProps extends Omit<BoxProps, 'bg'> {
 }
 
 const VARIANT_BG: Record<SurfaceVariant, ColorToken> = {
-  base: 'surface.base',
+  base: 'surface.default',
   raised: 'surface.raised',
   sunken: 'surface.sunken',
   transparent: 'transparent',

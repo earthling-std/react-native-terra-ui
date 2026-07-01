@@ -43,18 +43,19 @@ function resolveAvatarColors(
   variant: AvatarVariant,
   theme: TerraTheme
 ): { bg: string; fg: string } {
+  const c = theme.color as unknown as Record<string, string | undefined>;
+  const get = (key: string): string => c[key] ?? '';
   if (color === 'default') {
-    return { bg: theme.color.surface.sunken, fg: theme.color.content.secondary };
+    return { bg: get('surface.sunken'), fg: get('text.muted') };
   }
   if (color === 'accent') {
     return variant === 'soft'
-      ? { bg: theme.color.action.neutral.bg, fg: theme.color.content.accent }
-      : { bg: theme.color.action.primary.bg, fg: theme.color.action.primary.fg };
+      ? { bg: get('action.bg.neutral'), fg: get('text.accent') }
+      : { bg: get('action.bg.primary'), fg: get('action.fg.primary') };
   }
-  const s = theme.color.status[color];
   return variant === 'soft'
-    ? { bg: s.surface, fg: s.onSurface }
-    : { bg: s.solid, fg: s.onSolid };
+    ? { bg: get(`status.bg.${color}.subtle`), fg: get(`status.fg.${color}.subtle`) }
+    : { bg: get(`status.bg.${color}`), fg: get(`status.fg.${color}`) };
 }
 
 export function Avatar({

@@ -12,7 +12,7 @@ import { Pressable, StyleSheet } from 'react-native';
 
 import { useUnistyles } from 'react-native-unistyles';
 
-import type { ColorToken, TerraIconName, TerraTheme } from '#theme/types';
+import type { TerraIconName, TerraTheme } from '#theme/types';
 
 import { Box } from '../box';
 import { Button, type ButtonProps } from '../button';
@@ -56,60 +56,51 @@ function useToastContext(): ToastContextValue {
 }
 
 interface ToastColors {
-  bg: ColorToken;
-  border: ColorToken;
-  title: ColorToken;
-  description: ColorToken;
-  icon: ColorToken;
+  bg: string;
+  border: string;
+  title: string;
+  description: string;
+  icon: string;
   actionBg: string;
   actionFg: string;
 }
 
 function getToastColors(variant: ToastVariant, theme: TerraTheme): ToastColors {
+  const c = theme.color as unknown as Record<string, string | undefined>;
+  const get = (key: string): string => c[key] ?? '';
   const base = {
-    bg: theme.color.surface.base,
-    border: theme.color.border.subtle,
-    description: theme.color.content.secondary,
+    bg: get('surface.default'),
+    border: get('border.subtle'),
+    description: get('text.muted'),
   };
 
   switch (variant) {
     case 'accent':
       return {
         ...base,
-        title: theme.color.action.secondary.fg,
-        icon: theme.color.content.accent,
-        actionBg: theme.color.action.primary.bg,
-        actionFg: theme.color.action.primary.fg,
+        title: get('action.fg.subtle'),
+        icon: get('text.accent'),
+        actionBg: get('action.bg.primary'),
+        actionFg: get('action.fg.primary'),
       };
     case 'info':
     case 'success':
-    case 'warning': {
-      const status = theme.color.status[variant];
+    case 'warning':
+    case 'danger':
       return {
         ...base,
-        title: status.solid,
-        icon: status.solid,
-        actionBg: status.solid,
-        actionFg: status.onSolid,
+        title: get(`status.bg.${variant}`),
+        icon: get(`status.bg.${variant}`),
+        actionBg: get(`status.bg.${variant}`),
+        actionFg: get(`status.fg.${variant}`),
       };
-    }
-    case 'danger': {
-      const status = theme.color.status.danger;
-      return {
-        ...base,
-        title: status.solid,
-        icon: status.solid,
-        actionBg: status.solid,
-        actionFg: status.onSolid,
-      };
-    }
     case 'default':
       return {
         ...base,
-        title: theme.color.content.primary,
-        icon: theme.color.content.tertiary,
-        actionBg: theme.color.action.neutral.hover,
-        actionFg: theme.color.action.neutral.fg,
+        title: get('text.default'),
+        icon: get('text.subtle'),
+        actionBg: get('action.bg.neutral.hover'),
+        actionFg: get('action.fg.neutral'),
       };
   }
 }

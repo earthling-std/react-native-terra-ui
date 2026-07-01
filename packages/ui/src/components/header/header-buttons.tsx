@@ -81,7 +81,7 @@ export function HeaderDismissButton({
     >
       <Icon
         size={26}
-        color="content.primary"
+        color="text.default"
         name={getDismissIconName(dismissAction)}
       />
     </Pressable>
@@ -93,7 +93,7 @@ const styles = StyleSheet.create((theme) => ({
     width: 36,
     height: 36,
     borderRadius: theme.radius.full,
-    backgroundColor: theme.color.surface.base,
+    backgroundColor: (theme.color as unknown as Record<string, string | undefined>)['surface.default'] ?? '',
     alignItems: 'center',
     justifyContent: 'center',
   },

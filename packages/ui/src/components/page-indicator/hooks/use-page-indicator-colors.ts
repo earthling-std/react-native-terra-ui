@@ -20,9 +20,9 @@ export type PageIndicatorColorInput = {
 };
 
 const DEFAULT_COLOR_TOKENS: Required<PageIndicatorColorInput> = {
-  activeColor: 'content.primary',
-  inactiveColor: 'content.disabled',
-  loadingColor: 'content.disabled',
+  activeColor: 'text.default',
+  inactiveColor: 'text.disabled',
+  loadingColor: 'text.disabled',
 };
 
 export function usePageIndicatorColors(
@@ -36,17 +36,17 @@ export function usePageIndicatorColors(
         resolveThemeColor(
           colors.activeColor ?? DEFAULT_COLOR_TOKENS.activeColor,
           theme
-        ) ?? theme.color.content.primary,
+        ) ?? (theme.color as unknown as Record<string, string | undefined>)['text.default'] ?? '',
       inactiveColor:
         resolveThemeColor(
           colors.inactiveColor ?? DEFAULT_COLOR_TOKENS.inactiveColor,
           theme
-        ) ?? theme.color.content.disabled,
+        ) ?? (theme.color as unknown as Record<string, string | undefined>)['text.disabled'] ?? '',
       loadingColor:
         resolveThemeColor(
           colors.loadingColor ?? DEFAULT_COLOR_TOKENS.loadingColor,
           theme
-        ) ?? theme.color.content.disabled,
+        ) ?? (theme.color as unknown as Record<string, string | undefined>)['text.disabled'] ?? '',
     }),
     [colors.activeColor, colors.inactiveColor, colors.loadingColor, theme]
   );

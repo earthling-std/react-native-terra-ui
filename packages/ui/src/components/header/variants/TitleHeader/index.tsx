@@ -27,7 +27,7 @@ export interface TitleHeaderProps extends HeaderDismissProps {
   RightComponent?: ReactNode;
   /** Title placement within the bar. Defaults to `'center'`. */
   titleAlignment?: 'center' | 'left';
-  /** Background color token. Defaults to `surface.base`. */
+  /** Background color token. Defaults to `surface.default`. */
   bg?: ColorToken;
 }
 
@@ -51,7 +51,7 @@ export function TitleHeader({
   navigation,
   onDismiss,
   titleAlignment = 'center',
-  bg = 'surface.base',
+  bg = 'surface.default',
 }: TitleHeaderProps) {
   const { theme } = useUnistyles();
   const { top } = useSafeAreaInsets();
@@ -175,7 +175,7 @@ const styles = StyleSheet.create((theme) => ({
     letterSpacing: theme.typography.variants['title-md'].letterSpacing,
     fontWeight:
       FONT_WEIGHT_VALUE[theme.typography.variants['title-md'].fontWeight],
-    color: theme.color.content.primary,
+    color: (theme.color as unknown as Record<string, string | undefined>)['text.default'] ?? '',
     variants: {
       titleAlignment: {
         center: { textAlign: 'center' },

@@ -15,6 +15,49 @@ import type {
 } from './types';
 
 /**
+ * Resolves {palette.key} reference notation against a source flat-token map.
+ * Non-reference values pass through unchanged.
+ */
+function resolveRefs(
+  flat: Record<string, unknown>,
+  source: Record<string, unknown>,
+): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(flat)) {
+    out[k] =
+      typeof v === 'string' && v.startsWith('{') && v.endsWith('}')
+        ? (source[v.slice(1, -1)] ?? v)
+        : v;
+  }
+  return out;
+}
+
+/**
+ * Splits a flat dotted-key token map into a one-level-deep object keyed by
+ * the first path segment (the category). The category prefix is stripped from
+ * each key, leaving a flat map per category.
+ *
+ * Example:
+ *   { 'color.surface.default': '#fff', 'color.action.bg.primary': '#009966' }
+ *   → { color: { 'surface.default': '#fff', 'action.bg.primary': '#009966' } }
+ */
+function flattenByCategory(
+  tokens: Record<string, unknown>,
+): Record<string, Record<string, unknown>> {
+  const out: Record<string, Record<string, unknown>> = {};
+  for (const [key, value] of Object.entries(tokens)) {
+    const sep = key.indexOf('.');
+    const cat = sep === -1 ? key : key.slice(0, sep);
+    const rest = sep === -1 ? '' : key.slice(sep + 1);
+    if (out[cat] === undefined) {
+      out[cat] = {};
+    }
+    out[cat][rest] = value;
+  }
+  return out;
+}
+
+/**
  * Scheme-agnostic primitives, rebuilt once from the flat token data. Shared by
  * both default themes (matching the previous behavior where spacing / radius /
  * typography were singleton constants). `palette` is present at runtime for
@@ -74,12 +117,19 @@ export function buildRadiusScale(
 
 const defaultRadius = buildRadiusScale();
 
-const lightTokens = unflatten<{ color: ThemeColor; elevation: ElevationScale }>(
-  light
-);
-const darkTokens = unflatten<{ color: ThemeColor; elevation: ElevationScale }>(
-  dark
-);
+const lightByCategory = flattenByCategory(resolveRefs(light, primitives));
+const darkByCategory = flattenByCategory(resolveRefs(dark, primitives));
+
+// color: flat map — accessed as theme.color['action.bg.primary.hover']
+// elevation: re-unflattened for structured access — theme.elevation.sm.shadowRadius
+const lightTokens = {
+  color: lightByCategory.color as unknown as ThemeColor,
+  elevation: unflatten<ElevationScale>(lightByCategory.elevation ?? {}),
+};
+const darkTokens = {
+  color: darkByCategory.color as unknown as ThemeColor,
+  elevation: unflatten<ElevationScale>(darkByCategory.elevation ?? {}),
+};
 
 export const defaultLightTheme: TerraTheme = {
   color: lightTokens.color,
