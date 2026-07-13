@@ -6,7 +6,12 @@ import type { TerraImageContentFit } from '#theme/types';
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export type AvatarShape = 'circle' | 'rounded' | 'square';
 /** Semantic color scheme for the fallback state (initials / placeholder icon). */
-export type AvatarColor = 'default' | 'accent' | 'success' | 'warning' | 'danger';
+export type AvatarColor =
+  | 'default'
+  | 'accent'
+  | 'success'
+  | 'warning'
+  | 'danger';
 /** Visual weight of the fallback background. */
 export type AvatarVariant = 'default' | 'soft';
 

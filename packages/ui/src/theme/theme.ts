@@ -20,7 +20,7 @@ import type {
  */
 function resolveRefs(
   flat: Record<string, unknown>,
-  source: Record<string, unknown>,
+  source: Record<string, unknown>
 ): Record<string, unknown> {
   const out: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(flat)) {
@@ -42,7 +42,7 @@ function resolveRefs(
  *   → { color: { 'surface.default': '#fff', 'action.bg.primary': '#009966' } }
  */
 function flattenByCategory(
-  tokens: Record<string, unknown>,
+  tokens: Record<string, unknown>
 ): Record<string, Record<string, unknown>> {
   const out: Record<string, Record<string, unknown>> = {};
   for (const [key, value] of Object.entries(tokens)) {

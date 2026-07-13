@@ -1,8 +1,11 @@
 import { describe, expect, it } from '@jest/globals';
 import { render, screen } from '@testing-library/react-native';
+import type { SharedValue } from 'react-native-reanimated';
 
 import type { PageIndicatorProps } from '../PageIndicator';
 import { DotIndicator, PageIndicator, PillIndicator } from '../PageIndicator';
+
+const scrollProgress = { value: 0.5 } as SharedValue<number>;
 
 function assertVariantPropTypes() {
   const dot: PageIndicatorProps = {
@@ -49,7 +52,7 @@ describe('PageIndicator', () => {
   });
 
   it('renders pill with scroll-linked current prop', () => {
-    render(<PageIndicator count={4} current={{ value: 0.5 }} />);
+    render(<PageIndicator count={4} current={scrollProgress} />);
     expect(screen.root).toBeTruthy();
   });
 
@@ -73,7 +76,7 @@ describe('DotIndicator', () => {
   });
 
   it('renders with scroll-linked current', () => {
-    render(<DotIndicator count={4} current={{ value: 0.5 }} />);
+    render(<DotIndicator count={4} current={scrollProgress} />);
     expect(screen.root).toBeTruthy();
   });
 });
@@ -85,7 +88,7 @@ describe('PillIndicator', () => {
   });
 
   it('renders with scroll-linked current', () => {
-    render(<PillIndicator count={4} current={{ value: 0.5 }} />);
+    render(<PillIndicator count={4} current={scrollProgress} />);
     expect(screen.root).toBeTruthy();
   });
 

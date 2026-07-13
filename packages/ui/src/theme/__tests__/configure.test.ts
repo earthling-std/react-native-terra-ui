@@ -74,6 +74,6 @@ describe('configureTerraUI', () => {
     });
 
     const light = resolveTheme('light', 'brand');
-    expect(light.color.action.primary.bg).toBe('#009966');
+    expect(light.color['action.bg.primary']).toBe('#009966');
   });
 });

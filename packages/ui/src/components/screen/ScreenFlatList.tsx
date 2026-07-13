@@ -78,7 +78,7 @@ export function ScreenFlatList<T>({
   const margin = theme.layout.screen.margin;
   const marginsEnabled = margins ?? screenMargins;
   const compactHeaderHeight = hasHeader ? top + theme.layout.header.height : 0;
-  const { contentPadding, portalSpacing } = resolveScreenContentInsets(
+  const { contentPadding } = resolveScreenContentInsets(
     margin,
     marginsEnabled,
     bottomInset,
@@ -99,9 +99,7 @@ export function ScreenFlatList<T>({
   ]);
 
   const headerComponent = (
-    <View
-      style={portalSpacing > 0 ? { marginBottom: portalSpacing } : undefined}
-    >
+    <View>
       <PortalHost />
       {renderListHeader(ListHeaderComponent)}
     </View>

@@ -93,7 +93,10 @@ const styles = StyleSheet.create((theme) => ({
     width: 36,
     height: 36,
     borderRadius: theme.radius.full,
-    backgroundColor: (theme.color as unknown as Record<string, string | undefined>)['surface.default'] ?? '',
+    backgroundColor:
+      (theme.color as unknown as Record<string, string | undefined>)[
+        'surface.default'
+      ] ?? '',
     alignItems: 'center',
     justifyContent: 'center',
   },

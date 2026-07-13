@@ -96,17 +96,16 @@ const SpinnerIcon = memo(function SpinnerIcon({
  * <Spinner size="md" color="content.accent" />
  * ```
  */
-export function Spinner({
-  size = 'md',
-  color = 'text.accent',
-}: SpinnerProps) {
+export function Spinner({ size = 'md', color = 'text.accent' }: SpinnerProps) {
   const { theme } = useUnistyles();
   const id = useId();
   const gradientId1 = `spinner-def-1-${id}`;
   const gradientId2 = `spinner-def-2-${id}`;
   const resolvedColor =
     resolveThemeColor(color, theme) ??
-    (theme.color as unknown as Record<string, string | undefined>)['text.accent'] ??
+    (theme.color as unknown as Record<string, string | undefined>)[
+      'text.accent'
+    ] ??
     '';
 
   const dim = DIMENSION[size];

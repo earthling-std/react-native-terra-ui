@@ -29,7 +29,10 @@ const CONTENT_FIT_MAP = {
   cover: 'cover',
   contain: 'contain',
   fill: 'stretch',
-} as const satisfies Record<TerraImageContentFit, 'cover' | 'contain' | 'stretch'>;
+} as const satisfies Record<
+  TerraImageContentFit,
+  'cover' | 'contain' | 'stretch'
+>;
 
 const DefaultImage: TerraImageComponent = ({
   contentFit = 'cover',
@@ -102,7 +105,8 @@ export const getIsConfigured = (): boolean => registry.configured;
 
 export const getAccentNames = (): string[] => Object.keys(registry.accents);
 
-export const getImageComponent = (): TerraImageComponent => registry.imageComponent;
+export const getImageComponent = (): TerraImageComponent =>
+  registry.imageComponent;
 
 export const getIcon = (name: string): TerraIconComponent | undefined =>
   registry.icons[name] ?? defaultIcons[name as TerraSemanticIconName];

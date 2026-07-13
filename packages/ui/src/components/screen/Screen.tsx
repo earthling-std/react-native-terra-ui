@@ -1,8 +1,12 @@
 import {
   Children,
+  type ComponentPropsWithoutRef,
   type ComponentRef,
+  type ElementType,
+  Fragment,
   forwardRef,
   isValidElement,
+  type PropsWithChildren,
   type ReactNode,
   useMemo,
 } from 'react';
@@ -17,27 +21,41 @@ import type { ColorToken } from '#theme/types';
 import { resolveThemeColor } from '#utils/resolve-theme-color';
 
 import { PortalProvider } from '../portal';
-import { ScreenHeaderSlotContext, ScreenScrollProvider } from './ScreenContext';
+import { ScreenScrollProvider } from './ScreenContext';
 import { ScreenFlatList } from './ScreenFlatList';
 import { ScreenScrollView } from './ScreenScrollView';
 
-export interface ScreenHeaderProps {
-  children: ReactNode;
-}
+export type ScreenHeaderProps<T extends ElementType = typeof Fragment> =
+  PropsWithChildren<
+    {
+      /**
+       * Component to render the header as. Defaults to `Fragment` (no
+       * wrapper). Use this to cast the header to a different container,
+       * e.g. `as={View}` — any extra props are forwarded to it.
+       */
+      as?: T;
+    } & Omit<ComponentPropsWithoutRef<T>, 'children'>
+  >;
 
 /**
- * Marker slot identifying the screen's header. It renders its child directly
- * (no wrapper) — its purpose is to let `Screen` detect a header synchronously
- * and drop the `top` safe-area edge (the header manages its own top inset).
+ * Marker slot identifying the screen's header — its purpose is to let
+ * `Screen` detect a header synchronously and drop the `top` safe-area edge
+ * (the header manages its own top inset).
  *
  * Place a `Header.Title` / `Header.LargeTitle` (or any custom header) inside it.
+ *
+ * @example
+ * ```tsx
+ * <Screen.Header as={Header.Title} title="Meditate" />
+ * ```
  */
-function ScreenHeader({ children }: ScreenHeaderProps) {
-  return (
-    <ScreenHeaderSlotContext.Provider value={true}>
-      {children}
-    </ScreenHeaderSlotContext.Provider>
-  );
+function ScreenHeader<T extends ElementType = typeof Fragment>({
+  children,
+  as,
+  ...rest
+}: ScreenHeaderProps<T>) {
+  const Component = as ?? Fragment;
+  return <Component {...rest}>{children}</Component>;
 }
 
 /** True if `children` directly contains a `Screen.Header`. */
@@ -86,9 +104,7 @@ type ScreenComponent = ReturnType<
  * @example
  * ```tsx
  * <Screen>
- *   <Screen.Header>
- *     <Header.LargeTitle title="Meditate" />
- *   </Screen.Header>
+ *   <Screen.Header as={Header.LargeTitle} title="Meditate" />
  *   <Screen.ScrollView>{content}</Screen.ScrollView>
  * </Screen>
  * ```

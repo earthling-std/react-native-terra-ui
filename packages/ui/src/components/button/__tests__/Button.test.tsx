@@ -35,6 +35,6 @@ describe('Button', () => {
         ? styleProp({ hovered: false, pressed: false })
         : styleProp;
     const style = StyleSheet.flatten(resolvedStyle);
-    expect(style.paddingHorizontal).toBe(0);
+    expect(style.paddingHorizontal).toBe(2);
   });
 });

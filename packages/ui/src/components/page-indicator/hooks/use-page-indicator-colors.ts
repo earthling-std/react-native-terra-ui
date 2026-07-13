@@ -36,17 +36,29 @@ export function usePageIndicatorColors(
         resolveThemeColor(
           colors.activeColor ?? DEFAULT_COLOR_TOKENS.activeColor,
           theme
-        ) ?? (theme.color as unknown as Record<string, string | undefined>)['text.default'] ?? '',
+        ) ??
+        (theme.color as unknown as Record<string, string | undefined>)[
+          'text.default'
+        ] ??
+        '',
       inactiveColor:
         resolveThemeColor(
           colors.inactiveColor ?? DEFAULT_COLOR_TOKENS.inactiveColor,
           theme
-        ) ?? (theme.color as unknown as Record<string, string | undefined>)['text.disabled'] ?? '',
+        ) ??
+        (theme.color as unknown as Record<string, string | undefined>)[
+          'text.disabled'
+        ] ??
+        '',
       loadingColor:
         resolveThemeColor(
           colors.loadingColor ?? DEFAULT_COLOR_TOKENS.loadingColor,
           theme
-        ) ?? (theme.color as unknown as Record<string, string | undefined>)['text.disabled'] ?? '',
+        ) ??
+        (theme.color as unknown as Record<string, string | undefined>)[
+          'text.disabled'
+        ] ??
+        '',
     }),
     [colors.activeColor, colors.inactiveColor, colors.loadingColor, theme]
   );

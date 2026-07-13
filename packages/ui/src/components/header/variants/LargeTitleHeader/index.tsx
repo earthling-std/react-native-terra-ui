@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useId } from 'react';
+import { useCallback, useEffect, useId } from 'react';
 import { type LayoutChangeEvent, Text, View } from 'react-native';
 
 import Animated, {
@@ -19,10 +19,7 @@ import { resolveThemeColor } from '#utils/resolve-theme-color';
 import { FONT_WEIGHT_VALUE } from '#utils/typography';
 
 import { usePortal } from '../../../portal';
-import {
-  ScreenHeaderSlotContext,
-  useScreen,
-} from '../../../screen/ScreenContext';
+import { useScreen } from '../../../screen/ScreenContext';
 import { HeaderDismissButton } from '../../header-buttons';
 import type { TitleHeaderProps } from '../TitleHeader';
 
@@ -129,10 +126,11 @@ export function LargeTitleHeader({
   const { theme } = useUnistyles();
   const { top } = useSafeAreaInsets();
   const gradientId = useId();
-  const inScreenHeader = useContext(ScreenHeaderSlotContext);
   const bgColor =
     resolveThemeColor(bg, theme) ??
-    (theme.color as unknown as Record<string, string | undefined>)['surface.default'] ??
+    (theme.color as unknown as Record<string, string | undefined>)[
+      'surface.default'
+    ] ??
     '';
   const isTransparent = bgColor === 'transparent';
   const gradientColor = isTransparent ? theme.color.background : bgColor;
@@ -141,14 +139,6 @@ export function LargeTitleHeader({
   const { registerContent, unregisterContent } = usePortal();
   const portalId = useId();
   const isLargeTitleHiddenValue = useSharedValue(isLargeTitleHidden);
-
-  useEffect(() => {
-    if (__DEV__ && !inScreenHeader) {
-      console.warn(
-        '[react-native-terra-ui] Header.LargeTitle should be placed inside <Screen.Header>.'
-      );
-    }
-  }, [inScreenHeader]);
 
   styles.useVariants({ titleAlignment });
 
@@ -350,13 +340,19 @@ const styles = StyleSheet.create((theme) => ({
     letterSpacing: theme.typography.variants['headline-lg'].letterSpacing,
     fontWeight:
       FONT_WEIGHT_VALUE[theme.typography.variants['headline-lg'].fontWeight],
-    color: (theme.color as unknown as Record<string, string | undefined>)['text.default'] ?? '',
+    color:
+      (theme.color as unknown as Record<string, string | undefined>)[
+        'text.default'
+      ] ?? '',
   },
   caption: {
     fontSize: theme.typography.variants['body-lg'].fontSize,
     lineHeight: theme.typography.variants['body-lg'].lineHeight,
     letterSpacing: theme.typography.variants['body-lg'].letterSpacing,
-    color: (theme.color as unknown as Record<string, string | undefined>)['text.subtle'] ?? '',
+    color:
+      (theme.color as unknown as Record<string, string | undefined>)[
+        'text.subtle'
+      ] ?? '',
   },
   compactTitle: {
     fontSize: theme.typography.variants['title-md'].fontSize,
@@ -364,7 +360,10 @@ const styles = StyleSheet.create((theme) => ({
     letterSpacing: theme.typography.variants['title-md'].letterSpacing,
     fontWeight:
       FONT_WEIGHT_VALUE[theme.typography.variants['title-md'].fontWeight],
-    color: (theme.color as unknown as Record<string, string | undefined>)['text.default'] ?? '',
+    color:
+      (theme.color as unknown as Record<string, string | undefined>)[
+        'text.default'
+      ] ?? '',
     variants: {
       titleAlignment: {
         center: { textAlign: 'center' },

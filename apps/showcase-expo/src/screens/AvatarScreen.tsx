@@ -20,7 +20,13 @@ import { Pager } from '../components/Pager';
 
 const SIZES: AvatarSize[] = ['xs', 'sm', 'md', 'lg', 'xl'];
 const SHAPES: AvatarShape[] = ['circle', 'rounded', 'square'];
-const COLORS: AvatarColor[] = ['default', 'accent', 'success', 'warning', 'danger'];
+const COLORS: AvatarColor[] = [
+  'default',
+  'accent',
+  'success',
+  'warning',
+  'danger',
+];
 
 const SAMPLE_URI = 'https://i.pravatar.cc/150?img=12';
 
@@ -28,7 +34,9 @@ const PAGE_TITLES = ['Sizes', 'Shapes', 'Colors', 'Fallbacks'];
 
 function SizesPage({ width }: { width: number }) {
   return (
-    <View style={{ flex: 1, width, alignItems: 'center', justifyContent: 'center' }}>
+    <View
+      style={{ flex: 1, width, alignItems: 'center', justifyContent: 'center' }}
+    >
       <Box row gap="4" align="center">
         {SIZES.map((size) => (
           <Box key={size} gap="2" align="center">
@@ -45,7 +53,9 @@ function SizesPage({ width }: { width: number }) {
 
 function ShapesPage({ width }: { width: number }) {
   return (
-    <View style={{ flex: 1, width, alignItems: 'center', justifyContent: 'center' }}>
+    <View
+      style={{ flex: 1, width, alignItems: 'center', justifyContent: 'center' }}
+    >
       <Box row gap="6" align="center">
         {SHAPES.map((shape) => (
           <Box key={shape} gap="2" align="center">
@@ -62,20 +72,40 @@ function ShapesPage({ width }: { width: number }) {
 
 function ColorsPage({ width }: { width: number }) {
   return (
-    <View style={{ flex: 1, width, alignItems: 'center', justifyContent: 'center' }}>
+    <View
+      style={{ flex: 1, width, alignItems: 'center', justifyContent: 'center' }}
+    >
       <Box gap="5">
         <Box row gap="4" align="center" justify="center">
-          <Text variant="label-sm" color="content.tertiary" style={{ width: 56 }} />
-          <Text variant="label-sm" color="content.tertiary" align="center" style={{ width: 48 }}>
+          <Text
+            variant="label-sm"
+            color="content.tertiary"
+            style={{ width: 56 }}
+          />
+          <Text
+            variant="label-sm"
+            color="content.tertiary"
+            align="center"
+            style={{ width: 48 }}
+          >
             default
           </Text>
-          <Text variant="label-sm" color="content.tertiary" align="center" style={{ width: 48 }}>
+          <Text
+            variant="label-sm"
+            color="content.tertiary"
+            align="center"
+            style={{ width: 48 }}
+          >
             soft
           </Text>
         </Box>
         {COLORS.map((color) => (
           <Box key={color} row gap="4" align="center">
-            <Text variant="label-sm" color="content.tertiary" style={{ width: 56 }}>
+            <Text
+              variant="label-sm"
+              color="content.tertiary"
+              style={{ width: 56 }}
+            >
               {color}
             </Text>
             <Box style={{ width: 48 }} align="center">
@@ -93,7 +123,9 @@ function ColorsPage({ width }: { width: number }) {
 
 function FallbacksPage({ width }: { width: number }) {
   return (
-    <View style={{ flex: 1, width, alignItems: 'center', justifyContent: 'center' }}>
+    <View
+      style={{ flex: 1, width, alignItems: 'center', justifyContent: 'center' }}
+    >
       <Box row gap="6" align="center">
         <Box gap="2" align="center">
           <Avatar size="lg" />
@@ -112,7 +144,9 @@ function FallbacksPage({ width }: { width: number }) {
         <Box gap="2" align="center">
           <Avatar
             size="lg"
-            fallback={<Icon name="status.info" size={24} color="action.primary.fg" />}
+            fallback={
+              <Icon name="status.info" size={24} color="action.primary.fg" />
+            }
           />
           <Text variant="caption" color="content.tertiary">
             custom

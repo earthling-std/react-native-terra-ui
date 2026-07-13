@@ -44,7 +44,9 @@ export const Icon = forwardRef<ComponentRef<typeof View>, IconProps>(
 
     const resolvedColor =
       resolveThemeColor(color, theme) ??
-      (theme.color as unknown as Record<string, string | undefined>)['text.default'] ??
+      (theme.color as unknown as Record<string, string | undefined>)[
+        'text.default'
+      ] ??
       '';
 
     return (

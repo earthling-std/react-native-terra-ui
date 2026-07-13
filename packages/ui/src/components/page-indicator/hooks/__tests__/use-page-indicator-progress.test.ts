@@ -1,11 +1,12 @@
 import { describe, expect, it } from '@jest/globals';
 import { renderHook } from '@testing-library/react-native';
+import type { SharedValue } from 'react-native-reanimated';
 
 import { usePageIndicatorProgress } from '../use-page-indicator-progress';
 
 describe('usePageIndicatorProgress', () => {
   it('returns external progress when provided', () => {
-    const external = { value: 2 };
+    const external = { value: 2 } as SharedValue<number>;
     const { result } = renderHook(() =>
       usePageIndicatorProgress(4, external, undefined)
     );
@@ -15,7 +16,8 @@ describe('usePageIndicatorProgress', () => {
 
   it('returns internal progress when page is provided', () => {
     const { result, rerender } = renderHook(
-      ({ page }) => usePageIndicatorProgress(4, undefined, page),
+      ({ page }: { page: number }) =>
+        usePageIndicatorProgress(4, undefined, page),
       { initialProps: { page: 0 } }
     );
 

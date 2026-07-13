@@ -1,0 +1,48 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    # id-token: write is required for npm's OIDC "Trusted Publisher" auth —
+    # no NPM_TOKEN secret needed. Configure the Trusted Publisher on
+    # https://www.npmjs.com/package/react-native-terra-ui (Settings →
+    # Trusted Publisher) with this repo and workflow filename before running.
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Lint files
+        run: yarn lint
+
+      - name: Typecheck files
+        run: yarn typecheck
+
+      - name: Run unit tests
+        run: yarn turbo run test -- --maxWorkers=2
+
+      - name: Build package
+        run: yarn turbo run build --filter=react-native-terra-ui
+
+      # OIDC trusted publishing requires npm >= 11.5.1; upgrade regardless of
+      # what the pinned Node version in .nvmrc bundles.
+      - name: Update npm
+        run: npm install -g npm@latest
+
+      - name: Publish to npm
+        working-directory: packages/ui
+        run: npm publish --provenance

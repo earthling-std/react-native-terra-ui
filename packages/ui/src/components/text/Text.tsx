@@ -85,7 +85,9 @@ export const Text = forwardRef<ComponentRef<typeof RNText>, TextProps>(
       letterSpacing: v.letterSpacing,
       color:
         resolveThemeColor(color, theme) ??
-        (theme.color as unknown as Record<string, string | undefined>)['text.default'] ??
+        (theme.color as unknown as Record<string, string | undefined>)[
+          'text.default'
+        ] ??
         '',
     };
     // System font: apply numeric weight. Custom font: family encodes the weight.

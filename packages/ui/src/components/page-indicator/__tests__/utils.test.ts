@@ -22,13 +22,13 @@ describe('pageIndicatorPageJumpDuration', () => {
   });
 
   it('extends duration for multi-page jumps', () => {
-    expect(pageIndicatorPageJumpDuration(0, 2)).toBe(700);
-    expect(pageIndicatorPageJumpDuration(0, 3)).toBe(800);
+    expect(pageIndicatorPageJumpDuration(0, 2)).toBe(600);
+    expect(pageIndicatorPageJumpDuration(0, 3)).toBe(600);
   });
 
   it('caps very long jumps', () => {
-    expect(pageIndicatorPageJumpDuration(0, 9)).toBe(800);
-    expect(pageIndicatorPageJumpDuration(0, 99)).toBe(800);
+    expect(pageIndicatorPageJumpDuration(0, 9)).toBe(600);
+    expect(pageIndicatorPageJumpDuration(0, 99)).toBe(600);
   });
 });
 

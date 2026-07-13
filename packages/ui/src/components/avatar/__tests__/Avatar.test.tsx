@@ -33,7 +33,12 @@ describe('Avatar', () => {
 
   describe('error handling', () => {
     it('switches to initials when image fails to load', async () => {
-      render(<Avatar source={{ uri: 'https://broken.invalid/img.jpg' }} name="Error User" />);
+      render(
+        <Avatar
+          source={{ uri: 'https://broken.invalid/img.jpg' }}
+          name="Error User"
+        />
+      );
 
       // Trigger the onError callback on the Image
       const img = screen.UNSAFE_getByType(Image);
@@ -83,7 +88,9 @@ describe('Avatar', () => {
       const container = screen.getByTestId('av');
       expect(container.props.style).toEqual(
         expect.arrayContaining([
-          expect.objectContaining({ borderRadius: defaultLightTheme.radius.md }),
+          expect.objectContaining({
+            borderRadius: defaultLightTheme.radius.md,
+          }),
         ])
       );
     });
@@ -92,9 +99,7 @@ describe('Avatar', () => {
       render(<Avatar testID="av" size="md" shape="square" />);
       const container = screen.getByTestId('av');
       expect(container.props.style).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ borderRadius: 0 }),
-        ])
+        expect.arrayContaining([expect.objectContaining({ borderRadius: 0 })])
       );
     });
   });
