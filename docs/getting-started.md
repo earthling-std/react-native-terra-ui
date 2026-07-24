@@ -6,15 +6,44 @@ This guide covers how to install, configure, and use `react-native-terra-ui` in 
 
 - React Native with the **New Architecture** enabled (recommended)
 - A **development build** — Expo Go is not supported (Unistyles v3 requires native modules)
-- Peer dependencies: `react-native-unistyles`, `react-native-reanimated`, `react-native-safe-area-context`, `react-native-svg`
+- Peer dependencies: `react-native-unistyles`, `react-native-reanimated`, `react-native-worklets`, `react-native-safe-area-context`, `react-native-svg`, `react-native-nitro-modules`
 
 ## Installation
 
+`react-native-terra-ui` is built on top of [Unistyles](https://unistyl.es) and requires a few peer dependencies — including peers of Unistyles (`react-native-nitro-modules`) and Reanimated (`react-native-worklets`, split out as of Reanimated v4), which most package managers won't install automatically:
+
+| Package | Purpose |
+|---------|---------|
+| `react-native-unistyles` | Theming and styling engine |
+| `react-native-reanimated` | Animations |
+| `react-native-worklets` | Worklet runtime required by Reanimated v4 |
+| `react-native-safe-area-context` | Safe area insets |
+| `react-native-svg` | Icon rendering |
+| `react-native-nitro-modules` | Native module runtime required by Unistyles |
+
+Install the library alongside its peer dependencies:
+
 ```sh
-npm install react-native-terra-ui react-native-unistyles react-native-reanimated react-native-safe-area-context react-native-svg
+npm install react-native-terra-ui react-native-unistyles react-native-reanimated react-native-worklets react-native-safe-area-context react-native-svg react-native-nitro-modules
 ```
 
-Follow the setup guides for [Unistyles](https://unistyl.es) and [Reanimated](https://docs.swmansion.com/react-native-reanimated/) in your app.
+```sh
+yarn add react-native-terra-ui react-native-unistyles react-native-reanimated react-native-worklets react-native-safe-area-context react-native-svg react-native-nitro-modules
+```
+
+```sh
+pnpm add react-native-terra-ui react-native-unistyles react-native-reanimated react-native-worklets react-native-safe-area-context react-native-svg react-native-nitro-modules
+```
+
+In an Expo project, use `expo install` so versions resolve against your SDK:
+
+```sh
+npx expo install react-native-terra-ui react-native-unistyles react-native-reanimated react-native-worklets react-native-safe-area-context react-native-svg react-native-nitro-modules
+```
+
+Then follow the native setup guides for [Unistyles](https://unistyl.es) and [Reanimated](https://docs.swmansion.com/react-native-reanimated/) (Babel plugin, Reanimated worklet setup, etc.) before continuing below.
+
+> `react-native-edge-to-edge` was a required peer of Unistyles before v3.1.0; it's now optional and only needed if you want Unistyles to manage edge-to-edge display on Android.
 
 ## Import order: `/theme` vs root
 
@@ -32,7 +61,7 @@ If you need a custom theme, configure **before** importing any component from th
 1. Create a theme bootstrap file and import it **first** in your app entry (`index.js` / `index.ts`):
 
 ```ts
-// unistyles.ts
+// terra-ui.ts
 import { configureTerraUI, type TerraTheme } from 'react-native-terra-ui/theme';
 
 declare module 'react-native-unistyles' {
@@ -73,7 +102,7 @@ configureTerraUI({
 
 ```js
 // index.js
-import './unistyles';
+import './terra-ui';
 import 'expo-router/entry'; // or your AppRegistry entry
 ```
 
