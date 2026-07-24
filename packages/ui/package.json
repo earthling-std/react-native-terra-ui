@@ -29,9 +29,9 @@
     "!**/.*"
   ],
   "scripts": {
-    "build": "bob build",
+    "build": "bob build && tsc-alias -p tsconfig.build.json --outDir lib/typescript",
     "clean": "del-cli lib",
-    "prepare": "bob build",
+    "prepare": "bob build && tsc-alias -p tsconfig.build.json --outDir lib/typescript",
     "typecheck": "tsc",
     "lint": "biome check .",
     "test": "jest"
@@ -74,6 +74,7 @@
     "react-native-svg": "15.15.4",
     "react-native-unistyles": "^3.2.5",
     "react-test-renderer": "19.2.0",
+    "tsc-alias": "^1.9.1",
     "typescript": "^6.0.3"
   },
   "peerDependencies": {
@@ -91,7 +92,8 @@
       [
         "module",
         {
-          "esm": true
+          "esm": true,
+          "configFile": true
         }
       ],
       [
