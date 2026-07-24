@@ -38,10 +38,11 @@ jobs:
       - name: Build package
         run: yarn turbo run build --filter=react-native-terra-ui
 
-      # OIDC trusted publishing requires npm >= 11.5.1; upgrade regardless of
-      # what the pinned Node version in .nvmrc bundles.
+      # OIDC trusted publishing requires npm >= 11.5.1. Pin to the 11.x line
+      # instead of @latest — npm 12 requires Node >=24.15.0/26, newer than
+      # what's pinned in .nvmrc.
       - name: Update npm
-        run: npm install -g npm@latest
+        run: npm install -g npm@11
 
       - name: Publish to npm
         working-directory: packages/ui
