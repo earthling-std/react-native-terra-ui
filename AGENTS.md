@@ -102,8 +102,8 @@ All commits use **Conventional Commits** validated by Husky + commitlint. Full r
 Allowed types: `feat`, `fix`, `refactor`, `docs`, `test`, `build`, `ci`, `chore`
 
 ```
-feat(toast): add persistent duration option
-fix(button): render children alongside spinner when isLoading
+feat(ui): [toast] add persistent duration option
+fix(ui): [button] render children alongside spinner when isLoading
 refactor(ui): enforce component folder convention
 docs: update installation guide
 ```

@@ -27,12 +27,11 @@ All commits must follow [Conventional Commits](https://www.conventionalcommits.o
 
 ## Scopes
 
-Use the component or package name. Common values:
+Use the package name, not the component name:
 
 | Scope | Covers |
 |-------|--------|
-| `ui` | `packages/ui` library (general) |
-| `button`, `toast`, `header`, … | A specific component |
+| `ui` | `packages/ui` library |
 | `showcase` | `apps/showcase-expo` |
 | `docs` | Documentation site or markdown files |
 | `theme` | Theme tokens and configuration |
@@ -40,14 +39,22 @@ Use the component or package name. Common values:
 
 Omit the scope when the change spans multiple areas or is repo-wide.
 
+## Component prefix
+
+When a change under `ui` (or `showcase`) targets a specific component, prefix the message with the component name in lowercase brackets so it's easy to scan and grep:
+
+```
+<type>(<scope>): [<component>] <message>
+```
+
 ## Examples
 
 ```
-feat(toast): add persistent duration option
-fix(button): render children alongside spinner when isLoading
+feat(ui): [toast] add persistent duration option
+fix(ui): [button] render children alongside spinner when isLoading
 refactor(ui): enforce component folder convention across all components
 docs: add git commit conventions guide
-test(page-indicator): add SharedValue mock for progress hook
+test(ui): [page-indicator] add SharedValue mock for progress hook
 build(deps): upgrade react-native-unistyles to v3.1
 chore: move controller.ts into toast/utils/
 ```
