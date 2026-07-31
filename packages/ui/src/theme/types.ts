@@ -1,0 +1,386 @@
+/**
+ * Theme typing — the single source of truth for every consumer-facing and
+ * structural theme type. The token DATA (tokens/*.ts) is intentionally
+ * untyped (Figma-generated); these types describe the runtime theme that the
+ * data is unflattened into, plus the public configuration surface.
+ */
+import type { ComponentType } from 'react';
+import type { ImageStyle, StyleProp } from 'react-native';
+
+import type { DeepPartial } from '#utils/deep-merge';
+
+// ─── Scale keys (declared explicitly; token data is untyped) ────────────────
+
+/** Spacing scale keys (dp, 4dp base unit). Read as `gap={3}` → string '3'. */
+export type SpacingKey =
+  | '0'
+  | '1'
+  | '2'
+  | '3'
+  | '4'
+  | '5'
+  | '6'
+  | '7'
+  | '8'
+  | '9'
+  | '10'
+  | '12'
+  | '14'
+  | '16'
+  | '20'
+  | '24'
+  | '32';
+
+/** Border-radius scale keys. */
+export type RadiusKey =
+  | 'none'
+  | 'xs'
+  | 'sm'
+  | 'md'
+  | 'lg'
+  | 'xl'
+  | '2xl'
+  | '3xl'
+  | 'full';
+
+/**
+ * The radius tokens offered as a component default. Excludes the extreme/rare
+ * steps (`xs`, `2xl`, `3xl`).
+ */
+export type DefaultRadiusToken = 'sm' | 'md' | 'lg' | 'xl' | 'full';
+
+/** Components whose default appearance can be configured. */
+export type RadiusComponent = 'button' | 'surface';
+
+// ─── Elevation ──────────────────────────────────────────────────────────────
+
+/** Elevation preset — platform-aware shadow + Android elevation. */
+export interface ElevationStyle {
+  shadowColor: string;
+  shadowOpacity: number;
+  shadowRadius: number;
+  shadowOffset: { width: number; height: number };
+  /** Android elevation. */
+  elevation: number;
+}
+
+export type ElevationKey = 'none' | 'sm' | 'md' | 'lg' | 'xl';
+
+export type ElevationScale = Record<ElevationKey, ElevationStyle>;
+
+// ─── Typography ──────────────────────────────────────────────────────────────
+
+export type RoleTextVariant =
+  | 'display-lg'
+  | 'display-md'
+  | 'display-sm'
+  | 'headline-lg'
+  | 'headline-md'
+  | 'headline-sm'
+  | 'title-lg'
+  | 'title-md'
+  | 'title-sm'
+  | 'body-lg'
+  | 'body-md'
+  | 'body-sm'
+  | 'label-lg'
+  | 'label-md'
+  | 'label-sm'
+  | 'caption';
+
+export type HeadingTextVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+
+export type TextVariant = RoleTextVariant | HeadingTextVariant;
+
+export type FontWeightToken = 'regular' | 'medium' | 'semibold' | 'bold';
+
+export interface TypeStyle {
+  fontSize: number;
+  lineHeight: number;
+  fontWeight: FontWeightToken;
+  /** Tracking, dp. */
+  letterSpacing: number;
+  /** Cap OS Dynamic Type scaling to protect layout. */
+  maxFontSizeMultiplier: number;
+}
+
+export interface Typography {
+  /**
+   * Weight token → font-family name. Defaults to the system font.
+   * For custom fonts, point each weight at its own family
+   * (e.g. { regular: 'Inter-Regular', semibold: 'Inter-SemiBold' }).
+   */
+  fonts: Record<FontWeightToken, string>;
+  variants: Record<RoleTextVariant, TypeStyle>;
+}
+
+// ─── Semantic color tier ─────────────────────────────────────────────────────
+
+/**
+ * Flat color token map — keys are dotted paths matching the token schema
+ * (category prefix `color.` stripped). Accessed as `theme.color['text.default']`.
+ */
+export interface ThemeColor {
+  // page background
+  background: string;
+  // surfaces
+  'surface.default': string;
+  'surface.raised': string;
+  'surface.sunken': string;
+  'surface.overlay': string;
+  'surface.accent': string;
+  'surface.accent.subtle': string;
+  // text / icons
+  'text.default': string;
+  'text.muted': string;
+  'text.subtle': string;
+  'text.disabled': string;
+  'text.inverse': string;
+  'text.link': string;
+  'text.accent': string;
+  'text.on-accent': string;
+  'text.on-accent-subtle': string;
+  // borders
+  'border.subtle': string;
+  'border.default': string;
+  'border.strong': string;
+  'border.focus': string;
+  'border.accent': string;
+  // interactive actions
+  'action.bg.primary': string;
+  'action.bg.primary.hover': string;
+  'action.bg.primary.active': string;
+  'action.bg.primary.disabled': string;
+  'action.fg.primary': string;
+  'action.bg.subtle': string;
+  'action.bg.subtle.hover': string;
+  'action.bg.subtle.active': string;
+  'action.bg.subtle.disabled': string;
+  'action.fg.subtle': string;
+  'action.bg.neutral': string;
+  'action.bg.neutral.hover': string;
+  'action.bg.neutral.active': string;
+  'action.bg.neutral.disabled': string;
+  'action.fg.neutral': string;
+  // status — success
+  'status.bg.success': string;
+  'status.bg.success.subtle': string;
+  'status.border.success': string;
+  'status.border.success.subtle': string;
+  'status.fg.success': string;
+  'status.fg.success.subtle': string;
+  // status — warning
+  'status.bg.warning': string;
+  'status.bg.warning.subtle': string;
+  'status.border.warning': string;
+  'status.border.warning.subtle': string;
+  'status.fg.warning': string;
+  'status.fg.warning.subtle': string;
+  // status — danger
+  'status.bg.danger': string;
+  'status.bg.danger.subtle': string;
+  'status.border.danger': string;
+  'status.border.danger.subtle': string;
+  'status.fg.danger': string;
+  'status.fg.danger.subtle': string;
+  // status — info
+  'status.bg.info': string;
+  'status.bg.info.subtle': string;
+  'status.border.info': string;
+  'status.border.info.subtle': string;
+  'status.fg.info': string;
+  'status.fg.info.subtle': string;
+}
+
+// ─── Full theme ──────────────────────────────────────────────────────────────
+
+/** State-layer opacities for disabled / pressed feedback. */
+export interface OpacityTokens {
+  disabled: number;
+  pressed: number;
+}
+
+/** Screen-level layout tokens. */
+export interface LayoutTokens {
+  screen: {
+    /** Margin between content and the screen edge (applied as container padding). */
+    margin: { x: number; y: number };
+  };
+  header: {
+    /** Height of the header bar (compact nav bar / collapsed large-title bar), dp. */
+    height: number;
+  };
+}
+
+/** The full resolved theme. `light` and `dark` are both `TerraTheme`. */
+export interface TerraTheme {
+  color: ThemeColor;
+  spacing: Record<SpacingKey, number>;
+  radius: Record<RadiusKey, number>;
+  typography: Typography;
+  elevation: ElevationScale;
+  opacity: OpacityTokens;
+  layout: LayoutTokens;
+}
+
+// ─── Color token paths (component prop surface) ──────────────────────────────
+
+export type BackgroundColorToken = 'background';
+export type SurfaceColorToken = Extract<keyof ThemeColor, `surface.${string}`>;
+export type TextColorToken = Extract<keyof ThemeColor, `text.${string}`>;
+export type BorderColorToken = Extract<keyof ThemeColor, `border.${string}`>;
+export type ActionColorToken = Extract<keyof ThemeColor, `action.${string}`>;
+export type StatusColorToken = Extract<keyof ThemeColor, `status.${string}`>;
+
+/** @deprecated Use {@link TextColorToken} — renamed to reflect the `text.*` token namespace. */
+export type ContentColorToken = TextColorToken;
+
+/**
+ * Any color value a component accepts:
+ * semantic token (`text.default`, `surface.raised`, `action.bg.primary`),
+ * or a raw CSS color literal (`#fff`, `rgb(...)`, `transparent`).
+ */
+export type ColorToken =
+  | BackgroundColorToken
+  | SurfaceColorToken
+  | TextColorToken
+  | BorderColorToken
+  | ActionColorToken
+  | StatusColorToken
+  // literals last so token autocomplete still surfaces
+  | (string & {});
+
+// ─── Configuration / accents ─────────────────────────────────────────────────
+
+export type Scheme = 'light' | 'dark';
+
+/** A hue shorthand per scheme — expands to primary + accent token patches. */
+export interface AccentShorthand {
+  light: string;
+  dark: string;
+}
+
+/** A full partial-theme override per scheme. */
+export interface AccentOverride {
+  light?: DeepPartial<TerraTheme>;
+  dark?: DeepPartial<TerraTheme>;
+}
+
+/** A named, runtime-switchable theme override. */
+export type Accent = AccentShorthand | AccentOverride;
+
+/** An accent input normalized to per-scheme partial-theme overrides. */
+export interface NormalizedAccent {
+  light: DeepPartial<TerraTheme>;
+  dark: DeepPartial<TerraTheme>;
+}
+
+export interface TerraIconProps {
+  size?: number;
+  color?: string;
+  strokeWidth?: number;
+}
+
+export type TerraIconComponent = ComponentType<TerraIconProps>;
+
+// ─── Image ───────────────────────────────────────────────────────────────────
+
+export type TerraImageContentFit = 'cover' | 'contain' | 'fill';
+
+export interface TerraImageProps {
+  source: { uri: string } | number;
+  style?: StyleProp<ImageStyle>;
+  accessibilityLabel?: string;
+  contentFit?: TerraImageContentFit;
+  /** Shown while `source` is loading (and if it fails to resolve). */
+  placeholder?: { uri: string } | number;
+  onError?: () => void;
+}
+
+export type TerraImageComponent = ComponentType<TerraImageProps>;
+
+declare global {
+  namespace TerraUI {
+    interface IconRegistry {}
+  }
+}
+
+export interface TerraIconRegistry extends TerraUI.IconRegistry {}
+
+export type TerraSemanticIconName =
+  | 'navigation.back'
+  | 'navigation.forward'
+  | 'navigation.close'
+  | 'status.info'
+  | 'status.success'
+  | 'status.warning'
+  | 'status.danger'
+  | 'person';
+
+export type TerraConfiguredIconName = keyof TerraIconRegistry & string;
+
+export type TerraIconName = TerraSemanticIconName | TerraConfiguredIconName;
+
+export type ThemeRadiusOverride = DeepPartial<TerraTheme['radius']> & {
+  /**
+   * Base corner radius in dp — the `lg` (×1) step. The rest of the scale is
+   * derived by fixed multipliers (`xs` ×0.25, `sm` ×0.5, `md` ×0.75,
+   * `xl` ×1.5, `2xl` ×2, `3xl` ×3); `none` (0) and `full` (9999) are
+   * constant. Per-token radius overrides still win over the derived value.
+   */
+  base?: number;
+};
+
+/** Theme override accepted at configure time. */
+export type TerraThemeOverride = DeepPartial<Omit<TerraTheme, 'radius'>> & {
+  radius?: ThemeRadiusOverride;
+};
+
+/** Default props for the Button component. A per-instance prop still wins. */
+export interface ButtonDefaults {
+  /** Default corner radius. Defaults to `'md'`. */
+  radius?: DefaultRadiusToken;
+}
+
+/** Default props for the Surface component. A per-instance prop still wins. */
+export interface SurfaceDefaults {
+  /** Default corner radius. Defaults to `'md'`. */
+  radius?: DefaultRadiusToken;
+  /** Default drop-shadow depth (`'none'` = no shadow). Defaults to `'none'`. */
+  elevation?: ElevationKey;
+}
+
+/** Per-component default props applied at configure time. */
+export interface ComponentDefaults {
+  button?: ButtonDefaults;
+  surface?: SurfaceDefaults;
+}
+
+export interface TerraConfig {
+  /** Scheme-agnostic token overrides, applied to both light and dark themes. */
+  shared?: TerraThemeOverride;
+  /** Per-scheme token overrides, applied after `shared`. */
+  schemes?: { light?: TerraThemeOverride; dark?: TerraThemeOverride };
+  /** Runtime-switchable named overrides (hue shorthand or full partial). */
+  accents?: Record<string, Accent>;
+  /**
+   * App-provided icon overrides. Semantic icons (`navigation.*`, `status.*`)
+   * fall back to the built-in defaults when omitted; app icons (`add`, etc.)
+   * must be registered here.
+   */
+  icons?: Partial<Record<TerraIconName, TerraIconComponent>>;
+  /**
+   * Custom image renderer (e.g. `expo-image`, `react-native-fast-image`).
+   * Defaults to React Native's built-in `Image` with `contentFit` mapped to
+   * `resizeMode`. Wrap third-party components to match `TerraImageProps`.
+   */
+  image?: TerraImageComponent;
+  /** Name of the accent (from `accents`) to apply by default. */
+  defaultAccent?: string;
+  /** Per-component default props (e.g. `{ button: { radius: 'full' } }`). */
+  components?: ComponentDefaults;
+  /** Follow the system color scheme. Default `true`. */
+  adaptiveThemes?: boolean;
+  /** Force a starting scheme (disables adaptive theming). */
+  initialScheme?: Scheme;
+}

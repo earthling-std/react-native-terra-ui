@@ -1,0 +1,44 @@
+import { Link } from 'expo-router';
+
+import { Box, Button, Header, Screen, Text } from 'react-native-terra-ui';
+
+import { ThemeConfigSection } from '../components/ThemeConfigSection';
+
+const COMPONENTS = [
+  { href: '/avatar', label: 'Avatar' },
+  { href: '/typography', label: 'Typography' },
+  { href: '/surface', label: 'Surface' },
+  { href: '/button', label: 'Button' },
+  { href: '/toast', label: 'Toast' },
+  { href: '/icon', label: 'Icon' },
+  { href: '/spinner', label: 'Spinner' },
+  { href: '/page-indicator', label: 'Page Indicator' },
+] as const;
+
+export function GalleryScreen() {
+  return (
+    <Screen>
+      <Screen.Header>
+        <Header.LargeTitle
+          title="Gallery"
+          caption="Terra UI component explorer"
+          titleAlignment="left"
+        />
+      </Screen.Header>
+      <Screen.ScrollView>
+        <ThemeConfigSection />
+
+        <Box gap="2">
+          <Text variant="label-sm" color="text.subtle">
+            Components
+          </Text>
+          {COMPONENTS.map(({ href, label }) => (
+            <Link key={label} href={href} asChild>
+              <Button variant="outline">{label}</Button>
+            </Link>
+          ))}
+        </Box>
+      </Screen.ScrollView>
+    </Screen>
+  );
+}

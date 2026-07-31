@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "paths": {
+      "react-native-terra-ui": ["./src/index"],
+      "react-native-terra-ui/theme": ["./src/theme/index"],
+      "#*": ["./src/*"]
+    }
+  },
+  "exclude": ["jest.setup.ts", "lib"]
+}

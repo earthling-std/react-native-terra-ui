@@ -6,7 +6,19 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": ["**", "!**/node_modules", "!**/lib", "!**/build"]
+    "ignoreUnknown": true,
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/lib",
+      "!**/build",
+      "!**/coverage",
+      "!**/dist",
+      "!**/.next",
+      "!**/.source",
+      "!**/*.md",
+      "!**/*.mdx"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -17,16 +29,30 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "complexity": {
+        "noImportantStyles": "off"
+      }
     }
   },
+  "overrides": [
+    {
+      "includes": ["apps/docs/**"],
+      "linter": {
+        "domains": {
+          "next": "recommended",
+          "react": "recommended"
+        }
+      }
+    }
+  ],
   "javascript": {
     "formatter": {
       "quoteStyle": "single",
       "jsxQuoteStyle": "double",
       "semicolons": "always",
       "trailingCommas": "es5",
-      "quoteProperties": "asNeeded"
+      "quoteProperties": "preserve"
     }
   }
 }
