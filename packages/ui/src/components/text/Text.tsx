@@ -77,7 +77,11 @@ export const Text = forwardRef<ComponentRef<typeof RNText>, TextProps>(
     const v = theme.typography.variants[resolvedVariant];
     const effectiveWeight: FontWeightToken = weight ?? v.fontWeight;
     const fontFamily = theme.typography.fonts[effectiveWeight];
-    const isSystemFont = fontFamily === SYSTEM_FONT;
+    const italicFamily = italic
+      ? theme.typography.fontsItalic?.[effectiveWeight]
+      : undefined;
+    const resolvedFamily = italicFamily ?? fontFamily;
+    const isSystemFont = resolvedFamily === SYSTEM_FONT;
 
     const base: Mutable<TextStyle> = {
       fontSize: v.fontSize,
@@ -92,10 +96,13 @@ export const Text = forwardRef<ComponentRef<typeof RNText>, TextProps>(
     };
     // System font: apply numeric weight. Custom font: family encodes the weight.
     if (isSystemFont) base.fontWeight = FONT_WEIGHT_VALUE[effectiveWeight];
-    else base.fontFamily = fontFamily;
+    else base.fontFamily = resolvedFamily;
 
     if (align) base.textAlign = align;
-    if (italic) base.fontStyle = 'italic';
+    // A dedicated italic family already renders slanted; `fontStyle` is only
+    // needed (and only works) for the system font or as a best-effort
+    // fallback when no italic family is configured for this weight.
+    if (italic && !italicFamily) base.fontStyle = 'italic';
     if (underline && strikeThrough)
       base.textDecorationLine = 'underline line-through';
     else if (underline) base.textDecorationLine = 'underline';

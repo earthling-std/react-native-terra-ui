@@ -111,6 +111,16 @@ export interface Typography {
    * (e.g. { regular: 'Inter-Regular', semibold: 'Inter-SemiBold' }).
    */
   fonts: Record<FontWeightToken, string>;
+  /**
+   * Weight token → italic font-family name. Optional per weight.
+   * Custom fonts can't be slanted via `fontStyle: 'italic'` (that's a no-op
+   * for a non-system `fontFamily` on iOS/Android) — point each weight at its
+   * dedicated italic file (e.g. { bold: 'Inter-BoldItalic' }) to make
+   * `<Text italic />` render correctly. Weights left unset fall back to the
+   * upright family in `fonts`. Not needed for the system font, which can
+   * synthesize italic on its own.
+   */
+  fontsItalic?: Partial<Record<FontWeightToken, string>>;
   variants: Record<RoleTextVariant, TypeStyle>;
 }
 
