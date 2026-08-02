@@ -1,6 +1,7 @@
 export * from './avatar';
 export * from './box';
 export * from './button';
+export * from './chip';
 export * from './header';
 export * from './icon';
 export * from './image';
