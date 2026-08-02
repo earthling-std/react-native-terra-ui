@@ -9,6 +9,7 @@ const COMPONENTS = [
   { href: '/typography', label: 'Typography' },
   { href: '/surface', label: 'Surface' },
   { href: '/button', label: 'Button' },
+  { href: '/chip', label: 'Chip' },
   { href: '/toast', label: 'Toast' },
   { href: '/icon', label: 'Icon' },
   { href: '/spinner', label: 'Spinner' },

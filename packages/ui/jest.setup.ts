@@ -1,21 +1,87 @@
 jest.mock('react-native-unistyles', () => {
   const { defaultLightTheme } = require('./src/theme/theme');
 
+  // Minimal stand-in for `UnistylesMiniRuntime` — the second arg passed to a
+  // `StyleSheet.create((theme, runtime) => ...)` factory and returned as
+  // `rt` from `useUnistyles()`.
+  const mockRuntime = {
+    insets: { top: 0, bottom: 0, left: 0, right: 0, ime: 0 },
+    colorScheme: 'light',
+    themeName: 'light',
+    breakpoint: undefined,
+    contentSizeCategory: 'normal',
+    orientation: 'portrait',
+    pixelRatio: 1,
+    fontScale: 1,
+    rtl: false,
+    isLandscape: false,
+    isPortrait: true,
+  };
+
+  // Mirrors react-native-unistyles' own `variants`/`compoundVariants`
+  // resolution (see its `src/web/variants.ts`), so tests can assert on the
+  // actual resolved style rather than the raw, unresolved config.
+  function resolveVariants(
+    value: unknown,
+    selected: Record<string, unknown>
+  ): Record<string, unknown> {
+    if (!value || typeof value !== 'object') return {};
+    const { variants, compoundVariants, ...rest } = value as Record<
+      string,
+      unknown
+    > & {
+      variants?: Record<string, Record<string, unknown>>;
+      compoundVariants?: Array<
+        Record<string, unknown> & { styles: Record<string, unknown> }
+      >;
+    };
+
+    let merged = { ...rest };
+
+    if (variants) {
+      for (const [variantName, options] of Object.entries(variants)) {
+        const selectedValue = selected[variantName];
+        const variantStyle =
+          options[selectedValue as string] ?? options.default;
+        if (variantStyle) merged = { ...merged, ...variantStyle };
+      }
+    }
+
+    if (compoundVariants) {
+      for (const compound of compoundVariants) {
+        const { styles: compoundStyles, ...conditions } = compound;
+        const matches = Object.entries(conditions).every(
+          ([key, condValue]) => String(selected[key]) === String(condValue)
+        );
+        if (matches) merged = { ...merged, ...compoundStyles };
+      }
+    }
+
+    return merged;
+  }
+
   return {
-    useUnistyles: () => ({ theme: defaultLightTheme }),
+    useUnistyles: () => ({ theme: defaultLightTheme, rt: mockRuntime }),
     StyleSheet: {
       configure: jest.fn(),
       create: (stylesOrFn: unknown) => {
         const styles =
           typeof stylesOrFn === 'function'
-            ? stylesOrFn(defaultLightTheme)
+            ? stylesOrFn(defaultLightTheme, mockRuntime)
             : stylesOrFn;
+
+        let selectedVariants: Record<string, unknown> = {};
+
         return new Proxy(styles as object, {
           get(target, prop) {
             if (prop === 'useVariants') {
-              return () => undefined;
+              return (variants: Record<string, unknown>) => {
+                selectedVariants = variants ?? {};
+              };
             }
-            return (target as Record<string | symbol, unknown>)[prop] ?? {};
+            const value = (target as Record<string | symbol, unknown>)[prop];
+            if (typeof value === 'function') return value;
+            return resolveVariants(value, selectedVariants);
           },
         });
       },
