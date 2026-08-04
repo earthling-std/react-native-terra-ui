@@ -109,13 +109,12 @@ export function ScreenScrollView({
       horizontal={horizontal}
       showsVerticalScrollIndicator={false}
       scrollEventThrottle={16}
-      contentContainerStyle={styles.scrollContent}
+      contentContainerStyle={styles.scrollContent(hasHeader)}
       // snapToOffsets={headerSnapOffsets}
       {...rest}
       onScroll={composedHandler}
     >
       {/* <View style={styles.safeArea} /> */}
-      {hasHeader ? <View style={styles.header} /> : null}
       <View>
         <PortalHost name={SCREEN_HEADER_PORTAL_HOST} />
       </View>
@@ -128,18 +127,13 @@ export function ScreenScrollView({
   );
 }
 
-const styles = StyleSheet.create((theme, runtime) => ({
-  scrollContent: {
+const styles = StyleSheet.create((theme) => ({
+  scrollContent: (hasHeader) => ({
     flexGrow: 1,
-  },
+    paddingTop: hasHeader ? theme.layout.header.height : 0,
+  }),
   content: (horizontal, hasMargins) => ({
     paddingHorizontal: hasMargins ? theme.layout.screen.margin.x : 0,
     flexDirection: horizontal ? 'row' : 'column',
   }),
-  safeArea: {
-    height: runtime.insets.top,
-  },
-  header: {
-    height: theme.layout.header.height,
-  },
 }));

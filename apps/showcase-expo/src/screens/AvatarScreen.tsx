@@ -181,7 +181,7 @@ export function AvatarScreen() {
   });
 
   return (
-    <Screen margins={false}>
+    <Screen hasMargins={false}>
       <Screen.Header>
         <Header.Title
           dismissAction="back"

@@ -235,7 +235,7 @@ export function ToastScreen() {
   });
 
   return (
-    <Screen margins={false}>
+    <Screen hasMargins={false}>
       <Screen.Header>
         <Header.Title
           dismissAction="back"
