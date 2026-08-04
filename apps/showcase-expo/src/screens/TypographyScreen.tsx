@@ -277,14 +277,13 @@ export function TypographyScreen() {
   });
 
   return (
-    <Screen margins={false}>
-      <Screen.Header>
-        <Header.Title
-          dismissAction="back"
-          onDismiss={router.back}
-          title="Typography"
-        />
-      </Screen.Header>
+    <Screen hasMargins={false}>
+      <Screen.Header
+        as={Header.Title}
+        dismissAction="back"
+        onDismiss={router.back}
+        title="Typography"
+      />
 
       <Screen.ScrollView
         horizontal
