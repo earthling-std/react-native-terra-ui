@@ -7,13 +7,13 @@ export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export type AvatarShape = 'circle' | 'rounded' | 'square';
 /** Semantic color scheme for the fallback state (initials / placeholder icon). */
 export type AvatarColor =
-  | 'default'
-  | 'accent'
+  | 'secondary'
+  | 'primary'
   | 'success'
   | 'warning'
   | 'danger';
 /** Visual weight of the fallback background. */
-export type AvatarVariant = 'default' | 'soft';
+export type AvatarVariant = 'solid' | 'soft';
 
 export interface AvatarProps extends ViewProps {
   /** Predefined size token. Defaults to `'md'`. */
@@ -28,8 +28,8 @@ export interface AvatarProps extends ViewProps {
   fallback?: ReactNode;
   /** How the image fills its container. Defaults to `'cover'`. */
   contentFit?: TerraImageContentFit;
-  /** Fallback color theme. Defaults to `'default'`. */
+  /** Fallback color theme. Defaults to `'secondary'`. */
   color?: AvatarColor;
-  /** Visual style variant. Defaults to `'default'`. */
+  /** Visual style variant. Defaults to `'solid'`. */
   variant?: AvatarVariant;
 }

@@ -21,8 +21,8 @@ import { Pager } from '../components/Pager';
 const SIZES: AvatarSize[] = ['xs', 'sm', 'md', 'lg', 'xl'];
 const SHAPES: AvatarShape[] = ['circle', 'rounded', 'square'];
 const COLORS: AvatarColor[] = [
-  'default',
-  'accent',
+  'primary',
+  'secondary',
   'success',
   'warning',
   'danger',
@@ -80,7 +80,7 @@ function ColorsPage({ width }: { width: number }) {
           <Text
             variant="label-sm"
             color="content.tertiary"
-            style={{ width: 56 }}
+            style={{ width: 65 }}
           />
           <Text
             variant="label-sm"
@@ -88,7 +88,7 @@ function ColorsPage({ width }: { width: number }) {
             align="center"
             style={{ width: 48 }}
           >
-            default
+            solid
           </Text>
           <Text
             variant="label-sm"
@@ -104,12 +104,12 @@ function ColorsPage({ width }: { width: number }) {
             <Text
               variant="label-sm"
               color="content.tertiary"
-              style={{ width: 56 }}
+              style={{ width: 65 }}
             >
               {color}
             </Text>
             <Box style={{ width: 48 }} align="center">
-              <Avatar size="md" name="JD" color={color} variant="default" />
+              <Avatar size="md" name="JD" color={color} variant="solid" />
             </Box>
             <Box style={{ width: 48 }} align="center">
               <Avatar size="md" name="JD" color={color} variant="soft" />
@@ -135,7 +135,7 @@ function FallbacksPage({ width }: { width: number }) {
         </Box>
 
         <Box gap="2" align="center">
-          <Avatar size="lg" name="Jane Doe" color="accent" />
+          <Avatar size="lg" name="Jane Doe" color="primary" />
           <Text variant="caption" color="content.tertiary">
             initials
           </Text>

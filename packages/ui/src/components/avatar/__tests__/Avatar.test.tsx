@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
-import { Image } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 
 import { defaultLightTheme } from '../../../theme/theme';
 import { Avatar } from '../Avatar';
@@ -100,6 +100,138 @@ describe('Avatar', () => {
       const container = screen.getByTestId('av');
       expect(container.props.style).toEqual(
         expect.arrayContaining([expect.objectContaining({ borderRadius: 0 })])
+      );
+    });
+
+    it('clips the inner Image to match square shape (no radius)', () => {
+      render(
+        <Avatar
+          size="md"
+          shape="square"
+          source={{ uri: 'https://example.invalid/photo.jpg' }}
+        />
+      );
+      const img = screen.UNSAFE_getByType(Image);
+      const containerStyle = StyleSheet.flatten(
+        img.parent?.parent?.props.style
+      );
+      expect(containerStyle.borderRadius).toBe(0);
+    });
+
+    it('clips the inner Image to a circle to match circle shape', () => {
+      render(
+        <Avatar
+          size="md"
+          shape="circle"
+          source={{ uri: 'https://example.invalid/photo.jpg' }}
+        />
+      );
+      const img = screen.UNSAFE_getByType(Image);
+      const containerStyle = StyleSheet.flatten(
+        img.parent?.parent?.props.style
+      );
+      expect(containerStyle.borderRadius).toBe(defaultLightTheme.radius.full);
+    });
+
+    it('clips the inner Image to theme radius.md to match rounded shape', () => {
+      render(
+        <Avatar
+          size="md"
+          shape="rounded"
+          source={{ uri: 'https://example.invalid/photo.jpg' }}
+        />
+      );
+      const img = screen.UNSAFE_getByType(Image);
+      const containerStyle = StyleSheet.flatten(
+        img.parent?.parent?.props.style
+      );
+      expect(containerStyle.borderRadius).toBe(defaultLightTheme.radius.md);
+    });
+  });
+
+  describe('color', () => {
+    const T = defaultLightTheme.color as unknown as Record<
+      string,
+      string | undefined
+    >;
+    const get = (key: string): string => T[key] ?? '';
+
+    it('defaults to secondary/solid', () => {
+      render(<Avatar testID="av" name="Jane Doe" />);
+      const container = screen.getByTestId('av');
+      expect(container.props.style).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            backgroundColor: get('action.bg.neutral.hover'),
+          }),
+        ])
+      );
+    });
+
+    it('resolves secondary/solid and secondary/soft to different tokens', () => {
+      const solidResult = render(
+        <Avatar
+          testID="av-solid"
+          name="Jane Doe"
+          color="secondary"
+          variant="solid"
+        />
+      );
+      const solid = solidResult.getByTestId('av-solid').props.style;
+      solidResult.unmount();
+
+      const softResult = render(
+        <Avatar
+          testID="av-soft"
+          name="Jane Doe"
+          color="secondary"
+          variant="soft"
+        />
+      );
+      const soft = softResult.getByTestId('av-soft').props.style;
+
+      expect(solid).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            backgroundColor: get('action.bg.neutral.hover'),
+          }),
+        ])
+      );
+      expect(soft).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ backgroundColor: get('surface.sunken') }),
+        ])
+      );
+    });
+
+    it('resolves primary color to action tokens', () => {
+      render(
+        <Avatar testID="av" name="Jane Doe" color="primary" variant="solid" />
+      );
+      const container = screen.getByTestId('av');
+      expect(container.props.style).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            backgroundColor: get('action.bg.primary'),
+          }),
+        ])
+      );
+      expect(screen.getByText('JD').props.style).toEqual(
+        expect.objectContaining({ color: get('action.fg.primary') })
+      );
+    });
+
+    it('resolves danger/soft to status subtle tokens', () => {
+      render(
+        <Avatar testID="av" name="Jane Doe" color="danger" variant="soft" />
+      );
+      const container = screen.getByTestId('av');
+      expect(container.props.style).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            backgroundColor: get('status.bg.danger.subtle'),
+          }),
+        ])
       );
     });
   });

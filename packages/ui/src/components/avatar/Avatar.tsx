@@ -1,19 +1,13 @@
 import { useState } from 'react';
 import { Text, View } from 'react-native';
 
-import { useUnistyles } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
-import type { TerraTheme } from '#theme/types';
+import type { RadiusKey } from '#theme/types';
 
 import { Icon } from '../icon';
 import { Image } from '../image';
-import type {
-  AvatarColor,
-  AvatarProps,
-  AvatarShape,
-  AvatarSize,
-  AvatarVariant,
-} from './types';
+import type { AvatarProps, AvatarShape, AvatarSize } from './types';
 
 const SIZE_PX: Record<AvatarSize, number> = {
   xs: 24,
@@ -48,28 +42,14 @@ function getBorderRadius(
   return 0;
 }
 
-function resolveAvatarColors(
-  color: AvatarColor,
-  variant: AvatarVariant,
-  theme: TerraTheme
-): { bg: string; fg: string } {
-  const c = theme.color;
-  const get = (key: string): string =>
-    (c as unknown as Record<string, string | undefined>)[key] ?? '';
-  if (color === 'default') {
-    return { bg: c['surface.sunken'], fg: c['text.muted'] };
-  }
-  if (color === 'accent') {
-    return variant === 'soft'
-      ? { bg: c['action.bg.subtle'], fg: c['action.fg.subtle'] }
-      : { bg: c['action.bg.primary'], fg: c['action.fg.primary'] };
-  }
-  return variant === 'soft'
-    ? {
-        bg: get(`status.bg.${color}.subtle`),
-        fg: get(`status.fg.${color}.subtle`),
-      }
-    : { bg: get(`status.bg.${color}`), fg: get(`status.fg.${color}`) };
+// `Image` clips its own content to a `RadiusKey` theme token, independent of
+// Avatar's own container radius — this keeps the two in sync per `shape`.
+// `'full'` (theme.radius.full) clamps to a circle at any size, same as the
+// container's computed `sizePx / 2`.
+function getImageRadius(shape: AvatarShape): RadiusKey {
+  if (shape === 'circle') return 'full';
+  if (shape === 'rounded') return 'md';
+  return 'none';
 }
 
 export function Avatar({
@@ -79,19 +59,21 @@ export function Avatar({
   name,
   fallback,
   contentFit = 'cover',
-  color = 'default',
-  variant = 'default',
+  color = 'secondary',
+  variant = 'solid',
   style,
   ...rest
 }: AvatarProps) {
   const { theme } = useUnistyles();
   const [hasError, setHasError] = useState(false);
+  styles.useVariants({ color, variant });
 
   const sizePx = SIZE_PX[size];
   const borderRadius = getBorderRadius(shape, sizePx, theme.radius.md);
   const showFallback = !source || hasError;
 
-  const { bg, fg } = resolveAvatarColors(color, variant, theme);
+  const bg = styles.base.backgroundColor ?? '';
+  const fg = styles.base.color ?? '';
 
   const fallbackContent =
     fallback !== undefined ? (
@@ -134,6 +116,7 @@ export function Avatar({
         <Image
           source={source}
           style={{ width: sizePx, height: sizePx }}
+          radius={getImageRadius(shape)}
           contentFit={contentFit}
           accessibilityLabel={name}
           onError={() => setHasError(true)}
@@ -142,3 +125,112 @@ export function Avatar({
     </View>
   );
 }
+
+// ─── Styles ───────────────────────────────────────────────────────────────────
+
+// One compound variant per (color, variant) cell of the spec's token table —
+// `variants` below only registers the axis names/options for the type
+// system; the actual bg/fg values all come from `compoundVariants`.
+const styles = StyleSheet.create((theme) => {
+  const c = theme.color;
+
+  return {
+    base: {
+      variants: {
+        color: {
+          secondary: {},
+          primary: {},
+          success: {},
+          warning: {},
+          danger: {},
+        },
+        variant: {
+          solid: {},
+          soft: {},
+        },
+      },
+      compoundVariants: [
+        {
+          color: 'secondary',
+          variant: 'solid',
+          styles: {
+            backgroundColor: c['action.bg.neutral.hover'],
+            color: c['action.fg.neutral'],
+          },
+        },
+        {
+          color: 'secondary',
+          variant: 'soft',
+          styles: {
+            backgroundColor: c['surface.sunken'],
+            color: c['text.muted'],
+          },
+        },
+        {
+          color: 'primary',
+          variant: 'solid',
+          styles: {
+            backgroundColor: c['action.bg.primary'],
+            color: c['action.fg.primary'],
+          },
+        },
+        {
+          color: 'primary',
+          variant: 'soft',
+          styles: {
+            backgroundColor: c['action.bg.subtle'],
+            color: c['action.fg.subtle'],
+          },
+        },
+        {
+          color: 'success',
+          variant: 'solid',
+          styles: {
+            backgroundColor: c['status.bg.success'],
+            color: c['status.fg.success'],
+          },
+        },
+        {
+          color: 'success',
+          variant: 'soft',
+          styles: {
+            backgroundColor: c['status.bg.success.subtle'],
+            color: c['status.fg.success.subtle'],
+          },
+        },
+        {
+          color: 'warning',
+          variant: 'solid',
+          styles: {
+            backgroundColor: c['status.bg.warning'],
+            color: c['status.fg.warning'],
+          },
+        },
+        {
+          color: 'warning',
+          variant: 'soft',
+          styles: {
+            backgroundColor: c['status.bg.warning.subtle'],
+            color: c['status.fg.warning.subtle'],
+          },
+        },
+        {
+          color: 'danger',
+          variant: 'solid',
+          styles: {
+            backgroundColor: c['status.bg.danger'],
+            color: c['status.fg.danger'],
+          },
+        },
+        {
+          color: 'danger',
+          variant: 'soft',
+          styles: {
+            backgroundColor: c['status.bg.danger.subtle'],
+            color: c['status.fg.danger.subtle'],
+          },
+        },
+      ],
+    },
+  };
+});
