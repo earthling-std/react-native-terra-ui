@@ -14,9 +14,27 @@ import type {
   Typography,
 } from './types';
 
+// Matches `{palette.key}/NN` — a palette reference with a trailing NN%
+// opacity suffix (0-100), e.g. `{palette.amber.500}/15`.
+const ALPHA_REF_PATTERN = /^\{([\w.]+)\}\/(\d{1,3})$/;
+// Matches a bare `#rrggbb` hex color (the only shape palette primitives use).
+const HEX6_PATTERN = /^#[0-9a-f]{6}$/i;
+
+/**
+ * Converts a 0-100 percentage into a two-digit hex alpha byte, e.g. 15 -> '26'.
+ */
+function percentToHexAlpha(percent: number): string {
+  const byte = Math.round((percent / 100) * 255);
+  return byte.toString(16).padStart(2, '0');
+}
+
 /**
  * Resolves {palette.key} reference notation against a source flat-token map.
- * Non-reference values pass through unchanged.
+ * Also resolves {palette.key}/NN, which appends an NN% opacity alpha byte to
+ * the referenced hex color (the referenced value must be a plain #rrggbb hex
+ * - `/NN` is not supported on raw hex/rgba literals). Non-reference values
+ * pass through unchanged; a reference that can't be resolved this way is
+ * left as-is.
  */
 function resolveRefs(
   flat: Record<string, unknown>,
@@ -24,10 +42,28 @@ function resolveRefs(
 ): Record<string, unknown> {
   const out: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(flat)) {
+    if (typeof v !== 'string') {
+      out[k] = v;
+      continue;
+    }
+
+    const alphaMatch = v.match(ALPHA_REF_PATTERN);
+    if (alphaMatch) {
+      // Both groups are guaranteed by ALPHA_REF_PATTERN when it matches;
+      // `noUncheckedIndexedAccess` just can't see that from a regex literal.
+      const refKey = alphaMatch[1] as string;
+      const percentStr = alphaMatch[2] as string;
+      const base = source[refKey];
+      const percent = Number(percentStr);
+      out[k] =
+        typeof base === 'string' && HEX6_PATTERN.test(base)
+          ? `${base}${percentToHexAlpha(percent)}`
+          : v;
+      continue;
+    }
+
     out[k] =
-      typeof v === 'string' && v.startsWith('{') && v.endsWith('}')
-        ? (source[v.slice(1, -1)] ?? v)
-        : v;
+      v.startsWith('{') && v.endsWith('}') ? (source[v.slice(1, -1)] ?? v) : v;
   }
   return out;
 }
