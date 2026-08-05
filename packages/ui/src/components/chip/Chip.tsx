@@ -241,10 +241,10 @@ const styles = StyleSheet.create((theme) => {
           color: 'primary',
           variant: 'soft',
           styles: {
-            backgroundColor: c['action.bg.subtle'],
-            borderColor: c['action.bg.subtle'],
+            backgroundColor: c['action.bg.primary.subtle'],
+            borderColor: c['action.bg.primary.subtle'],
             borderWidth: 0,
-            color: c['action.fg.subtle'],
+            color: c['action.fg.primary.subtle'],
           },
         },
         {
@@ -261,20 +261,20 @@ const styles = StyleSheet.create((theme) => {
           color: 'secondary',
           variant: 'solid',
           styles: {
-            backgroundColor: c['action.bg.neutral.hover'],
-            borderColor: c['action.bg.neutral.hover'],
+            backgroundColor: c['action.bg.secondary'],
+            borderColor: c['action.bg.secondary'],
             borderWidth: 0,
-            color: c['action.fg.neutral'],
+            color: c['action.fg.secondary'],
           },
         },
         {
           color: 'secondary',
           variant: 'soft',
           styles: {
-            backgroundColor: c['surface.sunken'],
-            borderColor: c['surface.sunken'],
+            backgroundColor: c['action.bg.secondary.subtle'],
+            borderColor: c['action.bg.secondary.subtle'],
             borderWidth: 0,
-            color: c['text.muted'],
+            color: c['action.fg.secondary.subtle'],
           },
         },
         {

@@ -162,7 +162,7 @@ describe('Avatar', () => {
       expect(container.props.style).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            backgroundColor: get('action.bg.neutral.hover'),
+            backgroundColor: get('action.bg.secondary'),
           }),
         ])
       );
@@ -193,13 +193,15 @@ describe('Avatar', () => {
       expect(solid).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            backgroundColor: get('action.bg.neutral.hover'),
+            backgroundColor: get('action.bg.secondary'),
           }),
         ])
       );
       expect(soft).toEqual(
         expect.arrayContaining([
-          expect.objectContaining({ backgroundColor: get('surface.sunken') }),
+          expect.objectContaining({
+            backgroundColor: get('action.bg.secondary.subtle'),
+          }),
         ])
       );
     });

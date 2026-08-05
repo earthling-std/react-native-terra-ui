@@ -74,13 +74,11 @@ For each semantic scheme name, the theme color token used for the background and
 
 | `color` | `solid` bg / fg | `soft` bg / fg | `outline` border / fg |
 |---|---|---|---|
-| `primary` | `action.bg.primary` / `action.fg.primary` | `action.bg.subtle` / `action.fg.subtle` | `border.accent` / `text.accent` |
-| `secondary` | `action.bg.neutral.hover` / `action.fg.neutral` | `surface.sunken` / `text.muted` | `border.default` / `text.default` |
+| `primary` | `action.bg.primary` / `action.fg.primary` | `action.bg.primary.subtle` / `action.fg.primary.subtle` | `border.accent` / `text.accent` |
+| `secondary` | `action.bg.secondary` / `action.fg.secondary` | `action.bg.secondary.subtle` / `action.fg.secondary.subtle` | `border.default` / `text.default` |
 | `success` | `status.bg.success` / `status.fg.success` | `status.bg.success.subtle` / `status.fg.success.subtle` | `status.border.success` / `status.fg.success.subtle` |
 | `warning` | `status.bg.warning` / `status.fg.warning` | `status.bg.warning.subtle` / `status.fg.warning.subtle` | `status.border.warning` / `status.fg.warning.subtle` |
 | `danger` | `status.bg.danger` / `status.fg.danger` | `status.bg.danger.subtle` / `status.fg.danger.subtle` | `status.border.danger` / `status.fg.danger.subtle` |
-
-`secondary`'s `solid` mapping intentionally mirrors `Button`'s `neutral` variant (using the `.hover` token as the resting background, since `action.bg.neutral` itself is `transparent`).
 
 When a custom color literal is given instead of a scheme name, the chip SHALL derive its background, border, and foreground colors from that single literal at the resolved `variant`'s visual weight for `solid`, `soft`, and `outline`: `solid` uses the literal as the background with a legible (black or white) computed foreground; `soft` uses a translucent tint of the literal as the background with the literal itself as the foreground; `outline` uses the literal directly as the border and foreground with a transparent background — following the same derivation approach Terra UI already uses elsewhere to turn one accent color into a full color scheme. `ghost` SHALL still use `text.default` even when `color` is a custom literal (the literal has no effect on `ghost`).
 

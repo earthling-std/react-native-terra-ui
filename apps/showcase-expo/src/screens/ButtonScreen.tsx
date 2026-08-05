@@ -22,7 +22,6 @@ const noop = () => undefined;
 const VARIANTS: ButtonVariant[] = [
   'primary',
   'secondary',
-  'neutral',
   'outline',
   'ghost',
   'danger',

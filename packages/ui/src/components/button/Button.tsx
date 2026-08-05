@@ -27,7 +27,6 @@ import { Text } from '../text';
 export type ButtonVariant =
   | 'primary'
   | 'secondary'
-  | 'neutral'
   | 'outline'
   | 'ghost'
   | 'danger';
@@ -90,17 +89,10 @@ function getColors(variant: ButtonVariant, theme: TerraTheme): ButtonColors {
       };
     case 'secondary':
       return {
-        bg: get('action.bg.subtle'),
-        border: get('action.bg.subtle'),
+        bg: get('action.bg.secondary'),
+        border: get('action.bg.secondary'),
         borderWidth: 0,
-        fg: get('action.fg.subtle'),
-      };
-    case 'neutral':
-      return {
-        bg: get('action.bg.neutral.hover'),
-        border: get('action.bg.neutral.hover'),
-        borderWidth: 0,
-        fg: get('action.fg.neutral'),
+        fg: get('action.fg.secondary'),
       };
     case 'outline':
       return {

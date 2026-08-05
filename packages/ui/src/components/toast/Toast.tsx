@@ -78,7 +78,7 @@ function getToastColors(variant: ToastVariant, theme: TerraTheme): ToastColors {
     case 'accent':
       return {
         ...base,
-        title: get('action.fg.subtle'),
+        title: get('action.fg.primary.subtle'),
         icon: get('text.accent'),
         actionBg: get('action.bg.primary'),
         actionFg: get('action.fg.primary'),
@@ -99,8 +99,8 @@ function getToastColors(variant: ToastVariant, theme: TerraTheme): ToastColors {
         ...base,
         title: get('text.default'),
         icon: get('text.subtle'),
-        actionBg: get('action.bg.neutral.hover'),
-        actionFg: get('action.fg.neutral'),
+        actionBg: get('action.bg.secondary'),
+        actionFg: get('action.fg.secondary'),
       };
   }
 }
@@ -242,7 +242,7 @@ export interface ToastActionProps
 function renderActionChildren(children: ReactNode, color: string): ReactNode {
   if (typeof children === 'string' || typeof children === 'number') {
     return (
-      <Text variant="label-lg" weight="semibold" style={{ color }}>
+      <Text variant="label-md" weight="semibold" style={{ color }}>
         {children}
       </Text>
     );

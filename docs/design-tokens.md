@@ -102,9 +102,15 @@ color.action.bg.primary.hover     ← primary fill on hover
 color.action.bg.primary.active    ← primary fill on press
 color.action.bg.primary.disabled  ← primary fill when disabled
 color.action.fg.primary           ← primary label/icon color
-color.action.bg.subtle            ← tinted/ghost fill
-color.action.bg.subtle.hover
-color.action.fg.subtle
+color.action.bg.primary.subtle       ← tinted/ghost primary fill
+color.action.bg.primary.subtle.hover
+color.action.fg.primary.subtle
+
+color.action.bg.secondary            ← secondary (neutral) fill
+color.action.fg.secondary
+color.action.bg.secondary.subtle     ← tinted/ghost secondary fill
+color.action.bg.secondary.subtle.hover
+color.action.fg.secondary.subtle
 
 color.text.default                ← body text
 color.text.muted                  ← secondary text
