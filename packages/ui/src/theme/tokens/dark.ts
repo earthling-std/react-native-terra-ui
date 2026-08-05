@@ -42,17 +42,22 @@ export const dark = {
   'color.action.bg.primary.disabled': '{palette.slate.700}',
   'color.action.fg.primary': '{palette.slate.950}',
 
-  'color.action.bg.subtle': '{palette.emerald.950}',
-  'color.action.bg.subtle.hover': '{palette.emerald.900}',
-  'color.action.bg.subtle.active': '{palette.emerald.800}',
-  'color.action.bg.subtle.disabled': '{palette.neutral.900}',
-  'color.action.fg.subtle': '{palette.emerald.300}',
+  'color.action.bg.primary.subtle': '{palette.emerald.950}',
+  'color.action.bg.primary.subtle.hover': '{palette.emerald.900}',
+  'color.action.bg.primary.subtle.active': '{palette.emerald.800}',
+  'color.action.bg.primary.subtle.disabled': '{palette.neutral.900}',
+  'color.action.fg.primary.subtle': '{palette.emerald.300}',
 
-  'color.action.bg.neutral': 'transparent',
-  'color.action.bg.neutral.hover': '{palette.neutral.800}',
-  'color.action.bg.neutral.active': '{palette.neutral.700}',
-  'color.action.bg.neutral.disabled': 'transparent',
-  'color.action.fg.neutral': '{palette.neutral.400}',
+  // `secondary`'s resting fill/text — used by Avatar/Chip's `secondary` color
+  // and Button/Toast's neutral-emphasis look; sized for real separation
+  // against `color.background` (neutral.950).
+  'color.action.bg.secondary': '{palette.neutral.600}',
+  'color.action.fg.secondary': '{palette.neutral.50}',
+  'color.action.bg.secondary.subtle': '{palette.neutral.800}',
+  'color.action.bg.secondary.subtle.hover': '{palette.neutral.700}',
+  'color.action.bg.secondary.subtle.active': '{palette.neutral.600}',
+  'color.action.bg.secondary.subtle.disabled': '{palette.neutral.900}',
+  'color.action.fg.secondary.subtle': '{palette.neutral.200}',
 
   // ── color: status  (bg + fg + border → property required) ────────────────
   'color.status.bg.success': '{palette.green.500}',
@@ -69,7 +74,7 @@ export const dark = {
   'color.status.fg.warning': '{palette.slate.950}',
   'color.status.fg.warning.subtle': '{palette.amber.200}',
 
-  'color.status.bg.danger': '{palette.red.500}',
+  'color.status.bg.danger': '{palette.red.600}',
   'color.status.bg.danger.subtle': '{palette.red.950}',
   'color.status.border.danger': '{palette.red.800}',
   'color.status.border.danger.subtle': '{palette.red.900}',

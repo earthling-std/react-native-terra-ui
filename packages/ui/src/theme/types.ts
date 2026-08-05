@@ -162,16 +162,18 @@ export interface ThemeColor {
   'action.bg.primary.active': string;
   'action.bg.primary.disabled': string;
   'action.fg.primary': string;
-  'action.bg.subtle': string;
-  'action.bg.subtle.hover': string;
-  'action.bg.subtle.active': string;
-  'action.bg.subtle.disabled': string;
-  'action.fg.subtle': string;
-  'action.bg.neutral': string;
-  'action.bg.neutral.hover': string;
-  'action.bg.neutral.active': string;
-  'action.bg.neutral.disabled': string;
-  'action.fg.neutral': string;
+  'action.bg.primary.subtle': string;
+  'action.bg.primary.subtle.hover': string;
+  'action.bg.primary.subtle.active': string;
+  'action.bg.primary.subtle.disabled': string;
+  'action.fg.primary.subtle': string;
+  'action.bg.secondary': string;
+  'action.fg.secondary': string;
+  'action.bg.secondary.subtle': string;
+  'action.bg.secondary.subtle.hover': string;
+  'action.bg.secondary.subtle.active': string;
+  'action.bg.secondary.subtle.disabled': string;
+  'action.fg.secondary.subtle': string;
   // status — success
   'status.bg.success': string;
   'status.bg.success.subtle': string;

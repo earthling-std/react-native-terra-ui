@@ -6,7 +6,9 @@
  *   - property is required when a context carries multiple attributes (action, status)
  *
  * Values use {palette.key} reference notation, resolved against primitives at
- * build time via resolveRefs() in theme.ts. Raw hex is used only where no
+ * build time via resolveRefs() in theme.ts. {palette.key}/NN resolves the
+ * referenced #rrggbb hex with an NN% opacity byte appended (e.g.
+ * {palette.amber.500}/15 -> '#fe9a0026'). Raw hex is used only where no
  * palette step matches exactly.
  *
  * GENERATED-STYLE SOURCE: intended to be replaced by the Figma / design-sync export.
@@ -48,36 +50,41 @@ export const light = {
   'color.action.bg.primary.disabled': '{palette.slate.200}',
   'color.action.fg.primary': '{palette.white}',
 
-  'color.action.bg.subtle': '{palette.emerald.100}',
-  'color.action.bg.subtle.hover': '{palette.emerald.200}',
-  'color.action.bg.subtle.active': '{palette.emerald.300}',
-  'color.action.bg.subtle.disabled': '{palette.slate.100}',
-  'color.action.fg.subtle': '{palette.emerald.700}',
+  'color.action.bg.primary.subtle': '{palette.emerald.100}',
+  'color.action.bg.primary.subtle.hover': '{palette.emerald.200}',
+  'color.action.bg.primary.subtle.active': '{palette.emerald.300}',
+  'color.action.bg.primary.subtle.disabled': '{palette.slate.100}',
+  'color.action.fg.primary.subtle': '{palette.emerald.700}',
 
-  'color.action.bg.neutral': 'transparent',
-  'color.action.bg.neutral.hover': '{palette.slate.100}',
-  'color.action.bg.neutral.active': '{palette.slate.200}',
-  'color.action.bg.neutral.disabled': 'transparent',
-  'color.action.fg.neutral': '{palette.slate.700}',
+  // `secondary`'s resting fill/text — used by Avatar/Chip's `secondary` color
+  // and Button/Toast's neutral-emphasis look; sized for real separation
+  // against `color.background` (#f9f9fb), not just a tint.
+  'color.action.bg.secondary': '{palette.neutral.200}',
+  'color.action.fg.secondary': '{palette.neutral.900}',
+  'color.action.bg.secondary.subtle': '{palette.neutral.400}/15',
+  'color.action.bg.secondary.subtle.hover': '{palette.neutral.400}/25',
+  'color.action.bg.secondary.subtle.active': '{palette.neutral.400}/35',
+  'color.action.bg.secondary.subtle.disabled': '{palette.slate.100}',
+  'color.action.fg.secondary.subtle': '{palette.neutral.700}',
 
   // ── color: status  (bg + fg + border → property required) ────────────────
   'color.status.bg.success': '{palette.green.600}',
-  'color.status.bg.success.subtle': '{palette.green.100}',
+  'color.status.bg.success.subtle': '{palette.green.600}/20',
   'color.status.border.success': '{palette.green.300}',
   'color.status.border.success.subtle': '{palette.green.200}',
   'color.status.fg.success': '{palette.white}',
   'color.status.fg.success.subtle': '{palette.green.800}',
 
-  'color.status.bg.warning': '{palette.amber.500}',
-  'color.status.bg.warning.subtle': '{palette.amber.100}',
-  'color.status.border.warning': '{palette.amber.300}',
-  'color.status.border.warning.subtle': '{palette.amber.200}',
+  'color.status.bg.warning': '{palette.yellow.500}',
+  'color.status.bg.warning.subtle': '{palette.yellow.500}/20',
+  'color.status.border.warning': '{palette.yellow.300}',
+  'color.status.border.warning.subtle': '{palette.yellow.200}',
   'color.status.fg.warning': '{palette.slate.950}',
-  'color.status.fg.warning.subtle': '{palette.amber.800}',
+  'color.status.fg.warning.subtle': '{palette.yellow.800}',
 
-  'color.status.bg.danger': '{palette.red.600}',
-  'color.status.bg.danger.subtle': '{palette.red.100}',
-  'color.status.border.danger': '{palette.red.300}',
+  'color.status.bg.danger': '{palette.red.400}',
+  'color.status.bg.danger.subtle': '{palette.red.500}/20',
+  'color.status.border.danger': '{palette.red.500}',
   'color.status.border.danger.subtle': '{palette.red.200}',
   'color.status.fg.danger': '{palette.white}',
   'color.status.fg.danger.subtle': '{palette.red.800}',

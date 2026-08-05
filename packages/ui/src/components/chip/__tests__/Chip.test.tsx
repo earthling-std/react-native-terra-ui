@@ -92,7 +92,7 @@ describe('Chip', () => {
         </Chip>
       );
       const style = StyleSheet.flatten(screen.getByTestId('chip').props.style);
-      expect(style.backgroundColor).toBe(get('action.bg.subtle'));
+      expect(style.backgroundColor).toBe(get('action.bg.primary.subtle'));
       expect(style.borderWidth).toBe(0);
     });
 
@@ -158,9 +158,9 @@ describe('Chip', () => {
       {
         color: 'primary',
         variant: 'soft',
-        bg: get('action.bg.subtle'),
-        border: get('action.bg.subtle'),
-        fg: get('action.fg.subtle'),
+        bg: get('action.bg.primary.subtle'),
+        border: get('action.bg.primary.subtle'),
+        fg: get('action.fg.primary.subtle'),
       },
       {
         color: 'primary',
@@ -172,16 +172,16 @@ describe('Chip', () => {
       {
         color: 'secondary',
         variant: 'solid',
-        bg: get('action.bg.neutral.hover'),
-        border: get('action.bg.neutral.hover'),
-        fg: get('action.fg.neutral'),
+        bg: get('action.bg.secondary'),
+        border: get('action.bg.secondary'),
+        fg: get('action.fg.secondary'),
       },
       {
         color: 'secondary',
         variant: 'soft',
-        bg: get('surface.sunken'),
-        border: get('surface.sunken'),
-        fg: get('text.muted'),
+        bg: get('action.bg.secondary.subtle'),
+        border: get('action.bg.secondary.subtle'),
+        fg: get('action.fg.secondary.subtle'),
       },
       {
         color: 'secondary',

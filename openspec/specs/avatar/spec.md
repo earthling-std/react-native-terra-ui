@@ -33,8 +33,8 @@ For each `(color, variant)` combination, the `Avatar` component SHALL resolve it
 
 | `color` | `solid` bg / fg | `soft` bg / fg |
 |---|---|---|
-| `secondary` | `action.bg.neutral.hover` / `action.fg.neutral` | `surface.sunken` / `text.muted` |
-| `primary` | `action.bg.primary` / `action.fg.primary` | `action.bg.subtle` / `action.fg.subtle` |
+| `secondary` | `action.bg.secondary` / `action.fg.secondary` | `action.bg.secondary.subtle` / `action.fg.secondary.subtle` |
+| `primary` | `action.bg.primary` / `action.fg.primary` | `action.bg.primary.subtle` / `action.fg.primary.subtle` |
 | `success` | `status.bg.success` / `status.fg.success` | `status.bg.success.subtle` / `status.fg.success.subtle` |
 | `warning` | `status.bg.warning` / `status.fg.warning` | `status.bg.warning.subtle` / `status.fg.warning.subtle` |
 | `danger` | `status.bg.danger` / `status.fg.danger` | `status.bg.danger.subtle` / `status.fg.danger.subtle` |
@@ -47,4 +47,4 @@ This table SHALL hold for every `color`, including `secondary` — the resolved 
 
 #### Scenario: Secondary color respects variant
 - **WHEN** an `Avatar` is rendered with `color="secondary"` (the default) and `variant="solid"` vs. `variant="soft"`
-- **THEN** the two renders use different background and foreground tokens (`action.bg.neutral.hover` / `action.fg.neutral` for `solid`, `surface.sunken` / `text.muted` for `soft`), not the same tokens regardless of `variant`
+- **THEN** the two renders use different background and foreground tokens (`action.bg.secondary` / `action.fg.secondary` for `solid`, `action.bg.secondary.subtle` / `action.fg.secondary.subtle` for `soft`), not the same tokens regardless of `variant`

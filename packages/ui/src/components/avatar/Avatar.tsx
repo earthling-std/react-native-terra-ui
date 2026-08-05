@@ -154,16 +154,16 @@ const styles = StyleSheet.create((theme) => {
           color: 'secondary',
           variant: 'solid',
           styles: {
-            backgroundColor: c['action.bg.neutral.hover'],
-            color: c['action.fg.neutral'],
+            backgroundColor: c['action.bg.secondary'],
+            color: c['action.fg.secondary'],
           },
         },
         {
           color: 'secondary',
           variant: 'soft',
           styles: {
-            backgroundColor: c['surface.sunken'],
-            color: c['text.muted'],
+            backgroundColor: c['action.bg.secondary.subtle'],
+            color: c['action.fg.secondary.subtle'],
           },
         },
         {
@@ -178,8 +178,8 @@ const styles = StyleSheet.create((theme) => {
           color: 'primary',
           variant: 'soft',
           styles: {
-            backgroundColor: c['action.bg.subtle'],
-            color: c['action.fg.subtle'],
+            backgroundColor: c['action.bg.primary.subtle'],
+            color: c['action.fg.primary.subtle'],
           },
         },
         {
